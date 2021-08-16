@@ -27,5 +27,6 @@ void MainWindow::on_push_enc_clicked()
     }
 
 
+
     cout << input_text << endl;
 }
