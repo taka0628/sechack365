@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>150</y>
+      <y>180</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -31,7 +31,7 @@
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>150</y>
+      <y>180</y>
       <width>89</width>
       <height>25</height>
      </rect>
@@ -44,10 +44,26 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>40</y>
+      <y>80</y>
       <width>251</width>
       <height>71</height>
      </rect>
+    </property>
+    <property name="placeholderText">
+     <string>ファイルパス入力</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>50</y>
+      <width>191</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>対象ファイルをドラッグ</string>
     </property>
    </widget>
   </widget>
@@ -62,6 +78,15 @@
    </property>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Vertical</enum>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>

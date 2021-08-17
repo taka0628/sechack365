@@ -25,10 +25,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    dialog_password.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    dialog_password.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    dialog_password.ui
+
+DISTFILES +=
