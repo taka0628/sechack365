@@ -15,12 +15,20 @@ public:
     explicit Dialog_password(QWidget *parent = 0);
     ~Dialog_password();
 
+    bool is_ok() const;
+    bool is_calcel() const;
+
 private slots:
 
     void on_lineEdit_password_check_textChanged(const QString &arg1);
 
+    void on_pushButton_OK_clicked();
+
 private:
     Ui::Dialog_password *ui;
+
+    bool is_canceled_;
+    bool is_ok_;
 };
 
 #endif // DIALOG_PASSWORD_H

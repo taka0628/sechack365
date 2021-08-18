@@ -26,6 +26,8 @@ public:
 private slots:
     void on_push_enc_clicked();
 
+    void on_pushButton_debug_clicked();
+
 private:
     Ui::MainWindow *ui;
     Dialog_password *get_password_wind;

@@ -66,6 +66,19 @@
      <string>対象ファイルをドラッグ</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_debug">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>10</y>
+      <width>89</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>debug</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -82,7 +95,7 @@
     <bool>false</bool>
    </property>
    <property name="orientation">
-    <enum>Qt::Vertical</enum>
+    <enum>Qt::Horizontal</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>

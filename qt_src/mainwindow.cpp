@@ -35,6 +35,13 @@ void MainWindow::on_push_enc_clicked()
     get_password_wind = new Dialog_password(this);
     get_password_wind->show();
 
+    cout << "OK: " << get_password_wind->is_ok() << endl;
+
 
     cout << input_text << endl;
+}
+
+void MainWindow::on_pushButton_debug_clicked()
+{
+    cout << "OK: " << get_password_wind->is_ok() << endl;
 }
