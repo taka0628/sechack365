@@ -4,6 +4,11 @@
 #include "string"
 #include "fstream"
 #include "iostream"
+#include "cstdio"
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "aes_c.hpp"
 #include "sha_c.hpp"

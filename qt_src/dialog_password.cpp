@@ -67,7 +67,7 @@ void Dialog_password::on_pushButton_OK_clicked()
      if(file_enc.file_enc() == false){
          cerr << "暗号化に失敗しました" << endl;
      }
-     file_enc.~file_enc_c();
+     this->close();
 }
 
 void Dialog_password::on_pushButton_Cancel_clicked()

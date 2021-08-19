@@ -9,6 +9,7 @@
 #include "../src/RSA_c.hpp"
 
 #include "dialog_password.h"
+#include "dialog_dec_pass.h"
 
 
 namespace Ui {
@@ -28,9 +29,12 @@ private slots:
 
     void on_pushButton_debug_clicked();
 
+    void on_push_dec_clicked();
+
 private:
     Ui::MainWindow *ui;
     Dialog_password *get_password_wind;
+    Dialog_dec_pass *get_dec_pass_wind;
 };
 
 #endif // MAINWINDOW_H

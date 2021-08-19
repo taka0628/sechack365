@@ -66,7 +66,6 @@ void aes_c::set_key(string hex)
         bin[i / 2] = (char)strtoul(pch, NULL, 16);
         this->key.push_back(bin[i / 2]);
     }
-    cout << "bin: " << bin << endl;
     free(bin);
     bin = nullptr;
 }
@@ -156,7 +155,6 @@ string aes_c::hex2str(const string hex) const
     char buf[3] = {0};
     unsigned char *bin = (unsigned char *)calloc(sizeof(char), hex.size());
     int binsize = hex.size();
-    printf("binsize: %d\n", binsize);
 
     string result;
     result.erase(result.begin(), result.end());
@@ -334,7 +332,6 @@ void aes_c::decrypt(string &out, const string in, const AES_bit_e bit)
     free(outFromAes);
     outFromAes = nullptr;
 
-    cout << "dec: " << out << endl;
 }
 
 void aes_c::reset()
