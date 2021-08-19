@@ -7,8 +7,6 @@ using namespace std;
 
 aes_c::aes_c(/* args */)
 {
-    this->key;
-    this->iv;
 }
 
 aes_c::~aes_c()
@@ -18,14 +16,13 @@ aes_c::~aes_c()
 void aes_c::set_iv(std::string hex)
 {
     char buf[2] = {0};
-    char temp[2] = {0};
     char *bin = (char *)calloc(sizeof(char), hex.size());
     int binsize = hex.size();
     printf("binsize: %d\n", binsize);
 
     this->remove_iv();
     char *pch;
-    for (int i = 0; i < hex.size(); i += 2)
+    for (size_t i = 0; i < hex.size(); i += 2)
     {
         buf[0] = hex[i];
         buf[1] = hex[i + 1];
@@ -55,14 +52,13 @@ void aes_c::set_key(string hex)
 {
     // string buf(2, 0);
     char buf[2] = {0};
-    char temp[2] = {0};
     char *bin = (char *)calloc(sizeof(char), hex.size());
     int binsize = hex.size();
     printf("binsize: %d\n", binsize);
 
     this->remove_key();
     char *pch;
-    for (int i = 0; i < hex.size(); i += 2)
+    for (size_t i = 0; i < hex.size(); i += 2)
     {
         buf[0] = hex[i];
         buf[1] = hex[i + 1];
@@ -126,7 +122,7 @@ void aes_c::create_iv(int bit)
 void aes_c::print_0x(const string header, const string &buf) const
 {
     cout << header;
-    for (int i = 0; i < buf.size(); i++)
+    for (size_t i = 0; i < buf.size(); i++)
     {
         printf("%02x", (unsigned char)buf[i]);
     }
@@ -136,7 +132,7 @@ void aes_c::print_0x(const string header, const string &buf) const
 string aes_c::ui2hex(const vector<uint8_t> src) const
 {
     stringstream buf;
-    for (int i = 0; i < src.size(); i++)
+    for (size_t i = 0; i < src.size(); i++)
     {
         buf << hex << int(src[i]);
     }
@@ -147,7 +143,7 @@ string aes_c::str2hex(const string src) const
 {
     stringstream buf;
     char p[10];
-    for (int i = 0; i < src.size(); i++)
+    for (size_t i = 0; i < src.size(); i++)
     {
         sprintf(p, "%02x", (unsigned char)src[i]);
         buf << p;
@@ -158,7 +154,6 @@ string aes_c::str2hex(const string src) const
 string aes_c::hex2str(const string hex) const
 {
     char buf[3] = {0};
-    unsigned char char_out;
     unsigned char *bin = (unsigned char *)calloc(sizeof(char), hex.size());
     int binsize = hex.size();
     printf("binsize: %d\n", binsize);
@@ -167,7 +162,7 @@ string aes_c::hex2str(const string hex) const
     result.erase(result.begin(), result.end());
     char *pch;
     memset((void *)bin, 0, hex.size());
-    for (int i = 0; i < hex.size(); i += 2)
+    for (size_t i = 0; i < hex.size(); i += 2)
     {
         buf[0] = hex[i];
         buf[1] = hex[i + 1];
@@ -262,7 +257,7 @@ void aes_c::encrypt(string &out, const string in, const AES_bit_e bit)
 
     EVP_CIPHER_CTX_free(ctx);
 
-    for (int i = 0; i < in.size(); i++)
+    for (size_t i = 0; i < in.size(); i++)
     {
         out.push_back(outFromAes[i]);
     }
@@ -331,7 +326,7 @@ void aes_c::decrypt(string &out, const string in, const AES_bit_e bit)
     }
 
     EVP_CIPHER_CTX_free(ctx);
-    for (int i = 0; i < in.size(); i++)
+    for (size_t i = 0; i < in.size(); i++)
     {
         out.push_back(outFromAes[i]);
     }

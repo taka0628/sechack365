@@ -29,6 +29,10 @@ bool Dialog_password::is_calcel() const{
     return this->is_canceled_;
 }
 
+void Dialog_password::set_file_path(string file_path){
+    this->file_path_ = file_path;
+}
+
 
 void Dialog_password::on_lineEdit_password_check_textChanged(const QString &arg1)
 {
@@ -45,10 +49,28 @@ void Dialog_password::on_lineEdit_password_check_textChanged(const QString &arg1
    ui->label_show_pass_check->setText(out_put);
 }
 
+//暗号化を行う
 void Dialog_password::on_pushButton_OK_clicked()
 {
-    if(IS_PASSWORD_CORRECT){
-        this->is_ok_ = true;
-        this->close();
+    if(!IS_PASSWORD_CORRECT){
+        return;
     }
+
+     this->is_ok_ = true;
+     file_enc_c file_enc;
+     file_enc.set_file_path(this->file_path_);
+     if(file_enc.is_file_exit() == false){
+         return;
+     }
+
+     file_enc.set_password(ui->lineEdit_password->text().toStdString());
+     if(file_enc.file_enc() == false){
+         cerr << "暗号化に失敗しました" << endl;
+     }
+     file_enc.~file_enc_c();
+}
+
+void Dialog_password::on_pushButton_Cancel_clicked()
+{
+    this->close();
 }
