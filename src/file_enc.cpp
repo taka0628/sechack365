@@ -112,54 +112,48 @@ bool file_enc_c::file_enc()
     aes.set_iv(sha.str2hex(this->safe_pass_));
     aes.set_key(sha.str2hex(this->safe_pass_));
 
-    string temp;
-    string out_buf;
-    out_buf.clear();
+    string out_buf, buffer;
+    char buf[2048];
+    memset(buf, 0, 2048);
     fs.seekg(0, ios_base::beg);
 
-    // int fd = 0;
-    // char buf[2048];
-    // memset(buf, 0, sizeof(buf));
-    // if ((fd = open(this->get_file_pass().c_str(), O_RDONLY)) > 0)
-    // {
-    //     int n = 0;
-    //     while ((n = read(fd, buf, sizeof(buf))) > 0)
-    //     {
-    //         aes.encrypt(temp, buf, aes_c::AES_bit_e::aes_256);
-    //         out_buf += temp;
-    //         temp.clear();
-    //         memset(buf, 0, sizeof(buf));
-    //     }
-    // }
-    // else
-    // {
-    //     puts("ファイルが存在しません");
-    // }
-    string buffer, buffer_sub;
-    while (getline(fs, buffer, '/'))
+    FILE *fp = fopen(this->get_file_pass().c_str(), "rb");
+    if (fp == NULL)
     {
-        getline(fs, buffer_sub);
-        if (fs)
-        {
-            buffer_sub += '/';
-            buffer += '/';
-        }else{
-            buffer += '/';
-        }
-        buffer += buffer_sub;
-        aes.encrypt(temp, buffer, aes_c::AES_bit_e::aes_256);
-        out_buf += temp;
-        buffer.clear();
-        temp.clear();
-        buffer_sub.clear();
+        ERROR("ファイルが開けません");
+        return false;
     }
-    fs.close();
+#if 1
+    const string buff_file_name("crypt_temp");
+    FILE *fp_buffer = fopen(buff_file_name.c_str(), "wb");
+    int buf_size = 0;
+
+    // 暗号化
+    while ((buf_size = fread(buf, 1, 1024, fp)) > 0)
+    {
+        aes.encrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
+        fwrite(out_buf.c_str(), 1, buf_size, fp_buffer);
+        buffer.clear();
+        out_buf.clear();
+        memset(buf, 0, 2048);
+    }
+    fclose(fp);
+    fclose(fp_buffer);
 
     // ファイル出力
-    ofstream out_fs;
-    out_fs.open(this->get_file_pass(), ios::trunc);
-    out_fs << out_buf;
-    out_fs.close();
+    fp = fopen(this->get_file_pass().c_str(), "wb");
+    if ((fp_buffer = fopen(buff_file_name.c_str(), "rb")) == NULL)
+    {
+        ERROR("ファイルが開けません");
+        return false;
+    }
+    while ((buf_size = fread(buf, 1, 1024, fp_buffer)) > 0)
+    {
+        fwrite(buf, 1, buf_size, fp);
+    }
+    fclose(fp);
+    fclose(fp_buffer);
+    this->file_delete(buff_file_name);
 
     // 拡張子変更
     string new_file_name = this->get_file_pass() + ".enc";
@@ -168,6 +162,34 @@ bool file_enc_c::file_enc()
         ERROR("ファイル名の変更に失敗");
         return false;
     }
+#else
+    const string buff_file_name("crypt_temp");
+    FILE *fp_buffer = fopen(buff_file_name.c_str(), "wb");
+    while (fread(buf, 1, 1024, fp) > 0)
+    {
+        fwrite(buf, 1, 1024, fp_buffer);
+        memset(buf, 0, 1024);
+    }
+    fclose(fp);
+    fclose(fp_buffer);
+
+    // ファイル出力
+    fp = fopen(this->get_file_pass().c_str(), "wb");
+    if ((fp_buffer = fopen(buff_file_name.c_str(), "rb")) == NULL)
+    {
+        ERROR("ファイルが開けません");
+        return false;
+    }
+    while (fread(buf, 1, 1024, fp_buffer))
+    {
+        fwrite(buf, 1, 1024, fp);
+    }
+    fclose(fp);
+    fclose(fp_buffer);
+    delete (buf);
+    cout << "file_size: " << file_size << endl;
+
+#endif
     cout << "暗号化に成功" << endl;
     return true;
 }
@@ -201,43 +223,45 @@ bool file_enc_c::file_dec()
     out_buf.clear();
     fs.seekg(0, ios::basic_ios::beg);
     string buffer, buffer_sub;
-    while (getline(fs, buffer, '/'))
+    FILE *fp = fopen(this->get_file_pass().c_str(), "rb");
+    if (fp == NULL)
     {
-        getline(fs, buffer_sub);
-        if (fs)
-        {
-            buffer_sub += '/';
-            buffer += '/';
-        }else{
-            buffer += '/';
-        }
-        buffer += buffer_sub;
-        aes.decrypt(temp, buffer, aes_c::AES_bit_e::aes_256);
-        out_buf += temp;
-        buffer.clear();
-        temp.clear();
-        buffer_sub.clear();
+        ERROR("ファイルが開けません");
+        return false;
     }
-    fs.close();
+    char buf[2048];
+    memset(buf, 0, 2048);
+    const string buff_file_name("crypt_temp");
 
-    // string buffer;
-    // FILE *fp = fopen(this->get_file_pass().c_str(), O_RDONLY);
-    // char buf[1024];
-    // memset(buf, 0, sizeof(buf));
-    // while (fread(buf, sizeof(char), sizeof(buf), fp) > 0)
-    // {
-    //     aes.decrypt(temp, buf, aes_c::AES_bit_e::aes_256);
-    //     out_buf += temp;
-    //     temp.clear();
-    //     memset(buf, 0, sizeof(buf));
-    // }
-    // fclose(fp);
+    FILE *fp_buffer = fopen(buff_file_name.c_str(), "wb");
+    int buf_size = 0;
+    while ((buf_size = fread(buf, 1, 1024, fp)) > 0)
+    {
+        aes.decrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
+        fwrite(out_buf.c_str(), 1, buf_size, fp_buffer);
+        buffer.clear();
+        out_buf.clear();
+        memset(buf, 0, 2048);
+    }
+    fclose(fp);
+    fclose(fp_buffer);
+
+    // ファイル出力
+    fp = fopen(this->get_file_pass().c_str(), "wb");
+    if ((fp_buffer = fopen(buff_file_name.c_str(), "rb")) == NULL)
+    {
+        ERROR("ファイルが開けません");
+        return false;
+    }
+    while ((buf_size = fread(buf, 1, 1024, fp_buffer)) > 0)
+    {
+        fwrite(buf, 1, buf_size, fp);
+    }
+    fclose(fp);
+    fclose(fp_buffer);
+    this->file_delete(buff_file_name);
 
     // ファイル名変更
-    ofstream out_fs;
-    out_fs.open(this->get_file_pass(), ios::trunc);
-    out_fs << out_buf;
-    out_fs.close();
     string new_file_name = this->get_file_pass();
     // ファイル拡張子を更新
     if (new_file_name.find(".enc") != string::npos)
@@ -257,4 +281,33 @@ bool file_enc_c::file_dec()
 string file_enc_c::get_file_pass() const
 {
     return this->file_path_;
+}
+
+// ファイルポインタは先頭にして返す
+size_t file_enc_c::getFileSize(FILE *fp) const
+{
+    if (fp == NULL)
+    {
+        return -1;
+    }
+
+    if (fseek(fp, 0L, SEEK_END) != 0)
+    {
+        return -1;
+    }
+    size_t file_size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    return file_size;
+}
+
+void file_enc_c::file_delete(string file_path) const
+{
+    FILE *fp = fopen(file_path.c_str(), "wb");
+    if (fp == NULL)
+    {
+        ERROR("");
+        return;
+    }
+    fclose(fp);
+    // remove(file_path.c_str());
 }

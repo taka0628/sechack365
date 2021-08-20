@@ -31,6 +31,10 @@ private:
     bool isEncrypt_;
     bool isNoEncrypt_;
 
+    size_t getFileSize(FILE *fp) const;
+    void file_delete(std::string file_path) const;
+    
+
 public:
     file_enc_c();
     ~file_enc_c();
