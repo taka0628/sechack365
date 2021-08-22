@@ -14,6 +14,8 @@
 #include <string>
 #include <sstream>
 
+#include "dynamic_mem_c.hpp"
+
 
 class aes_c
 {
@@ -45,7 +47,10 @@ public:
     void reset();
 
     void encrypt(std::string &out, const std::string in, const AES_bit_e bit);
+    void encrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e bit);
+
     void decrypt(std::string &out, const std::string in, const AES_bit_e bit);
+    void decrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e bit);
 
     void print_0x(const std::string header, const std::string &buf) const;
     std::string ui2hex(const std::vector<uint8_t> src) const;
