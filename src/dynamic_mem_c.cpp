@@ -39,8 +39,14 @@ int dynamic_mem_c::get_size() const
 
 void dynamic_mem_c::copy(string & dest, const uint size) const{
     if(this->mem){
-        for (int i = 0; i < size; i++){
+        for (uint i = 0; i < size; i++){
             dest.push_back(this->mem[i]);
         }
+    }
+}
+
+void dynamic_mem_c::reset(){
+    if(this->mem){
+        memset(this->mem, 0, this->get_size());
     }
 }

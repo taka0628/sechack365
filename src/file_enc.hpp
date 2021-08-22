@@ -20,6 +20,12 @@
 class file_enc_c
 {
 private:
+    enum class CRYPT_MODE
+    {
+        DECRYPT,
+        ENCRYPT
+    };
+
     std::string file_path_;
     std::string file_buff_;
     std::string enc_buf_;
@@ -32,8 +38,8 @@ private:
     bool isNoEncrypt_;
 
     size_t getFileSize(FILE *fp) const;
-    void file_delete(std::string file_path) const;
-    
+    void file_delete(std::string const file_path) const;
+    bool crypt_process(aes_c &aes , file_enc_c::CRYPT_MODE const mode) const;
 
 public:
     file_enc_c();

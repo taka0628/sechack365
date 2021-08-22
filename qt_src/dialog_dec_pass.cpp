@@ -31,10 +31,16 @@ void Dialog_dec_pass::on_buttonBox_accepted()
     }
 
     //復号
+    auto start = chrono::system_clock::now();
     file_dec.set_password(ui->lineEdit_dec_pass->text().toStdString());
     if(file_dec.file_dec() == false){
         cerr << "復号に失敗しました" << endl;
     }
+    auto end = std::chrono::system_clock::now();
+    auto dur = end - start;
+    auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
+    // 要した時間をミリ秒（1/1000秒）に変換して表示
+    std::cout << msec << " milli sec" << endl;
     this->close();
 }
 

@@ -16,7 +16,7 @@ class dynamic_mem_c
 {
 private:
     dynamic_mem_c(const dynamic_mem_c &);
-    int size;
+    size_t size;
     int usage_;
 
 public:
@@ -29,7 +29,8 @@ public:
     void d_free();
     int get_size() const;
     void copy(std::string &dest, const uint size) const;
-    void push_back()
+    void reset();
+    void push_back();
 };
 
 #endif

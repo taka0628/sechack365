@@ -36,17 +36,17 @@ void Dialog_password::set_file_path(string file_path){
 
 void Dialog_password::on_lineEdit_password_check_textChanged(const QString &arg1)
 {
-   QString input_pass_ck = arg1;
-   QString input_pass_origin = ui->lineEdit_password->text();
-   QString  out_put;
-   if(input_pass_origin == input_pass_ck){
+    QString input_pass_ck = arg1;
+    QString input_pass_origin = ui->lineEdit_password->text();
+    QString  out_put;
+    if(input_pass_origin == input_pass_ck){
         out_put.push_back("OK");
         IS_PASSWORD_CORRECT = true;
-   }else{
-       out_put.push_back(("NG"));
-       IS_PASSWORD_CORRECT = false;
-   }
-   ui->label_show_pass_check->setText(out_put);
+    }else{
+        out_put.push_back(("NG"));
+        IS_PASSWORD_CORRECT = false;
+    }
+    ui->label_show_pass_check->setText(out_put);
 }
 
 //暗号化を行う
@@ -56,18 +56,24 @@ void Dialog_password::on_pushButton_OK_clicked()
         return;
     }
 
-     this->is_ok_ = true;
-     file_enc_c file_enc;
-     file_enc.set_file_path(this->file_path_);
-     if(file_enc.is_file_exit() == false){
-         return;
-     }
+    this->is_ok_ = true;
+    file_enc_c file_enc;
+    file_enc.set_file_path(this->file_path_);
+    if(file_enc.is_file_exit() == false){
+        return;
+    }
 
-     file_enc.set_password(ui->lineEdit_password->text().toStdString());
-     if(file_enc.file_enc() == false){
-         cerr << "暗号化に失敗しました" << endl;
-     }
-     this->close();
+    file_enc.set_password(ui->lineEdit_password->text().toStdString());
+    auto start = chrono::system_clock::now();
+    if(file_enc.file_enc() == false){
+        cerr << "暗号化に失敗しました" << endl;
+    }
+    auto end = std::chrono::system_clock::now();
+    auto dur = end - start;
+    auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
+    // 要した時間をミリ秒（1/1000秒）に変換して表示
+    std::cout << msec << " milli sec" << endl;
+    this->close();
 }
 
 void Dialog_password::on_pushButton_Cancel_clicked()

@@ -154,7 +154,6 @@ string aes_c::hex2str(const string hex) const
 {
     char buf[3] = {0};
     unsigned char *bin = (unsigned char *)calloc(sizeof(char), hex.size());
-    int binsize = hex.size();
 
     string result;
     result.erase(result.begin(), result.end());
@@ -264,6 +263,75 @@ void aes_c::encrypt(string &out, const string in, const AES_bit_e bit)
     outFromAes = nullptr;
 }
 
+void aes_c::encrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e bit)
+{
+
+    // int out_len, in_len = in.size();
+    EVP_CIPHER_CTX *ctx;
+
+
+    if (key.empty())
+    {
+        ERROR("key empty");
+        return;
+    }
+    if (this->iv.empty())
+    {
+        ERROR("iv empty");
+        return;
+    }
+    u_int8_t *key2aes = (u_int8_t *)this->key.data();
+    u_int8_t *iv2aes = (u_int8_t *)this->iv.data();
+
+    if (!(ctx = EVP_CIPHER_CTX_new()))
+    {
+        printf("error EVP_CIPHER_CTX_new\n");
+        return;
+    }
+
+    switch (bit)
+    {
+    case AES_bit_e::aes_128:
+        if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_128_ctr(), NULL, key2aes, iv2aes))
+        {
+            printf("error EVP_EncryptInit_ex\n");
+            return;
+        }
+        break;
+    case AES_bit_e::aes_256:
+        if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_ctr(), NULL, key2aes, iv2aes))
+        {
+            printf("error EVP_EncryptInit_ex\n");
+            return;
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    int size2aes = (int)in.get_size();
+    unsigned char *in2aes = (unsigned char *)in.mem;
+    unsigned char *outFromAes = (unsigned char *)calloc(sizeof(unsigned char), out.get_size());
+
+    if (1 != EVP_EncryptUpdate(ctx, outFromAes, &size2aes, in2aes, in.get_size()))
+    {
+        printf("error EVP_EncryptUpdate\n");
+        return;
+    }
+    if (size2aes != in.get_size())
+    {
+        printf("error encrypt out_len(%d) != in_len(%d)\n", size2aes, in.get_size());
+    }
+
+    EVP_CIPHER_CTX_free(ctx);
+
+    memcpy(out.mem, outFromAes, out.get_size());
+
+    free(outFromAes);
+    outFromAes = nullptr;
+}
+
 void aes_c::decrypt(string &out, const string in, const AES_bit_e bit)
 {
     int out_len, in_len = in.size();
@@ -331,7 +399,72 @@ void aes_c::decrypt(string &out, const string in, const AES_bit_e bit)
 
     free(outFromAes);
     outFromAes = nullptr;
+}
 
+void aes_c::decrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e bit)
+{
+    int out_len, in_len = in.get_size();
+    EVP_CIPHER_CTX *ctx;
+
+    if (key.empty())
+    {
+        ERROR("key empty");
+        return;
+    }
+    if (this->iv.empty())
+    {
+        ERROR("iv empty");
+        return;
+    }
+
+    u_int8_t *key2aes = (u_int8_t *)this->key.data();
+    u_int8_t *iv2aes = (u_int8_t *)this->iv.data();
+
+    if (!(ctx = EVP_CIPHER_CTX_new()))
+    {
+        printf("error EVP_CIPHER_CTX_new\n");
+        return;
+    }
+
+    switch (bit)
+    {
+    case AES_bit_e::aes_128:
+        if (1 != EVP_DecryptInit_ex(ctx, EVP_aes_128_ctr(), NULL, key2aes, iv2aes))
+        {
+            printf("error EVP_DecryptInit_ex\n");
+            return;
+        }
+        break;
+
+    case AES_bit_e::aes_256:
+        if (1 != EVP_DecryptInit_ex(ctx, EVP_aes_256_ctr(), NULL, key2aes, iv2aes))
+        {
+            printf("error EVP_DecryptInit_ex\n");
+            return;
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    unsigned char *outFromAes = (unsigned char *)calloc(sizeof(unsigned char), in.get_size());
+    unsigned char *in2aes = (unsigned char *)in.mem;
+    if (1 != EVP_DecryptUpdate(ctx, outFromAes, &out_len, in2aes, in_len))
+    {
+        printf("error EVP_DecryptUpdate\n");
+        return;
+    }
+    if (out_len != in_len)
+    {
+        printf("error decrypt out_len(%d) != in_len(%d)\n", out_len, in_len);
+    }
+
+    EVP_CIPHER_CTX_free(ctx);
+    memcpy(out.mem, outFromAes, out.get_size());
+
+    free(outFromAes);
+    outFromAes = nullptr;
 }
 
 void aes_c::reset()

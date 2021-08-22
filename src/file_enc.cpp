@@ -112,84 +112,7 @@ bool file_enc_c::file_enc()
     aes.set_iv(sha.str2hex(this->safe_pass_));
     aes.set_key(sha.str2hex(this->safe_pass_));
 
-    string out_buf, buffer;
-    char buf[2048];
-    memset(buf, 0, 2048);
-    fs.seekg(0, ios_base::beg);
-
-    FILE *fp = fopen(this->get_file_pass().c_str(), "rb");
-    if (fp == NULL)
-    {
-        ERROR("ファイルが開けません");
-        return false;
-    }
-#if 1
-    const string buff_file_name("crypt_temp");
-    FILE *fp_buffer = fopen(buff_file_name.c_str(), "wb");
-    int buf_size = 0;
-
-    // 暗号化
-    while ((buf_size = fread(buf, 1, 1024, fp)) > 0)
-    {
-        aes.encrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
-        fwrite(out_buf.c_str(), 1, buf_size, fp_buffer);
-        buffer.clear();
-        out_buf.clear();
-        memset(buf, 0, 2048);
-    }
-    fclose(fp);
-    fclose(fp_buffer);
-
-    // ファイル出力
-    fp = fopen(this->get_file_pass().c_str(), "wb");
-    if ((fp_buffer = fopen(buff_file_name.c_str(), "rb")) == NULL)
-    {
-        ERROR("ファイルが開けません");
-        return false;
-    }
-    while ((buf_size = fread(buf, 1, 1024, fp_buffer)) > 0)
-    {
-        fwrite(buf, 1, buf_size, fp);
-    }
-    fclose(fp);
-    fclose(fp_buffer);
-    this->file_delete(buff_file_name);
-
-    // 拡張子変更
-    string new_file_name = this->get_file_pass() + ".enc";
-    if (rename(this->get_file_pass().c_str(), new_file_name.c_str()))
-    {
-        ERROR("ファイル名の変更に失敗");
-        return false;
-    }
-#else
-    const string buff_file_name("crypt_temp");
-    FILE *fp_buffer = fopen(buff_file_name.c_str(), "wb");
-    while (fread(buf, 1, 1024, fp) > 0)
-    {
-        fwrite(buf, 1, 1024, fp_buffer);
-        memset(buf, 0, 1024);
-    }
-    fclose(fp);
-    fclose(fp_buffer);
-
-    // ファイル出力
-    fp = fopen(this->get_file_pass().c_str(), "wb");
-    if ((fp_buffer = fopen(buff_file_name.c_str(), "rb")) == NULL)
-    {
-        ERROR("ファイルが開けません");
-        return false;
-    }
-    while (fread(buf, 1, 1024, fp_buffer))
-    {
-        fwrite(buf, 1, 1024, fp);
-    }
-    fclose(fp);
-    fclose(fp_buffer);
-    delete (buf);
-    cout << "file_size: " << file_size << endl;
-
-#endif
+    this->crypt_process(aes, file_enc_c::CRYPT_MODE::ENCRYPT);
     cout << "暗号化に成功" << endl;
     return true;
 }
@@ -219,61 +142,7 @@ bool file_enc_c::file_dec()
     aes.set_iv(sha.str2hex(this->safe_pass_));
     aes.set_key(sha.str2hex(this->safe_pass_));
 
-    string out_buf, temp;
-    out_buf.clear();
-    fs.seekg(0, ios::basic_ios::beg);
-    string buffer, buffer_sub;
-    FILE *fp = fopen(this->get_file_pass().c_str(), "rb");
-    if (fp == NULL)
-    {
-        ERROR("ファイルが開けません");
-        return false;
-    }
-    char buf[2048];
-    memset(buf, 0, 2048);
-    const string buff_file_name("crypt_temp");
-
-    FILE *fp_buffer = fopen(buff_file_name.c_str(), "wb");
-    int buf_size = 0;
-    while ((buf_size = fread(buf, 1, 1024, fp)) > 0)
-    {
-        aes.decrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
-        fwrite(out_buf.c_str(), 1, buf_size, fp_buffer);
-        buffer.clear();
-        out_buf.clear();
-        memset(buf, 0, 2048);
-    }
-    fclose(fp);
-    fclose(fp_buffer);
-
-    // ファイル出力
-    fp = fopen(this->get_file_pass().c_str(), "wb");
-    if ((fp_buffer = fopen(buff_file_name.c_str(), "rb")) == NULL)
-    {
-        ERROR("ファイルが開けません");
-        return false;
-    }
-    while ((buf_size = fread(buf, 1, 1024, fp_buffer)) > 0)
-    {
-        fwrite(buf, 1, buf_size, fp);
-    }
-    fclose(fp);
-    fclose(fp_buffer);
-    this->file_delete(buff_file_name);
-
-    // ファイル名変更
-    string new_file_name = this->get_file_pass();
-    // ファイル拡張子を更新
-    if (new_file_name.find(".enc") != string::npos)
-    {
-        new_file_name.erase(new_file_name.find(".enc"), 4);
-    }
-    if (rename(this->get_file_pass().c_str(), new_file_name.c_str()))
-    {
-        ERROR("ファイル名の変更に失敗");
-        return false;
-    }
-
+    this->crypt_process(aes, file_enc_c::CRYPT_MODE::DECRYPT);
     cout << "復号に成功" << endl;
     return true;
 }
@@ -300,7 +169,7 @@ size_t file_enc_c::getFileSize(FILE *fp) const
     return file_size;
 }
 
-void file_enc_c::file_delete(string file_path) const
+void file_enc_c::file_delete(string const file_path) const
 {
     FILE *fp = fopen(file_path.c_str(), "wb");
     if (fp == NULL)
@@ -310,4 +179,102 @@ void file_enc_c::file_delete(string file_path) const
     }
     fclose(fp);
     // remove(file_path.c_str());
+}
+
+bool file_enc_c::crypt_process(aes_c &aes, file_enc_c::CRYPT_MODE const mode) const
+{
+    const int BUF_SIZE = 2048;
+    const string buff_file_name("crypt_temp");
+
+    dynamic_mem_c buf;
+    buf.d_new(BUF_SIZE);
+
+    FILE *fp = fopen(this->get_file_pass().c_str(), "rb");
+    if (fp == NULL)
+    {
+        ERROR("ファイルが開けません");
+        return false;
+    }
+
+    // バッファ用ファイルを作成
+    FILE *fp_buffer = fopen(buff_file_name.c_str(), "wb");
+    int read_size = 0;
+
+    dynamic_mem_c out_buf;
+    out_buf.d_new(BUF_SIZE);
+
+    // 暗号化/復号
+    switch (mode)
+    {
+    case file_enc_c::CRYPT_MODE::ENCRYPT:
+        while ((read_size = fread(buf.mem, 1, 1024, fp)) > 0)
+        {
+            aes.encrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
+            fwrite(out_buf.mem, 1, read_size, fp_buffer);
+            // out_buf.reset();
+            buf.reset();
+        }
+        break;
+
+    case file_enc_c::CRYPT_MODE::DECRYPT:
+        while ((read_size = fread(buf.mem, 1, 1024, fp)) > 0)
+        {
+            aes.decrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
+            fwrite(out_buf.mem, 1, read_size, fp_buffer);
+            out_buf.reset();
+            buf.reset();
+        }
+        break;
+
+    default:
+        ERROR("");
+        break;
+    }
+    fclose(fp);
+    fclose(fp_buffer);
+
+    // ファイル出力
+    fp = fopen(this->get_file_pass().c_str(), "wb");
+    if ((fp_buffer = fopen(buff_file_name.c_str(), "rb")) == NULL)
+    {
+        ERROR("ファイルが開けません");
+        return false;
+    }
+    while ((read_size = fread(buf.mem, 1, 1024, fp_buffer)) > 0)
+    {
+        fwrite(buf.mem, 1, read_size, fp);
+    }
+    fclose(fp);
+    fclose(fp_buffer);
+    this->file_delete(buff_file_name);
+
+    // 拡張子変更
+    string new_file_name = this->get_file_pass();
+    switch (mode)
+    {
+    case file_enc_c::CRYPT_MODE::ENCRYPT:
+        new_file_name += ".enc";
+        if (rename(this->get_file_pass().c_str(), new_file_name.c_str()))
+        {
+            ERROR("ファイル名の変更に失敗");
+            return false;
+        }
+        break;
+
+    case file_enc_c::CRYPT_MODE::DECRYPT:
+        if (new_file_name.find(".enc") != string::npos)
+        {
+            new_file_name.erase(new_file_name.find(".enc"), 4);
+        }
+        if (rename(this->get_file_pass().c_str(), new_file_name.c_str()))
+        {
+            ERROR("ファイル名の変更に失敗");
+            return false;
+        }
+        break;
+
+    default:
+        break;
+    }
+    return true;
 }

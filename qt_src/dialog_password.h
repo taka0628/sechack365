@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "../src/file_enc.hpp"
+#include <chrono>
 
 namespace Ui {
 class Dialog_password;

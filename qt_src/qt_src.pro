@@ -22,7 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-LIBS += -lcrypto -lssl -std=c++11
+LIBS += -lcrypto -lssl -std=c++11 -d -O -Wall
 
 SOURCES += \
         main.cpp \
@@ -31,6 +31,7 @@ SOURCES += \
     ../src/file_enc.cpp\
     ../src/aes_c.cpp\
     ../src/sha_c.cpp \
+    ../src/dynamic_mem_c.cpp \
     dialog_dec_pass.cpp
 
 HEADERS += \
@@ -39,6 +40,7 @@ HEADERS += \
     ../src/file_enc.hpp\
     ../src/aes_c.hpp\
     ../src/sha_c.hpp \
+    ../src/dynamic_mem_c.cpp \
     dialog_dec_pass.h
 
 FORMS += \

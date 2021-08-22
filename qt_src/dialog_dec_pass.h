@@ -4,6 +4,7 @@
 #include <QDialog>
 #include "iostream"
 #include "string"
+#include <chrono>
 
 #include "../src/file_enc.hpp"
 
