@@ -10,8 +10,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "openssl/rand.h"
+
 #include "aes_c.hpp"
 #include "sha_c.hpp"
+#include "key_list_c.hpp"
+#include "file_ptr_c.hpp"
+
 
 #define FILE_PATH_SIZE_LIM 500
 #define ERROR(comment) \
@@ -25,6 +30,7 @@ private:
         DECRYPT,
         ENCRYPT
     };
+    file_enc_c(const file_enc_c &);
 
     std::string file_path_;
     std::string file_buff_;
@@ -49,7 +55,8 @@ public:
     bool set_password(std::string pass);
     bool file_enc();
     bool file_dec();
-
+    bool calc_file_hash(const std::string file_name, dynamic_mem_c &out) const;
+    void extemsion_set(const file_enc_c::CRYPT_MODE mode);
     std::string get_file_pass() const;
 
     bool is_file_exit() const;
