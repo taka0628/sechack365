@@ -2,7 +2,7 @@
 #include "dynamic_mem_c.hpp"
 
 #define ERROR(comment) \
-    printf("[ERROR]\n\t%s: %d\n\t%s\n", __func__, __LINE__, comment);
+    printf("[ERROR]\n\t%s_%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, comment)
 
 RSA_c::RSA_c()
 {

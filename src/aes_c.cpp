@@ -2,8 +2,7 @@
 
 using namespace std;
 
-#define ERROR(comment) \
-    printf("[ERROR]\n\t%s: %d\n\t%s\n", __func__, __LINE__, comment);
+
 
 aes_c::aes_c(/* args */)
 {

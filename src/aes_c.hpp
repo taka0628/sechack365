@@ -16,6 +16,8 @@
 
 #include "dynamic_mem_c.hpp"
 
+#define ERROR(comment) \
+    printf("[ERROR]\n\t%s: %d\n\t%s\n", __func__, __LINE__, comment)
 
 class aes_c
 {

@@ -17,6 +17,9 @@
 
 #include "dynamic_mem_c.hpp"
 
+#define ERROR(comment) \
+    printf("[ERROR]\n\t%s_%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, comment)
+
 class SHA_c
 {
 private:

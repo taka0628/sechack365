@@ -43,8 +43,6 @@ HEADERS += \
     ../src/aes_c.hpp\
     ../src/sha_c.hpp \
     ../src/dynamic_mem_c.hpp \
-    ../src/key_list_c.hpp \
-    ../src/file_ptr_c.hpp \
     dialog_dec_pass.h
 
 FORMS += \

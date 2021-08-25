@@ -13,7 +13,7 @@
 #include <sstream>
 
 #define ERROR(comment) \
-    printf("[ERROR]\n\t%s: %d\n\t%s\n", __func__, __LINE__, comment)
+    printf("[ERROR]\n\t%s_%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, comment)
 
 
 class dynamic_mem_c
@@ -35,7 +35,6 @@ public:
     int get_size() const;
     void copy(std::string &dest, const uint size) const;
     void reset();
-    void push_back();
 };
 
 #endif

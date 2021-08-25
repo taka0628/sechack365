@@ -1,7 +1,6 @@
 #include "sha_c.hpp"
 
-#define ERROR(comment) \
-    printf("[ERROR]\n\t%s: %d\n\t%s\n", __func__, __LINE__, comment);
+
 
 SHA_c::SHA_c()
 {
