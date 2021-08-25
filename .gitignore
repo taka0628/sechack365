@@ -1,0 +1,17 @@
+*
+# !*/
+!*.*
+!Makefile
+!qt_src/
+!src/
+!test/
+
+
+*.txt
+*.o
+.*
+*.autosave
+*.user
+*.out
+
+!.gitignore
