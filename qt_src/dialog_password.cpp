@@ -34,6 +34,7 @@ void Dialog_password::set_file_path(string file_path){
 }
 
 
+//パスワード二重チェック
 void Dialog_password::on_lineEdit_password_check_textChanged(const QString &arg1)
 {
     QString input_pass_ck = arg1;
@@ -64,15 +65,10 @@ void Dialog_password::on_pushButton_OK_clicked()
     }
 
     file_enc.set_password(ui->lineEdit_password->text().toStdString());
-    auto start = chrono::system_clock::now();
     if(file_enc.file_enc() == false){
         cerr << "暗号化に失敗しました" << endl;
     }
-    auto end = std::chrono::system_clock::now();
-    auto dur = end - start;
-    auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(dur).count();
-    // 要した時間をミリ秒（1/1000秒）に変換して表示
-    std::cout << msec << " milli sec" << endl;
+
     this->close();
 }
 

@@ -32,6 +32,10 @@ private slots:
 
     void on_push_dec_clicked();
 
+    void on_pushButton_clear_clicked();
+
+    void on_pushButton_pass_register_clicked();
+
 private:
     Ui::MainWindow *ui;
     Dialog_password *get_password_wind;

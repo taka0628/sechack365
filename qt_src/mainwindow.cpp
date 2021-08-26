@@ -30,26 +30,26 @@ void MainWindow::on_push_enc_clicked()
         input_text.erase(input_text.find(erase_string.c_str()), erase_string.size());
     }
 
-    file_enc_c file_check;
-    file_check.set_file_path(input_text);
-    if(file_check.is_file_exit() == false){
+    //暗号化
+    file_enc_c file_enc;
+    file_enc.set_file_path(input_text);
+    if(file_enc.is_file_exit() == false){
         return;
     }
+    if(file_enc.file_enc() == false){
+        cerr << "暗号化に失敗しました" << endl;
+    }
 
-    get_password_wind = new Dialog_password(this);
-    get_password_wind->set_file_path(input_text);
-    get_password_wind->show();
 
-    cout << "OK: " << get_password_wind->is_ok() << endl;
+    //    get_password_wind = new Dialog_password(this);
+    //    get_password_wind->set_file_path(input_text);
+    //    get_password_wind->show();
+
+    //    cout << "OK: " << get_password_wind->is_ok() << endl;
 
 
     cout << input_text << endl;
     ui->lineEdit_file_path->clear();
-}
-
-void MainWindow::on_pushButton_debug_clicked()
-{
-    cout << "OK: " << get_password_wind->is_ok() << endl;
 }
 
 void MainWindow::on_push_dec_clicked()
@@ -70,15 +70,28 @@ void MainWindow::on_push_dec_clicked()
     }
 
     //ファイルが存在するか確認
-    file_enc_c file_check;
-    file_check.set_file_path(input_text);
-    if(file_check.is_file_exit() == false){
+    file_enc_c file_dec;
+    file_dec.set_file_path(input_text);
+    if(file_dec.is_file_exit() == false){
         return;
     }
-
     //復号
-    get_dec_pass_wind = new Dialog_dec_pass(this);
-    get_dec_pass_wind->set_file_path(input_text);
-    get_dec_pass_wind->show();
+    if(file_dec.file_dec() == false){
+        cerr << "復号に失敗しました" << endl;
+    }
+    //    get_dec_pass_wind = new Dialog_dec_pass(this);
+    //    get_dec_pass_wind->set_file_path(input_text);
+    //    get_dec_pass_wind->show();
+    //    ui->lineEdit_file_path->clear();
     ui->lineEdit_file_path->clear();
+}
+
+void MainWindow::on_pushButton_clear_clicked()
+{
+    ui->lineEdit_file_path->clear();
+}
+
+void MainWindow::on_pushButton_pass_register_clicked()
+{
+
 }
