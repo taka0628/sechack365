@@ -2,10 +2,10 @@
 # !*/
 !*.*
 !Makefile
+!makefile
 !qt_src/
 !src/
 !test/
-
 
 *.txt
 *.o
