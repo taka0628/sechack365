@@ -7,10 +7,10 @@
 #include "cstdio"
 
 #include "gtest/gtest.h"
+#include "openssl/rand.h"
 
 #include "../src/file_enc.hpp"
 #include "../src/dynamic_mem_c.hpp"
 #include "../src/sha_c.hpp"
-
 
 #endif

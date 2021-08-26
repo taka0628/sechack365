@@ -16,9 +16,7 @@
 #include <sstream>
 
 #include "dynamic_mem_c.hpp"
-
-#define ERROR(comment) \
-    printf("[ERROR]\n\t%s_%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, comment)
+#include "macro.hpp"
 
 class SHA_c
 {

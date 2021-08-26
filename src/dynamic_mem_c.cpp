@@ -69,3 +69,26 @@ void dynamic_mem_c::reset()
         memset(this->mem, 0, this->get_size());
     }
 }
+
+bool dynamic_mem_c::is_empty() const
+{
+    if (this->get_size() == 0)
+    {
+        ERROR("領域が確保されていません");
+        return true;
+    }
+    bool isEmpty = true;
+    for (auto i = 0; i < this->get_size(); i++)
+    {
+        if (this->mem[i] != 0)
+        {
+            isEmpty = false;
+            break;
+        }
+    }
+    if (isEmpty == true)
+    {
+        return true;
+    }
+    return false;
+}

@@ -10,6 +10,7 @@
 
 #include "dynamic_mem_c.hpp"
 #include "file_ptr_c.hpp"
+#include "macro.hpp"
 
 #define ___AES_BIT 256
 #define ___HASH_BIT 256
