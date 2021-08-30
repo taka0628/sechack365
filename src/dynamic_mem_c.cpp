@@ -1,4 +1,4 @@
-#include "dynamic_mem_c.hpp"
+#include "../include/dynamic_mem_c.hpp"
 
 dynamic_mem_c::dynamic_mem_c()
 {

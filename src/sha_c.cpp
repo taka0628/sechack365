@@ -1,6 +1,4 @@
-#include "sha_c.hpp"
-
-
+#include "../include/sha_c.hpp"
 
 SHA_c::SHA_c()
 {
