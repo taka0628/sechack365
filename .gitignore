@@ -1,5 +1,5 @@
 *
-# !*/
+
 !*.*
 !Makefile
 !makefile
@@ -13,5 +13,6 @@
 *.autosave
 *.user
 *.out
+*.jpg
 
 !.gitignore
