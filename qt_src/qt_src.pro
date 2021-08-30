@@ -39,11 +39,11 @@ SOURCES += \
 HEADERS += \
         mainwindow.h \
     dialog_password.h \
-    ../src/file_enc.hpp\
-    ../src/aes_c.hpp\
-    ../src/sha_c.hpp \
-    ../src/dynamic_mem_c.hpp \
-    ../src/macro.hpp\
+    ../include/file_enc.hpp\
+    ../include/aes_c.hpp\
+    ../include/sha_c.hpp \
+    ../include/dynamic_mem_c.hpp \
+    ../include/macro.hpp\
     dialog_dec_pass.h
 
 FORMS += \
