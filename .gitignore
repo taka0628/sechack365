@@ -1,19 +1,23 @@
-*
-
-!*.*
-!Makefile
-!makefile
-!qt_src/
-!src/
-!test/
-!include/
+# !*.*
+# !Makefile
+# !makefile
+# !qt_src/
+# !src/
+# !test/
+# !include/
+build-qt_src*Debug/*
+.*
 
 *.txt
 *.o
-.*
 *.autosave
 *.user
-*.out
 *.jpg
+*.out*
+.stash
+test/*
 
-!.gitignore
+!test/*.cpp
+!test/*.hpp
+
+!build-qt_src-Release/*.out
