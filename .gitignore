@@ -6,6 +6,7 @@
 !qt_src/
 !src/
 !test/
+!include/
 
 *.txt
 *.o
