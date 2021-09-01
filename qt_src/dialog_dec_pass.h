@@ -6,7 +6,7 @@
 #include "string"
 #include <chrono>
 
-#include "../src/file_enc.hpp"
+#include "../include/file_enc.hpp"
 
 namespace Ui {
 class Dialog_dec_pass;

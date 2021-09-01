@@ -5,9 +5,9 @@
 #include "algorithm"
 #include "iostream"
 
-#include "../src/aes_c.hpp"
-#include "../src/RSA_c.hpp"
-#include "../src/file_enc.hpp"
+#include "../include/aes_c.hpp"
+#include "../include/RSA_c.hpp"
+#include "../include/file_enc.hpp"
 
 #include "dialog_password.h"
 #include "dialog_dec_pass.h"
@@ -28,7 +28,7 @@ public:
 private slots:
     void on_push_enc_clicked();
 
-    void on_pushButton_debug_clicked();
+//    void on_pushButton_debug_clicked();
 
     void on_push_dec_clicked();
 
