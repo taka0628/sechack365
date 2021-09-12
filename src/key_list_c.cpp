@@ -126,3 +126,9 @@ bool key_list_c::add_file(dynamic_mem_c const &hash, dynamic_mem_c const &iv, dy
 
 	return true;
 }
+
+bool key_list_c::encrypt(dynamic_mem_c const &iv, dynamic_mem_c const &key) const
+{
+	file_ptr_c fp;
+	fp.open(this->get_file_name(), "rb");
+}

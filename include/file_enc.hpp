@@ -88,6 +88,10 @@ public:
 	bool pop_file(dynamic_mem_c const &hash, dynamic_mem_c &iv, dynamic_mem_c &key);
 	// データベースにファイルを登録
 	bool add_file(dynamic_mem_c const &hash, dynamic_mem_c const &iv, dynamic_mem_c const &key) const;
+	// 鍵ファイルを暗号化 AES-256bit
+	bool encrypt(dynamic_mem_c const &iv, dynamic_mem_c const &key) const;
+	// 鍵ファイルを復号 AES-256bit
+	bool decrypt(dynamic_mem_c const &iv, dynamic_mem_c const &key) const;
 };
 
 class file_ptr_c
