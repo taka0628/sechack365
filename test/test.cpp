@@ -82,3 +82,23 @@ TEST(FileEncTest, ErrorProcess)
 	ASSERT_FALSE(file_enc.set_file_path(error_filepath + ".enc"));
 	ASSERT_FALSE(file_enc.file_dec());
 }
+
+TEST(SandBox, TestRun)
+{
+	FILE *fp;
+	string cmdline = "sudo lsusb  -v | grep iSerial";
+	if ((fp = popen(cmdline.c_str(), "r")) == NULL)
+	{
+		FAIL();
+		perror("can not exec commad");
+	}
+	char buf[BUF];
+
+	while (!feof(fp))
+	{
+		fgets(buf, sizeof(buf), fp);
+		printf("=> %s", buf);
+	}
+
+	(void)pclose(fp);
+}

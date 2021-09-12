@@ -5,6 +5,9 @@
 #include "fstream"
 #include "iostream"
 #include "cstdio"
+#include <stdio.h>
+#include <stdlib.h>
+#define BUF 256
 
 #include "gtest/gtest.h"
 #include "openssl/rand.h"
