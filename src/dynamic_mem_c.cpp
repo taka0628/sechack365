@@ -31,6 +31,11 @@ using namespace std;
 
 void dynamic_mem_c::d_new(const uint size)
 {
+    if (this->mem)
+    {
+        delete this->mem;
+        this->mem = nullptr;
+    }
     this->mem = new unsigned char[size];
     memset(this->mem, 0, size);
     this->size = size;
@@ -46,7 +51,7 @@ void dynamic_mem_c::d_free()
     this->size = 0;
 }
 
-int dynamic_mem_c::get_size() const
+size_t dynamic_mem_c::get_size() const
 {
     return this->size;
 }
@@ -72,13 +77,13 @@ void dynamic_mem_c::reset()
 
 bool dynamic_mem_c::is_empty() const
 {
-    if (this->get_size() == 0)
+    if (this->get_size() == 0 || this->mem == nullptr)
     {
         ERROR("領域が確保されていません");
         return true;
     }
     bool isEmpty = true;
-    for (auto i = 0; i < this->get_size(); i++)
+    for (size_t i = 0; i < this->get_size(); i++)
     {
         if (this->mem[i] != 0)
         {

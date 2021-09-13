@@ -228,7 +228,7 @@ void file_enc_c::file_delete(string const file_path) const
 bool file_enc_c::crypt_process(aes_c &aes, file_enc_c::CRYPT_MODE const mode) const
 {
 	const int BUF_SIZE = 2048;
-	const string buff_file_name("crypt_temp");
+	const string buff_file_name(CRYPT_BUFFER_FILE);
 
 	dynamic_mem_c buf;
 	buf.d_new(BUF_SIZE);

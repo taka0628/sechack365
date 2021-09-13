@@ -22,7 +22,7 @@ file_ptr_c::~file_ptr_c()
 	this->fp_ = NULL;
 }
 
-void file_ptr_c::open(const string filepath, const string option)
+bool file_ptr_c::open(const string filepath, const string option)
 {
 	if (this->fp_ != NULL)
 	{
@@ -33,10 +33,12 @@ void file_ptr_c::open(const string filepath, const string option)
 	if (this->fp_ == NULL)
 	{
 		ERROR_NO_COMMENT;
+		return false;
 	}
+	return true;
 }
 
-void file_ptr_c::reopen(const string filepath, const string option)
+bool file_ptr_c::reopen(const string filepath, const string option)
 {
 	if (this->fp_ != NULL)
 	{
@@ -44,6 +46,12 @@ void file_ptr_c::reopen(const string filepath, const string option)
 		this->fp_ = NULL;
 	}
 	this->fp_ = fopen(filepath.c_str(), option.c_str());
+	if (this->fp_ == NULL)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+	return true;
 }
 
 void file_ptr_c::close()

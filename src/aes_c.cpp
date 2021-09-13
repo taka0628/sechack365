@@ -44,7 +44,7 @@ bool aes_c::set_iv_key(const dynamic_mem_c &iv, const dynamic_mem_c &key)
 		return false;
 	}
 
-	for (auto i = 0; i < iv.get_size(); i++)
+	for (size_t i = 0; i < iv.get_size(); i++)
 	{
 		this->iv.push_back(iv.mem[i]);
 		this->key.push_back(key.mem[i]);
@@ -336,9 +336,9 @@ void aes_c::encrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e
 		printf("error EVP_EncryptUpdate\n");
 		return;
 	}
-	if (size2aes != in.get_size())
+	if (size2aes != (int)in.get_size())
 	{
-		printf("error encrypt out_len(%d) != in_len(%d)\n", size2aes, in.get_size());
+		printf("error encrypt out_len(%d) != in_len(%ld)\n", size2aes, in.get_size());
 	}
 
 	EVP_CIPHER_CTX_free(ctx);

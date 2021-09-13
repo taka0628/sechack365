@@ -76,7 +76,7 @@ bool key_list_c::plug(const dynamic_mem_c &hash)
 	file_ptr_c fp(this->get_file_name().c_str(), "rb");
 
 	// バッファ用ファイル
-	const string buffer_file_name = "buffer_file_key_list";
+	const string buffer_file_name = BUFFER_FILE_NAME;
 	file_ptr_c buffer_fp(buffer_file_name.c_str(), "wb");
 
 	const uint line_size = HASH_SIZE + AES_SIZE * 2;
@@ -127,8 +127,173 @@ bool key_list_c::add_file(dynamic_mem_c const &hash, dynamic_mem_c const &iv, dy
 	return true;
 }
 
-bool key_list_c::encrypt(dynamic_mem_c const &iv, dynamic_mem_c const &key) const
+bool key_list_c::encrypt(dynamic_mem_c const &key) const
 {
+	if (key.is_empty() || key.get_size() != AES_SIZE)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
 	file_ptr_c fp;
-	fp.open(this->get_file_name(), "rb");
+	if (fp.open(this->get_file_name(), "rb") == false)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	aes_c aes;
+	dynamic_mem_c iv;
+	iv.d_new(AES_SIZE);
+	RAND_bytes(iv.mem, iv.get_size());
+	aes.set_iv_key(iv, key);
+	file_enc_c file_enc;
+	file_enc.set_file_path(this->get_file_name());
+
+	if (file_enc.crypt_process(aes, file_enc_c::CRYPT_MODE::ENCRYPT) == false)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	fp.reopen(this->get_file_name().c_str(), "ab");
+	fwrite(iv.mem, 1, iv.get_size(), fp.fp_);
+	fp.close();
+
+	file_enc.extemsion_set(file_enc_c::CRYPT_MODE::ENCRYPT);
+
+	this->key_list_pkey_update(key);
+
+	return true;
+}
+
+bool key_list_c::decrypt(dynamic_mem_c const &key) const
+{
+	if (key.is_empty() || key.get_size() != AES_SIZE)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+	if (this->key_check(key) == false)
+	{
+		ERROR("鍵が違います");
+		sleep(1);
+		return false;
+	}
+	file_ptr_c fp;
+	if (fp.open(this->get_file_name() + ".enc", "rb") == false)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	dynamic_mem_c iv;
+	iv.d_new(AES_SIZE);
+	fseek(fp.fp_, -iv.get_size(), SEEK_END);
+	size_t read_size = fread(iv.mem, 1, iv.get_size(), fp.fp_);
+	if (read_size != AES_SIZE)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	// 末尾のivを削除
+	fseek(fp.fp_, 0, SEEK_SET);
+	file_ptr_c buff_fp;
+	dynamic_mem_c buff;
+	buff.d_new(AES_SIZE);
+	buff_fp.open(BUFFER_FILE_NAME, "wb");
+	while (fread(buff.mem, 1, buff.get_size(), fp.fp_) > 0)
+	{
+		if (memcmp(buff.mem, iv.mem, iv.get_size()) == 0)
+		{
+			break;
+		}
+		fwrite(buff.mem, 1, buff.get_size(), buff_fp.fp_);
+	}
+	fp.reopen(this->get_file_name() + ".enc", "wb");
+	buff_fp.reopen(BUFFER_FILE_NAME, "rb");
+	while (fread(buff.mem, 1, buff.get_size(), buff_fp.fp_) > 0)
+	{
+		fwrite(buff.mem, 1, buff.get_size(), fp.fp_);
+	}
+	buff_fp.close();
+	fp.close();
+
+	// ファイル復号
+	aes_c aes;
+	aes.set_iv_key(iv, key);
+	file_enc_c file_enc;
+	file_enc.set_file_path(this->get_file_name() + ".enc");
+
+	if (file_enc.crypt_process(aes, file_enc_c::CRYPT_MODE::DECRYPT) == false)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	file_enc.extemsion_set(file_enc_c::CRYPT_MODE::DECRYPT);
+	return true;
+}
+
+bool key_list_c::key_check(dynamic_mem_c const &key) const
+{
+	if (key.get_size() < AES_SIZE || key.is_empty())
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+	file_ptr_c fp;
+	if (fp.open(KEY_HASH_FILE, "rb") == false)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	dynamic_mem_c temp;
+	temp.d_new(AES_SIZE);
+	size_t read_size = fread(temp.mem, 1, temp.get_size(), fp.fp_);
+	if (read_size != temp.get_size())
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	SHA_c sha;
+	dynamic_mem_c hash;
+	hash.d_new(AES_SIZE);
+	sha.sha2_cal(key, hash, SHA_c::SHA2_bit::SHA_256);
+	if (memcmp(hash.mem, temp.mem, hash.get_size()) == 0)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool key_list_c::key_list_pkey_update(dynamic_mem_c const &key) const
+{
+	if (key.mem == nullptr || key.get_size() != AES_SIZE)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	file_ptr_c fp;
+	if (fp.open(KEY_HASH_FILE, "wb") == false)
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+
+	SHA_c sha;
+	dynamic_mem_c hash;
+	hash.d_new(HASH_SIZE);
+
+	sha.sha2_cal(key, hash, SHA_c::SHA2_bit::SHA_256);
+	if (fwrite(hash.mem, 1, hash.get_size(), fp.fp_) != hash.get_size())
+	{
+		ERROR_NO_COMMENT;
+		return false;
+	}
+	return true;
 }

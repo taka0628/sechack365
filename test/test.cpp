@@ -35,7 +35,7 @@ TEST(KeyListTest, TrueProcess)
 
 	ASSERT_TRUE(testKey.pop_file(hash, iv, key));
 	string out_hash, out_iv, out_key;
-	for (int i = 0; i < hash.get_size(); i++)
+	for (size_t i = 0; i < hash.get_size(); i++)
 	{
 		out_hash.push_back(hash.mem[i]);
 		out_iv.push_back(iv.mem[i]);
@@ -83,10 +83,62 @@ TEST(FileEncTest, ErrorProcess)
 	ASSERT_FALSE(file_enc.file_dec());
 }
 
-TEST(SandBox, TestRun)
+TEST(KeyListCryptTest, EncryptTest)
+{
+	key_list_c keyList;
+	dynamic_mem_c key;
+	string pass("hoge");
+	SHA_c sha;
+	string key_st = sha.sha2_cal(pass, SHA_c::SHA2_bit::SHA_256);
+	key.d_new(SHA256_DIGEST_LENGTH);
+	for (size_t i = 0; i < key.get_size(); i++)
+	{
+		key.mem[i] = (unsigned char)key_st[i];
+	}
+	cout << sha.str2hex(key_st) << endl;
+	cout << sha.str2hex(sha.sha2_cal(key_st, SHA_c::SHA2_bit::SHA_256)) << endl;
+
+	ASSERT_TRUE(keyList.encrypt(key));
+	ASSERT_TRUE(keyList.decrypt(key));
+}
+
+TEST(KeyListCryptError, DISABLED_KeySize)
+{
+	key_list_c keyList;
+	dynamic_mem_c key;
+	// 鍵のサイズが違う
+	key.d_new(128 / 8);
+	RAND_bytes(key.mem, 128 / 8);
+	ASSERT_FALSE(keyList.encrypt(key));
+	ASSERT_FALSE(keyList.decrypt(key));
+}
+
+TEST(KeyListCryptError, DISABLED_NullKey)
+{
+	key_list_c keyList;
+	dynamic_mem_c key;
+	key.d_new(AES_SIZE);
+	ASSERT_FALSE(keyList.encrypt(key));
+	ASSERT_FALSE(keyList.decrypt(key));
+}
+
+TEST(KeyListCryptError, DISABLED_DiffKey)
+{
+	key_list_c keyList;
+	dynamic_mem_c key;
+	key.d_new(AES_SIZE);
+	// 鍵が異なる
+	RAND_bytes(key.mem, key.get_size());
+	ASSERT_TRUE(keyList.encrypt(key));
+
+	RAND_bytes(key.mem, key.get_size());
+	ASSERT_FALSE(keyList.decrypt(key));
+}
+
+TEST(DISABLED_SandBox, TestRun)
 {
 	FILE *fp;
-	string cmdline = "sudo lsusb  -v | grep iSerial";
+	string cmdline = "sudo lsusb -d 8564:1000  -v | grep iSerial | awk '{print $3}'";
 	if ((fp = popen(cmdline.c_str(), "r")) == NULL)
 	{
 		FAIL();
