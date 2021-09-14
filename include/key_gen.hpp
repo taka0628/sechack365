@@ -5,6 +5,7 @@
 #include "sha_c.hpp"
 #include "macro.hpp"
 #include "file_enc.hpp"
+#include "error.hpp"
 
 #include "string"
 #include "fstream"

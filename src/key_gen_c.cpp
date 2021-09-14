@@ -74,3 +74,14 @@ bool key_gen_c::getUsbSerial()
 	(void)pclose(fp);
 	return true;
 }
+
+bool key_gen_c::set_usbID(string const id)
+{
+	if (id.empty())
+	{
+		PRINT_ERROR_LOG("idが空");
+		return false;
+	}
+
+	return true;
+}

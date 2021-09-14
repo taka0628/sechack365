@@ -10,7 +10,8 @@ SRCS	= key_list_c.cpp\
 	sha_c.cpp\
 	file_enc.cpp\
 	aes_c.cpp\
-	key_gen_c.cpp
+	key_gen_c.cpp\
+	error.cpp
 
 TESTSRC	= test.cpp \
 	keyGenTest.cpp
