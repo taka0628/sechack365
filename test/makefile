@@ -2,16 +2,18 @@ CXX = g++
 
 TARGET	= test.out
 
-SRCDIR = ../src/
+SRCDIR = ../src
 
 SRCS	= key_list_c.cpp\
 	dynamic_mem_c.cpp\
 	file_ptr_c.cpp\
 	sha_c.cpp\
 	file_enc.cpp\
-	aes_c.cpp
+	aes_c.cpp\
+	key_gen_c.cpp
 
-TESTSRC	= test.cpp
+TESTSRC	= test.cpp \
+	keyGenTest.cpp
 
 OBJDIR = build
 
@@ -32,10 +34,20 @@ CFLAGS	= -Wall\
 ${TARGET}: ${OBJS}
 	${CXX} -o $@ $^ ${LDFLAGS} ${LDGFLAGS}
 
-${OBJS}: ${addprefix ${SRCDIR},${SRCS}} ${TESTSRC}
+${OBJDIR}/%.o: $(SRCDIR)/%.cpp
 	mkdir -p build
 	cd build;\
-	${CXX} ../${TESTSRC} -c ${addprefix ../${SRCDIR},${SRCS}} ${CFLAGS}
+	${CXX} -c ../$^ ${CFLAGS}
+
+${OBJDIR}/%.o: %.cpp
+	mkdir -p build
+	cd build;\
+	${CXX} -c ../$^ ${CFLAGS}
+
+# %.o: ${addprefix ${SRCDIR},${SRCS}} ${TESTSRC}
+# 	mkdir -p build
+# 	cd build;\
+# 	${CXX} ${addprefix ../, ${TESTSRC}} -c ${addprefix ../${SRCDIR},${SRCS}} ${CFLAGS}
 
 run: ${TARGET}
 	./${TARGET}
