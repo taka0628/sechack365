@@ -15,5 +15,6 @@
 #include "../include/file_enc.hpp"
 #include "../include/dynamic_mem_c.hpp"
 #include "../include/sha_c.hpp"
+#include "../include/key_gen.hpp"
 
 #endif

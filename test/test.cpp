@@ -135,7 +135,7 @@ TEST(KeyListCryptError, DISABLED_DiffKey)
 	ASSERT_FALSE(keyList.decrypt(key));
 }
 
-TEST(DISABLED_SandBox, TestRun)
+TEST(SandBox, TestRun)
 {
 	FILE *fp;
 	string cmdline = "sudo lsusb -d 8564:1000  -v | grep iSerial | awk '{print $3}'";
