@@ -14,7 +14,10 @@ SRCS	= key_list_c.cpp\
 	error.cpp
 
 TESTSRC	= test.cpp \
-	keyGenTest.cpp
+	keyGenTest.cpp\
+	key_list_test.cpp
+
+TESTDIR = src
 
 OBJDIR = build
 
@@ -40,7 +43,7 @@ ${OBJDIR}/%.o: $(SRCDIR)/%.cpp
 	cd build;\
 	${CXX} -c ../$^ ${CFLAGS}
 
-${OBJDIR}/%.o: %.cpp
+${OBJDIR}/%.o: $(TESTDIR)/%.cpp
 	mkdir -p build
 	cd build;\
 	${CXX} -c ../$^ ${CFLAGS}
