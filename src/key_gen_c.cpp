@@ -83,5 +83,28 @@ bool key_gen_c::set_usbID(string const id)
 		return false;
 	}
 
+	string cmdline;
+	cmdline += "lsusb | grep ";
+	cmdline += id;
+	FILE *fp;
+	if ((fp = popen(cmdline.c_str(), "r")) == NULL)
+	{
+		PRINT_ERROR_LOG("can not exec commad");
+		return false;
+	}
+
+	char buf[256] = {"0"};
+	string result;
+	while (!feof(fp))
+	{
+		fgets(buf, sizeof(buf), fp);
+		result += buf;
+	}
+	if (result.size() < 10)
+	{
+		PRINT_ERROR_LOG("USBが検出できません");
+		return false;
+	}
+
 	return true;
 }

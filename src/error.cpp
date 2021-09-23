@@ -23,7 +23,8 @@ void push_error_log(const char *comment, const char *file, const char *func, con
 
 	// ファイル出力
 	ofp << buf << "\n\t";
-	ofp << "[" << file << "," << func << "," << line << "]"
-		<< "\t";
-	ofp << comment << endl;
+	ofp << "[" << file << ", " << func << ", " << line << "]"
+		<< "\n\t\t";
+	ofp << comment << "\n"
+		<< endl;
 }
