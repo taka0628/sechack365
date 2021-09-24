@@ -13,9 +13,7 @@ SRCS	= key_list_c.cpp\
 	key_gen_c.cpp\
 	error.cpp
 
-TESTSRC	= test.cpp \
-	keyGenTest.cpp\
-	key_list_test.cpp
+TESTSRC	= keyGenTest.cpp
 
 TESTDIR = src
 

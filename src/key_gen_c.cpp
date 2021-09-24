@@ -60,7 +60,7 @@ bool key_gen_c::getUsbSerial()
 	cout << "cmd: " << cmdline << endl;
 	if ((fp = popen(cmdline.c_str(), "r")) == NULL)
 	{
-		ERROR("can not exec commad");
+		PRINT_ERROR_LOG("can not exec commad");
 		return false;
 	}
 	char buf[256];
@@ -80,6 +80,11 @@ bool key_gen_c::set_usbID(string const id)
 	if (id.empty())
 	{
 		PRINT_ERROR_LOG("idが空");
+		return false;
+	}
+	if (id.find(":") == string::npos)
+	{
+		PRINT_ERROR_LOG("不正な引数");
 		return false;
 	}
 
