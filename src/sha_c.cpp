@@ -281,3 +281,15 @@ string SHA_c::str2hex(const string &src) const
     }
     return buf.str();
 }
+
+string SHA_c::str2hex(const dynamic_mem_c &src) const
+{
+    stringstream buf;
+    char p[10];
+    for (uint i = 0; i < src.get_size(); i++)
+    {
+        sprintf(p, "%02x", src.mem[i]);
+        buf << p;
+    }
+    return buf.str();
+}
