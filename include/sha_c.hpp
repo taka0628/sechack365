@@ -39,6 +39,7 @@ public:
     bool sha2_cal(const dynamic_mem_c &in, dynamic_mem_c &out, const SHA2_bit bit) const;
 
     std::string str2hex(const std::string &src) const;
+    std::string str2hex(const dynamic_mem_c &src) const;
 };
 
 #endif
