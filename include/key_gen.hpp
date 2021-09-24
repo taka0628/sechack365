@@ -23,24 +23,32 @@ class key_gen_c
 private:
 	key_gen_c(const key_gen_c &);
 
-	dynamic_mem_c key;
-	std::string pass;
-	std::string usbID;
+	dynamic_mem_c key_;
+	std::string pass_;
+	std::string usbID_;
+	std::string usbSerial_;
 
 	std::string get_pass() const;
+	std::string get_usbSerial() const;
 
 protected:
 public:
 	key_gen_c();
 	~key_gen_c();
 
+	bool new_key_gen();
 	bool key_gen();
 
 	bool set_pass(std::string const pass);
-	bool set_usbID(std::string const id);
-	bool getUsbSerial();
 
-	dynamic_mem_c get_key() const;
+	bool set_usbID(std::string const id);
+	std::string get_usbID() const;
+	bool set_UsbSerial();
+
+	bool get_nonce(dynamic_mem_c &to) const;
+	bool set_nonce() const;
+
+	bool get_key(dynamic_mem_c &to) const;
 	bool canKeyGen() const;
 };
 

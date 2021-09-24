@@ -17,7 +17,6 @@
 class dynamic_mem_c
 {
 private:
-    dynamic_mem_c(const dynamic_mem_c &);
     size_t size;
     int usage_;
 
@@ -25,6 +24,8 @@ public:
     dynamic_mem_c();
     dynamic_mem_c(const uint size);
     ~dynamic_mem_c();
+    dynamic_mem_c(const dynamic_mem_c &);
+    dynamic_mem_c operator=(dynamic_mem_c) const;
 
     unsigned char *mem;
 
