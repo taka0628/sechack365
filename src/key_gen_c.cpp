@@ -47,6 +47,9 @@ bool key_gen_c::key_gen()
 		ERROR_NO_COMMENT;
 		return false;
 	}
+
+	SHA_c sha;
+
 	return true;
 }
 
