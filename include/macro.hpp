@@ -42,4 +42,9 @@
 
 #define ERROR_LOG_FILE "errorLog.txt"
 
+// ------------------------------------------------------------------------
+// nonce設定
+#define NONCE_FILE "nonce"
+#define NONCE_SIZE 1024 / 8
+
 #endif
