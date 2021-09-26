@@ -26,3 +26,4 @@ test/*
 !test/include
 
 !build-qt_src-Release/*.out
+nonce
