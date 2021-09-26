@@ -27,31 +27,47 @@ dynamic_mem_c::~dynamic_mem_c()
     }
 }
 
-dynamic_mem_c::dynamic_mem_c(const dynamic_mem_c &)
+dynamic_mem_c::dynamic_mem_c(const dynamic_mem_c &from)
 {
-    size = this->size;
-    usage_ = this->usage_;
-    mem = new u_char[this->size];
+    if (this == &from)
+    {
+        return;
+    }
+    this->size = from.size;
+    if (from.size > 0)
+    {
+        this->mem = new u_char[this->size];
+    }
     for (size_t i = 0; i < this->size; i++)
     {
-        mem[i] = this->mem[i];
+        this->mem[i] = from.mem[i];
     }
+    return;
 }
 
 using namespace std;
 
-dynamic_mem_c dynamic_mem_c::operator=(dynamic_mem_c) const
+dynamic_mem_c &dynamic_mem_c::operator=(const dynamic_mem_c &from)
 {
-    dynamic_mem_c to;
-    to.size = this->size;
-    to.usage_ = this->usage_;
-    to.d_new(this->size);
-    cout << "badAllocSize: " << this->size;
+    if (this == &from)
+    {
+        return *this;
+    }
+
+    if (this->size != from.size)
+    {
+        this->size = from.size;
+        if (this->mem != nullptr)
+        {
+            delete mem;
+        }
+        mem = new u_char[this->size];
+    }
     for (size_t i = 0; i < this->size; i++)
     {
-        to.mem[i] = this->mem[i];
+        this->mem[i] = from.mem[i];
     }
-    return to;
+    return *this;
 }
 
 void dynamic_mem_c::d_new(const uint size)
