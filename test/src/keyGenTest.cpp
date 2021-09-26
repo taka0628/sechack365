@@ -78,6 +78,7 @@ TEST(keyGenMethodTest, keyGen)
 	ASSERT_TRUE(key.new_key_gen());
 }
 
+#if 1
 TEST(keyGenMethodTest, getKey)
 {
 	key_gen_c key;
@@ -87,13 +88,23 @@ TEST(keyGenMethodTest, getKey)
 	ASSERT_TRUE(key.new_key_gen());
 
 	dynamic_mem_c temp;
-	temp.d_new(AES_SIZE);
-	ASSERT_TRUE(key.get_key(temp));
-	cout << "key";
-	SHA_c sha;
-	for (size_t i = 0; i < temp.get_size(); i++)
+	try
 	{
-		cout << sha.str2hex(temp.mem[i]);
+		temp = key.get_key();
 	}
+	catch (const std::exception &e)
+	{
+		std::cerr << e.what() << '\n';
+		FAIL();
+	}
+	if (temp.is_empty())
+	{
+		FAIL();
+	}
+
+	cout << "key: ";
+	SHA_c sha;
+	cout << sha.str2hex(temp);
 	cout << endl;
 }
+#endif

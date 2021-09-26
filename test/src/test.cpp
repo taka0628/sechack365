@@ -83,7 +83,8 @@ TEST(FileEncTest, ErrorProcess)
 	ASSERT_FALSE(file_enc.file_dec());
 }
 
-TEST(SandBox, TestRun)
+#if 0
+TEST(IGNORESandBox, TestRun)
 {
 	FILE *fp;
 	string cmdline = "sudo lsusb -d 8564:1000  -v | grep iSerial | awk '{print $3}'";
@@ -102,3 +103,4 @@ TEST(SandBox, TestRun)
 
 	(void)pclose(fp);
 }
+#endif

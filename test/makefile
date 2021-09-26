@@ -13,7 +13,10 @@ SRCS	= key_list_c.cpp\
 	key_gen_c.cpp\
 	error.cpp
 
-TESTSRC	= keyGenTest.cpp
+TESTSRC	= keyGenTest.cpp\
+	key_list_test.cpp\
+	test.cpp\
+	dynamicMemTest.cpp
 
 TESTDIR = src
 
@@ -56,3 +59,7 @@ run: ${TARGET}
 
 clean:
 	rm -rf ${OBJDIR}/*.o ${TARGET}
+
+debug:
+	make clean
+	make "CFLAGS += -g -O0" -j 3
