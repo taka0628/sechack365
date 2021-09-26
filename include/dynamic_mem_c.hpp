@@ -24,8 +24,8 @@ public:
     dynamic_mem_c();
     dynamic_mem_c(const uint size);
     ~dynamic_mem_c();
-    dynamic_mem_c(const dynamic_mem_c &);
-    dynamic_mem_c operator=(dynamic_mem_c) const;
+    dynamic_mem_c(const dynamic_mem_c &from);
+    dynamic_mem_c &operator=(const dynamic_mem_c &from);
 
     unsigned char *mem;
 
