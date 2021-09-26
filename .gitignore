@@ -22,5 +22,7 @@ test/*
 !test/*.cpp
 !test/*.hpp
 !test/.vscode
+!test/src
+!test/include
 
 !build-qt_src-Release/*.out
