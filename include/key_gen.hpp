@@ -48,7 +48,7 @@ public:
 	bool get_nonce(dynamic_mem_c &to) const;
 	bool set_nonce() const;
 
-	bool get_key(dynamic_mem_c &to) const;
+	dynamic_mem_c get_key() const;
 	bool canKeyGen() const;
 };
 
