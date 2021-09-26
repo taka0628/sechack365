@@ -206,26 +206,12 @@ string key_gen_c::get_usbID() const
 	return this->usbID_;
 }
 
-bool key_gen_c::get_key(dynamic_mem_c &to) const
+dynamic_mem_c key_gen_c::get_key() const
 {
-	if (to.get_size() < AES_SIZE)
-	{
-		PRINT_ERROR_LOG("鍵を格納する容量がありません");
-		return false;
-	}
 	if (this->key_.is_empty())
 	{
 		PRINT_ERROR_LOG("鍵がありません");
-		return false;
-	}
-	try
-	{
-		to = this->key_;
-	}
-	catch (const std::exception &e)
-	{
-		std::cerr << e.what() << '\n';
 	}
 
-	return true;
+	return this->key_;
 }
