@@ -17,7 +17,7 @@
 class dynamic_mem_c
 {
 private:
-    size_t size;
+    size_t size_;
     int usage_;
 
 public:
@@ -27,14 +27,14 @@ public:
     dynamic_mem_c(const dynamic_mem_c &from);
     dynamic_mem_c &operator=(const dynamic_mem_c &from);
 
-    unsigned char *mem;
+    unsigned char *mem_;
 
     void d_new(const uint size);
     void d_free();
-    size_t get_size() const;
+    size_t size() const;
     void copy(std::string &dest, const uint size) const;
     void reset();
-    bool is_empty() const;
+    bool empty() const;
 };
 
 #endif
