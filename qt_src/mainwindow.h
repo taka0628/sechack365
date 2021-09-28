@@ -6,11 +6,11 @@
 #include "iostream"
 
 #include "../include/aes_c.hpp"
-#include "../include/RSA_c.hpp"
 #include "../include/file_enc.hpp"
 
 #include "dialog_password.h"
 #include "dialog_dec_pass.h"
+#include "usb_select.h"
 
 
 namespace Ui {
@@ -40,6 +40,7 @@ private:
     Ui::MainWindow *ui;
     Dialog_password *get_password_wind;
     Dialog_dec_pass *get_dec_pass_wind;
+    usb_select *usb_select_wind;
 };
 
 #endif // MAINWINDOW_H

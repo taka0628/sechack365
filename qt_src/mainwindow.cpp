@@ -93,5 +93,6 @@ void MainWindow::on_pushButton_clear_clicked()
 
 void MainWindow::on_pushButton_pass_register_clicked()
 {
-
+    usb_select_wind = new usb_select;
+    usb_select_wind->show();
 }

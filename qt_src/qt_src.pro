@@ -34,7 +34,12 @@ SOURCES += \
     ../src/dynamic_mem_c.cpp \
     ../src/key_list_c.cpp \
     ../src/file_ptr_c.cpp \
-    dialog_dec_pass.cpp
+    ../src/error.cpp\
+    ../src/key_gen_c.cpp\
+    ../src/device_c.cpp\
+    dialog_dec_pass.cpp \
+    pass_check.cpp \
+    usb_select.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,11 +49,16 @@ HEADERS += \
     ../include/sha_c.hpp \
     ../include/dynamic_mem_c.hpp \
     ../include/macro.hpp\
-    dialog_dec_pass.h
+    ../include/device_c.hpp\
+    dialog_dec_pass.h \
+    pass_check.h \
+    usb_select.h
 
 FORMS += \
         mainwindow.ui \
     dialog_password.ui \
-    dialog_dec_pass.ui
+    dialog_dec_pass.ui \
+    pass_check.ui \
+    usb_select.ui
 
 DISTFILES +=

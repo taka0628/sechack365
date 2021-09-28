@@ -7,6 +7,8 @@
 #include "cstdio"
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
+#include <algorithm>
 #define BUF 256
 
 #include "gtest/gtest.h"
@@ -16,6 +18,7 @@
 #include "../../include/dynamic_mem_c.hpp"
 #include "../../include/sha_c.hpp"
 #include "../../include/key_gen.hpp"
+#include "../../include/device_c.hpp"
 
 #define ERROR_TEST \
 	push_error_log("===エラーテスト開始===", __FILE__, __func__, __LINE__)

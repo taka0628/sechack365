@@ -2,9 +2,15 @@
 #define USB_SELECT_H
 
 #include <QWidget>
+#include <unistd.h>
+#include <vector>
+#include <string>
 
-namespace Ui {
-class usb_select;
+#include "../include/device_c.hpp"
+
+namespace Ui
+{
+    class usb_select;
 }
 
 class usb_select : public QWidget
@@ -14,6 +20,8 @@ class usb_select : public QWidget
 public:
     explicit usb_select(QWidget *parent = 0);
     ~usb_select();
+
+    bool update();
 
 private:
     Ui::usb_select *ui;

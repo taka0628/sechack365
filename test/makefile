@@ -11,13 +11,15 @@ SRCS	= key_list_c.cpp\
 	file_enc.cpp\
 	aes_c.cpp\
 	key_gen_c.cpp\
-	error.cpp
+	error.cpp\
+	device_c.cpp
 
 TESTSRC	= keyGenTest.cpp\
 	key_list_test.cpp\
 	test.cpp\
 	dynamicMemTest.cpp\
-	test_log.cpp
+	test_log.cpp\
+	deviceTest.cpp
 
 TESTDIR = src
 
