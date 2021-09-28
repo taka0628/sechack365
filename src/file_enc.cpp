@@ -115,8 +115,8 @@ bool file_enc_c::file_enc()
 	aes.set_key(sha.str2hex(this->safe_pass_));
 #else
 	dynamic_mem_c iv(HASH_SIZE), key(HASH_SIZE);
-	RAND_bytes(iv.mem, iv.get_size());
-	RAND_bytes(key.mem, key.get_size());
+	RAND_bytes(iv.mem_, iv.size());
+	RAND_bytes(key.mem_, key.size());
 	aes.set_iv_key(iv, key);
 
 #endif
@@ -247,20 +247,20 @@ bool file_enc_c::crypt_process(aes_c &aes, file_enc_c::CRYPT_MODE const mode) co
 	switch (mode)
 	{
 	case file_enc_c::CRYPT_MODE::ENCRYPT:
-		while ((read_size = fread(buf.mem, 1, 1024, FP.fp_)) > 0)
+		while ((read_size = fread(buf.mem_, 1, 1024, FP.fp_)) > 0)
 		{
 			aes.encrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
-			fwrite(out_buf.mem, 1, read_size, FP_buffer.fp_);
+			fwrite(out_buf.mem_, 1, read_size, FP_buffer.fp_);
 			// out_buf.reset();
 			buf.reset();
 		}
 		break;
 
 	case file_enc_c::CRYPT_MODE::DECRYPT:
-		while ((read_size = fread(buf.mem, 1, 1024, FP.fp_)) > 0)
+		while ((read_size = fread(buf.mem_, 1, 1024, FP.fp_)) > 0)
 		{
 			aes.decrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
-			fwrite(out_buf.mem, 1, read_size, FP_buffer.fp_);
+			fwrite(out_buf.mem_, 1, read_size, FP_buffer.fp_);
 			out_buf.reset();
 			buf.reset();
 		}
@@ -275,9 +275,9 @@ bool file_enc_c::crypt_process(aes_c &aes, file_enc_c::CRYPT_MODE const mode) co
 	FP.reopen(this->get_file_pass().c_str(), "wb");
 	FP_buffer.reopen(buff_file_name.c_str(), "rb");
 
-	while ((read_size = fread(buf.mem, 1, 1024, FP_buffer.fp_)) > 0)
+	while ((read_size = fread(buf.mem_, 1, 1024, FP_buffer.fp_)) > 0)
 	{
-		fwrite(buf.mem, 1, read_size, FP.fp_);
+		fwrite(buf.mem_, 1, read_size, FP.fp_);
 	}
 	this->file_delete(buff_file_name);
 
@@ -294,16 +294,16 @@ bool file_enc_c::calc_file_hash(const string file_name, dynamic_mem_c &out) cons
 	dynamic_mem_c buffer(file_size);
 
 	rewind(FP.fp_);
-	fread(buffer.mem, 1, file_size, FP.fp_);
+	fread(buffer.mem_, 1, file_size, FP.fp_);
 	dynamic_mem_c hash(HASH_SIZE);
 
 	SHA_c sha;
 	sha.sha2_cal(buffer, hash, SHA_c::SHA2_bit::SHA_256);
-	if (out.get_size() < hash.get_size())
+	if (out.size() < hash.size())
 	{
 		return false;
 	}
-	memcpy(out.mem, hash.mem, hash.get_size());
+	memcpy(out.mem_, hash.mem_, hash.size());
 	return true;
 }
 

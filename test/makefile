@@ -16,7 +16,8 @@ SRCS	= key_list_c.cpp\
 TESTSRC	= keyGenTest.cpp\
 	key_list_test.cpp\
 	test.cpp\
-	dynamicMemTest.cpp
+	dynamicMemTest.cpp\
+	test_log.cpp
 
 TESTDIR = src
 
@@ -62,4 +63,4 @@ clean:
 
 debug:
 	make clean
-	make "CFLAGS += -g -O0" -j 3
+	make "CFLAGS = ${CFLAGS} -g -O0"

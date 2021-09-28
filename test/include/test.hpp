@@ -17,4 +17,19 @@
 #include "../../include/sha_c.hpp"
 #include "../../include/key_gen.hpp"
 
+#define ERROR_TEST \
+	push_error_log("===エラーテスト開始===", __FILE__, __func__, __LINE__)
+
+#define NORMAL_TEST \
+	push_error_log("===動作テスト開始===", __FILE__, __func__, __LINE__)
+
+class TestLog_c
+{
+private:
+	/* data */
+public:
+	TestLog_c(std::string comment);
+	~TestLog_c();
+};
+
 #endif

@@ -4,8 +4,8 @@ using namespace std;
 
 void create_rand_hash(dynamic_mem_c &hash)
 {
-	dynamic_mem_c temp(hash.get_size());
-	RAND_bytes(temp.mem, hash.get_size());
+	dynamic_mem_c temp(hash.size());
+	RAND_bytes(temp.mem_, hash.size());
 
 	SHA_c sha;
 	sha.sha2_cal(temp, hash, SHA_c::SHA2_bit::SHA_256);
@@ -16,7 +16,7 @@ TEST(KeyListTest, TrueProcess)
 	int crypt_size = 256 / 8;
 	dynamic_mem_c hash(crypt_size), iv(crypt_size), key(crypt_size), temp(crypt_size);
 	SHA_c sha;
-	temp.mem[0] = 1;
+	temp.mem_[0] = 1;
 	sha.sha2_cal(temp, hash, SHA_c::SHA2_bit::SHA_256);
 
 	file_ptr_c fp;
@@ -35,11 +35,11 @@ TEST(KeyListTest, TrueProcess)
 
 	ASSERT_TRUE(testKey.pop_file(hash, iv, key));
 	string out_hash, out_iv, out_key;
-	for (size_t i = 0; i < hash.get_size(); i++)
+	for (size_t i = 0; i < hash.size(); i++)
 	{
-		out_hash.push_back(hash.mem[i]);
-		out_iv.push_back(iv.mem[i]);
-		out_key.push_back(key.mem[i]);
+		out_hash.push_back(hash.mem_[i]);
+		out_iv.push_back(iv.mem_[i]);
+		out_key.push_back(key.mem_[i]);
 	}
 	cout << "hash: " << sha.str2hex(out_hash) << endl;
 	cout << "iv: " << sha.str2hex(out_iv) << endl;

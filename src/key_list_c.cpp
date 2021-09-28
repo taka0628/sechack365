@@ -23,7 +23,7 @@ string key_list_c::get_file_name() const
 
 bool key_list_c::pop_file(dynamic_mem_c const &hash, dynamic_mem_c &iv, dynamic_mem_c &key)
 {
-	if (hash.is_empty())
+	if (hash.empty())
 	{
 		return false;
 	}
@@ -38,14 +38,14 @@ bool key_list_c::pop_file(dynamic_mem_c const &hash, dynamic_mem_c &iv, dynamic_
 	size_t read_size = 0;
 
 	// ハッシュ値を検索
-	while ((read_size = fread(buffer.mem, 1, line_size, fp.fp_)) > 0)
+	while ((read_size = fread(buffer.mem_, 1, line_size, fp.fp_)) > 0)
 	{
 		if (read_size != line_size)
 		{
 			break;
 		}
-		memcpy(temp, buffer.mem, HASH_SIZE);
-		if (memcmp(temp, hash.mem, HASH_SIZE) == 0)
+		memcpy(temp, buffer.mem_, HASH_SIZE);
+		if (memcmp(temp, hash.mem_, HASH_SIZE) == 0)
 		{
 			isFindHash = true;
 			break;
@@ -61,8 +61,8 @@ bool key_list_c::pop_file(dynamic_mem_c const &hash, dynamic_mem_c &iv, dynamic_
 	// iv, keyをコピー
 	for (size_t i = 0; i < HASH_SIZE; i++)
 	{
-		iv.mem[i] = buffer.mem[i + HASH_SIZE];
-		key.mem[i] = buffer.mem[i + HASH_SIZE + AES_SIZE];
+		iv.mem_[i] = buffer.mem_[i + HASH_SIZE];
+		key.mem_[i] = buffer.mem_[i + HASH_SIZE + AES_SIZE];
 	}
 
 	this->plug(hash);
@@ -84,25 +84,25 @@ bool key_list_c::plug(const dynamic_mem_c &hash)
 
 	// バッファへ該当ハッシュ値のファイルの除いて書き出し
 	size_t read_size = 0;
-	while ((read_size = fread(buffer.mem, 1, line_size, fp.fp_)) > 0)
+	while ((read_size = fread(buffer.mem_, 1, line_size, fp.fp_)) > 0)
 	{
 		if (read_size != line_size)
 		{
 			break;
 		}
-		if (memcmp(buffer.mem, hash.mem, HASH_SIZE) == 0)
+		if (memcmp(buffer.mem_, hash.mem_, HASH_SIZE) == 0)
 		{
 			continue;
 		}
-		fwrite(buffer.mem, 1, line_size, buffer_fp.fp_);
+		fwrite(buffer.mem_, 1, line_size, buffer_fp.fp_);
 	}
 
 	// バッファを読み取り元ファイルへ書き出し
 	buffer_fp.reopen(buffer_file_name.c_str(), "rb");
 	fp.reopen(this->get_file_name().c_str(), "wb");
-	while ((read_size = fread(buffer.mem, 1, line_size, buffer_fp.fp_)))
+	while ((read_size = fread(buffer.mem_, 1, line_size, buffer_fp.fp_)))
 	{
-		fwrite(buffer.mem, 1, read_size, fp.fp_);
+		fwrite(buffer.mem_, 1, read_size, fp.fp_);
 	}
 	// バッファ用ファイルを初期化
 	buffer_fp.reopen(buffer_file_name.c_str(), "wb");
@@ -112,7 +112,7 @@ bool key_list_c::plug(const dynamic_mem_c &hash)
 bool key_list_c::add_file(dynamic_mem_c const &hash, dynamic_mem_c const &iv, dynamic_mem_c const &key) const
 {
 	// hashに値は入っているか？
-	if (hash.is_empty() == true || iv.is_empty() == true || key.is_empty() == true)
+	if (hash.empty() == true || iv.empty() == true || key.empty() == true)
 	{
 		return false;
 	}
@@ -120,16 +120,16 @@ bool key_list_c::add_file(dynamic_mem_c const &hash, dynamic_mem_c const &iv, dy
 	file_ptr_c fp;
 	fp.open(this->get_file_name().c_str(), "ab");
 
-	fwrite(hash.mem, 1, hash.get_size(), fp.fp_);
-	fwrite(iv.mem, 1, iv.get_size(), fp.fp_);
-	fwrite(key.mem, 1, key.get_size(), fp.fp_);
+	fwrite(hash.mem_, 1, hash.size(), fp.fp_);
+	fwrite(iv.mem_, 1, iv.size(), fp.fp_);
+	fwrite(key.mem_, 1, key.size(), fp.fp_);
 
 	return true;
 }
 
 bool key_list_c::encrypt(dynamic_mem_c const &key) const
 {
-	if (key.is_empty() || key.get_size() != AES_SIZE)
+	if (key.empty() || key.size() != AES_SIZE)
 	{
 		ERROR_NO_COMMENT;
 		return false;
@@ -145,7 +145,7 @@ bool key_list_c::encrypt(dynamic_mem_c const &key) const
 	aes_c aes;
 	dynamic_mem_c iv;
 	iv.d_new(AES_SIZE);
-	RAND_bytes(iv.mem, iv.get_size());
+	RAND_bytes(iv.mem_, iv.size());
 	aes.set_iv_key(iv, key);
 	file_enc_c file_enc;
 	file_enc.set_file_path(this->get_file_name());
@@ -157,7 +157,7 @@ bool key_list_c::encrypt(dynamic_mem_c const &key) const
 	}
 
 	fp.reopen(this->get_file_name().c_str(), "ab");
-	fwrite(iv.mem, 1, iv.get_size(), fp.fp_);
+	fwrite(iv.mem_, 1, iv.size(), fp.fp_);
 	fp.close();
 
 	file_enc.extemsion_set(file_enc_c::CRYPT_MODE::ENCRYPT);
@@ -169,7 +169,7 @@ bool key_list_c::encrypt(dynamic_mem_c const &key) const
 
 bool key_list_c::decrypt(dynamic_mem_c const &key) const
 {
-	if (key.is_empty() || key.get_size() != AES_SIZE)
+	if (key.empty() || key.size() != AES_SIZE)
 	{
 		ERROR_NO_COMMENT;
 		return false;
@@ -189,8 +189,8 @@ bool key_list_c::decrypt(dynamic_mem_c const &key) const
 
 	dynamic_mem_c iv;
 	iv.d_new(AES_SIZE);
-	fseek(fp.fp_, -iv.get_size(), SEEK_END);
-	size_t read_size = fread(iv.mem, 1, iv.get_size(), fp.fp_);
+	fseek(fp.fp_, -iv.size(), SEEK_END);
+	size_t read_size = fread(iv.mem_, 1, iv.size(), fp.fp_);
 	if (read_size != AES_SIZE)
 	{
 		ERROR_NO_COMMENT;
@@ -203,19 +203,19 @@ bool key_list_c::decrypt(dynamic_mem_c const &key) const
 	dynamic_mem_c buff;
 	buff.d_new(AES_SIZE);
 	buff_fp.open(BUFFER_FILE_NAME, "wb");
-	while (fread(buff.mem, 1, buff.get_size(), fp.fp_) > 0)
+	while (fread(buff.mem_, 1, buff.size(), fp.fp_) > 0)
 	{
-		if (memcmp(buff.mem, iv.mem, iv.get_size()) == 0)
+		if (memcmp(buff.mem_, iv.mem_, iv.size()) == 0)
 		{
 			break;
 		}
-		fwrite(buff.mem, 1, buff.get_size(), buff_fp.fp_);
+		fwrite(buff.mem_, 1, buff.size(), buff_fp.fp_);
 	}
 	fp.reopen(this->get_file_name() + ".enc", "wb");
 	buff_fp.reopen(BUFFER_FILE_NAME, "rb");
-	while (fread(buff.mem, 1, buff.get_size(), buff_fp.fp_) > 0)
+	while (fread(buff.mem_, 1, buff.size(), buff_fp.fp_) > 0)
 	{
-		fwrite(buff.mem, 1, buff.get_size(), fp.fp_);
+		fwrite(buff.mem_, 1, buff.size(), fp.fp_);
 	}
 	buff_fp.close();
 	fp.close();
@@ -238,7 +238,7 @@ bool key_list_c::decrypt(dynamic_mem_c const &key) const
 
 bool key_list_c::key_check(dynamic_mem_c const &key) const
 {
-	if (key.get_size() < AES_SIZE || key.is_empty())
+	if (key.size() < AES_SIZE || key.empty())
 	{
 		ERROR_NO_COMMENT;
 		return false;
@@ -252,8 +252,8 @@ bool key_list_c::key_check(dynamic_mem_c const &key) const
 
 	dynamic_mem_c temp;
 	temp.d_new(AES_SIZE);
-	size_t read_size = fread(temp.mem, 1, temp.get_size(), fp.fp_);
-	if (read_size != temp.get_size())
+	size_t read_size = fread(temp.mem_, 1, temp.size(), fp.fp_);
+	if (read_size != temp.size())
 	{
 		ERROR_NO_COMMENT;
 		return false;
@@ -263,7 +263,7 @@ bool key_list_c::key_check(dynamic_mem_c const &key) const
 	dynamic_mem_c hash;
 	hash.d_new(AES_SIZE);
 	sha.sha2_cal(key, hash, SHA_c::SHA2_bit::SHA_256);
-	if (memcmp(hash.mem, temp.mem, hash.get_size()) == 0)
+	if (memcmp(hash.mem_, temp.mem_, hash.size()) == 0)
 	{
 		return true;
 	}
@@ -272,7 +272,7 @@ bool key_list_c::key_check(dynamic_mem_c const &key) const
 
 bool key_list_c::key_list_pkey_update(dynamic_mem_c const &key) const
 {
-	if (key.mem == nullptr || key.get_size() != AES_SIZE)
+	if (key.mem_ == nullptr || key.size() != AES_SIZE)
 	{
 		ERROR_NO_COMMENT;
 		return false;
@@ -290,7 +290,7 @@ bool key_list_c::key_list_pkey_update(dynamic_mem_c const &key) const
 	hash.d_new(HASH_SIZE);
 
 	sha.sha2_cal(key, hash, SHA_c::SHA2_bit::SHA_256);
-	if (fwrite(hash.mem, 1, hash.get_size(), fp.fp_) != hash.get_size())
+	if (fwrite(hash.mem_, 1, hash.size(), fp.fp_) != hash.size())
 	{
 		ERROR_NO_COMMENT;
 		return false;

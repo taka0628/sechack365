@@ -33,21 +33,21 @@ void aes_c::set_iv(std::string hex)
 
 bool aes_c::set_iv_key(const dynamic_mem_c &iv, const dynamic_mem_c &key)
 {
-	if (iv.is_empty() || key.is_empty())
+	if (iv.empty() || key.empty())
 	{
 		ERROR("");
 		return false;
 	}
-	if (iv.get_size() != key.get_size())
+	if (iv.size() != key.size())
 	{
 		ERROR("");
 		return false;
 	}
 
-	for (size_t i = 0; i < iv.get_size(); i++)
+	for (size_t i = 0; i < iv.size(); i++)
 	{
-		this->iv.push_back(iv.mem[i]);
-		this->key.push_back(key.mem[i]);
+		this->iv.push_back(iv.mem_[i]);
+		this->key.push_back(key.mem_[i]);
 	}
 	return true;
 }
@@ -327,23 +327,23 @@ void aes_c::encrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e
 		break;
 	}
 
-	int size2aes = (int)in.get_size();
-	unsigned char *in2aes = (unsigned char *)in.mem;
-	unsigned char *outFromAes = (unsigned char *)calloc(sizeof(unsigned char), out.get_size());
+	int size2aes = (int)in.size();
+	unsigned char *in2aes = (unsigned char *)in.mem_;
+	unsigned char *outFromAes = (unsigned char *)calloc(sizeof(unsigned char), out.size());
 
-	if (1 != EVP_EncryptUpdate(ctx, outFromAes, &size2aes, in2aes, in.get_size()))
+	if (1 != EVP_EncryptUpdate(ctx, outFromAes, &size2aes, in2aes, in.size()))
 	{
 		printf("error EVP_EncryptUpdate\n");
 		return;
 	}
-	if (size2aes != (int)in.get_size())
+	if (size2aes != (int)in.size())
 	{
-		printf("error encrypt out_len(%d) != in_len(%ld)\n", size2aes, in.get_size());
+		printf("error encrypt out_len(%d) != in_len(%ld)\n", size2aes, in.size());
 	}
 
 	EVP_CIPHER_CTX_free(ctx);
 
-	memcpy(out.mem, outFromAes, out.get_size());
+	memcpy(out.mem_, outFromAes, out.size());
 
 	free(outFromAes);
 	outFromAes = nullptr;
@@ -420,7 +420,7 @@ void aes_c::decrypt(string &out, const string in, const AES_bit_e bit)
 
 void aes_c::decrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e bit)
 {
-	int out_len, in_len = in.get_size();
+	int out_len, in_len = in.size();
 	EVP_CIPHER_CTX *ctx;
 
 	if (key.empty())
@@ -465,8 +465,8 @@ void aes_c::decrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e
 		break;
 	}
 
-	unsigned char *outFromAes = (unsigned char *)calloc(sizeof(unsigned char), in.get_size());
-	unsigned char *in2aes = (unsigned char *)in.mem;
+	unsigned char *outFromAes = (unsigned char *)calloc(sizeof(unsigned char), in.size());
+	unsigned char *in2aes = (unsigned char *)in.mem_;
 	if (1 != EVP_DecryptUpdate(ctx, outFromAes, &out_len, in2aes, in_len))
 	{
 		printf("error EVP_DecryptUpdate\n");
@@ -478,7 +478,7 @@ void aes_c::decrypt(dynamic_mem_c &out, const dynamic_mem_c &in, const AES_bit_e
 	}
 
 	EVP_CIPHER_CTX_free(ctx);
-	memcpy(out.mem, outFromAes, out.get_size());
+	memcpy(out.mem_, outFromAes, out.size());
 
 	free(outFromAes);
 	outFromAes = nullptr;
