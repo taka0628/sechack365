@@ -27,3 +27,5 @@ test/*
 
 !build-qt_src-Release/*.out
 nonce
+build-qt_src-Release/buffer_file_key_list
+build-qt_src-Release/crypt_temp
