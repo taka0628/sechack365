@@ -11,6 +11,8 @@
 #include "vector"
 #include "cstdio"
 #include "algorithm"
+#include "memory"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -19,12 +21,18 @@
 class device_c
 {
 private:
-	/* data */
+	std::string usb_id_;
+	std::string usb_serial_;
+
 public:
 	device_c();
 	~device_c();
 
 	std::vector<std::string> get_usbList() const;
+	bool set_usbID(const std::string);
+	std::string get_usbID() const;
+
+	std::string get_usbSerial() const;
 };
 
 #endif
