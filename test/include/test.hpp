@@ -20,18 +20,27 @@
 #include "../../include/key_gen.hpp"
 #include "../../include/device_c.hpp"
 
-#define ERROR_TEST \
-	push_error_log("===エラーテスト開始===", __FILE__, __func__, __LINE__)
+#define ERROR_TEST        \
+	TestLog_c testLogIns; \
+	testLogIns.errorTest()
 
-#define NORMAL_TEST \
-	push_error_log("===動作テスト開始===", __FILE__, __func__, __LINE__)
+#define NORMAL_TEST       \
+	TestLog_c testLogIns; \
+	testLogIns.correctTest()
+
+#define TEST_END \
+	testLogIns.~TestLog_c()
 
 class TestLog_c
 {
 private:
 	/* data */
+
 public:
-	TestLog_c(std::string comment);
+	TestLog_c();
+	TestLog_c(const std::string comment);
+	void errorTest();
+	void correctTest();
 	~TestLog_c();
 };
 
