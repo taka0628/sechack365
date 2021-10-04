@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>896</width>
-    <height>565</height>
+    <width>431</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,7 +40,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>290</y>
+     <y>330</y>
      <width>89</width>
      <height>25</height>
     </rect>
@@ -53,7 +53,7 @@
    <property name="geometry">
     <rect>
      <x>260</x>
-     <y>290</y>
+     <y>330</y>
      <width>89</width>
      <height>25</height>
     </rect>
@@ -62,15 +62,31 @@
     <string>Cansel</string>
    </property>
   </widget>
-  <widget class="QListView" name="listView_select">
+  <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>60</y>
-     <width>331</width>
-     <height>192</height>
+     <x>30</x>
+     <y>270</y>
+     <width>371</width>
+     <height>31</height>
     </rect>
    </property>
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,10">
+    <item>
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Select USB ID: </string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_selected_usbID">
+      <property name="text">
+       <string>null</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

@@ -16,6 +16,10 @@ MainWindow::~MainWindow()
 
 using namespace std;
 
+namespace global {
+string selected_usbID;
+}
+
 void MainWindow::on_push_enc_clicked()
 {
     static const string erase_string = "file://";

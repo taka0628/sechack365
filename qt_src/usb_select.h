@@ -2,9 +2,12 @@
 #define USB_SELECT_H
 
 #include <QWidget>
+#include <QListWidgetItem>
+
 #include <unistd.h>
 #include <vector>
 #include <string>
+
 
 #include "../include/device_c.hpp"
 
@@ -22,6 +25,13 @@ public:
     ~usb_select();
 
     bool update();
+    std::string usbID_;
+
+
+private slots:
+    void on_listWidget_select_itemClicked(QListWidgetItem *item);
+
+    void on_pushButton_ok_clicked();
 
 private:
     Ui::usb_select *ui;

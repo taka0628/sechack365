@@ -10,12 +10,13 @@ usb_select::usb_select(QWidget *parent) : QWidget(parent),
     this->update();
 }
 
-usb_select::~usb_select()
-{
-    delete ui;
+usb_select::~usb_select(){
+
 }
 
+
 using namespace std;
+
 
 bool usb_select::update()
 {
@@ -23,11 +24,25 @@ bool usb_select::update()
     vector<string> usb_list;
     usb_list = usb.get_usbList();
 
-    QString usb_list_qs;
+    //    USBリストを表示
     for(string temp : usb_list){
-        usb_list_qs.fromStdString(temp);
-        ui->listWidget_select->addItem(usb_list_qs);
+        new QListWidgetItem(tr(temp.c_str()), ui->listWidget_select);
     }
     return true;
 }
 
+//USB IDを抽出
+void usb_select::on_listWidget_select_itemClicked(QListWidgetItem *item)
+{
+    string selected_usb{item->text().toStdString()};
+    this->usbID_ =  selected_usb.substr(3,9);
+    ui->label_selected_usbID->setText(QString::fromStdString(this->usbID_));
+}
+
+void usb_select::on_pushButton_ok_clicked()
+{
+    if(this->usbID_.empty()){
+        return;
+    }
+    this->close();
+}
