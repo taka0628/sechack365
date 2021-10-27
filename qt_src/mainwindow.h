@@ -36,6 +36,8 @@ private slots:
 
     void on_pushButton_pass_register_clicked();
 
+    void on_MainWindow_destroyed(QObject *arg1);
+
 private:
     Ui::MainWindow *ui;
     Dialog_password *get_password_wind;

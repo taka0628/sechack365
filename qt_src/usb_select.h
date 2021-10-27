@@ -2,6 +2,7 @@
 #define USB_SELECT_H
 
 #include <QWidget>
+#include <QDialog>
 #include <QListWidgetItem>
 
 #include <unistd.h>
@@ -16,7 +17,7 @@ namespace Ui
     class usb_select;
 }
 
-class usb_select : public QWidget
+class usb_select : public QDialog, public device_c
 {
     Q_OBJECT
 

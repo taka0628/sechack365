@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>303</height>
+    <height>347</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -90,6 +90,19 @@
     </property>
     <property name="text">
      <string>clear</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_usb_debug">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>240</y>
+      <width>171</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>usbID: </string>
     </property>
    </widget>
   </widget>
