@@ -14,6 +14,7 @@ build-qt_src*Debug/*
 *.user
 *.jpg
 *.out*
+*.csv
 .stash
 test/*
 
@@ -24,6 +25,7 @@ test/*
 !test/.vscode
 !test/src
 !test/include
+!test/gps_sandbox
 
 !build-qt_src-Release/*.out
 nonce

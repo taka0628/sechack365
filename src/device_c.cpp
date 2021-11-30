@@ -10,38 +10,76 @@ device_c::~device_c()
 
 using namespace std;
 
+namespace local
+{
+	vector<string> cmdline2List(string cmd)
+	{
+		FILE *fp;
+		vector<string> cmdstring;
+		if ((fp = popen(cmd.c_str(), "r")) == NULL)
+		{
+			PRINT_ERROR_LOG("can not exec commad");
+			cmdstring.clear();
+			return cmdstring;
+		}
+		char cmd_buf[256];
+		while (fgetc(fp) != EOF)
+		{
+			fgets(cmd_buf, sizeof(cmd_buf), fp);
+			cmdstring.push_back(cmd_buf);
+		}
+
+		if (cmdstring.empty())
+		{
+			PRINT_ERROR_LOG("コマンドラインから出力を得られませんでした");
+			cmdstring.clear();
+			return cmdstring;
+		}
+		(void)pclose(fp);
+
+		// 改行文字を処理
+		for (string &in : cmdstring)
+		{
+			if (in.find("\n", 1) != string::npos)
+			{
+				in.erase(in.find("\n", 1), 1);
+			}
+		}
+		return cmdstring;
+	}
+	string cmdline(string cmd)
+	{
+		FILE *fp;
+		string cmdstring;
+		if ((fp = popen(cmd.c_str(), "r")) == NULL)
+		{
+			PRINT_ERROR_LOG("can not exec commad");
+			return "";
+		}
+		char cmd_buf[256];
+		fgets(cmd_buf, sizeof(cmd_buf), fp);
+		cmdstring += cmd_buf;
+
+		if (cmdstring.empty())
+		{
+			PRINT_ERROR_LOG("コマンドラインから出力を得られませんでした");
+			return "";
+		}
+		(void)pclose(fp);
+
+		// 改行文字を処理
+		if (cmdstring.find("\n", 1) != string::npos)
+		{
+			cmdstring.erase(cmdstring.find("\n", 1), 1);
+		}
+		return cmdstring;
+	}
+}
 vector<string> device_c::get_usbList() const
 {
 	string cmdline = "lsusb | cut -d ' ' -f 5- ";
-	FILE *fp;
 	std::vector<std::string> usb_list;
-
-	if ((fp = popen(cmdline.c_str(), "r")) == NULL)
-	{
-		PRINT_ERROR_LOG("can not exec commad");
-		usb_list.clear();
-		return usb_list;
-	}
-	char cmd_buf[256];
-	while (!feof(fp))
-	{
-		fgets(cmd_buf, sizeof(cmd_buf), fp);
-		usb_list.push_back(cmd_buf);
-	}
-
-	if (usb_list.empty())
-	{
-		PRINT_ERROR_LOG("コマンドラインから出力を得られませんでした");
-		usb_list.clear();
-		return usb_list;
-	}
-	(void)pclose(fp);
-
-	// 改行文字を処理
-	for (string &in : usb_list)
-	{
-		in.erase(in.find("\n", 1));
-	}
+	usb_list = local::cmdline2List(cmdline);
 	return usb_list;
 }
 
@@ -57,31 +95,29 @@ bool device_c::set_usbID(const string usbID)
 	cmdline += usbID;
 	cmdline += " -v | grep iSerial | awk '{print $3}' | tail -n -1";
 
-	FILE *fp;
-	if ((fp = popen(cmdline.c_str(), "r")) == NULL)
+	string temp = local::cmdline(cmdline);
+	try
 	{
-		PRINT_ERROR_LOG("can not exec commad");
-		return false;
+		// 4文字未満のシリアル番号はエラーとみなす
+		if (temp.empty() || temp.size() < 4)
+		{
+			PRINT_ERROR_LOG("コマンドラインから出力を得られませんでした");
+			return false;
+		}
+		else
+		{
+			if (temp.find("\n", 1) != string::npos)
+			{
+				temp.erase(temp.find("\n", 1));
+			}
+			this->usb_serial_ = temp;
+			this->usb_id_ = usbID;
+		}
 	}
-	char cmd_buf[256];
-	string temp;
-
-	fgets(cmd_buf, sizeof(cmd_buf), fp);
-	temp = cmd_buf;
-
-	(void)pclose(fp);
-
-	// 4文字未満のシリアル番号はエラーとみなす
-	if (temp.empty() || temp.size() < 4)
+	catch (const std::exception &e)
 	{
-		PRINT_ERROR_LOG("コマンドラインから出力を得られませんでした");
-		return false;
-	}
-	else
-	{
-		temp.erase(temp.find("\n", 1), 1);
-		this->usb_serial_ = temp;
-		this->usb_id_ = usbID;
+		std::cerr << e.what() << '\n';
+		PRINT_ERROR_LOG(e.what());
 	}
 
 	return true;
@@ -103,4 +139,10 @@ string device_c::get_usbSerial() const
 		return "";
 	}
 	return this->usb_serial_;
+}
+
+uint32_t device_c::get_usb_cnt() const
+{
+	uint32_t usb_size = static_cast<uint32_t>(stoi(local::cmdline("lsusb | wc -l")));
+	return usb_size;
 }
