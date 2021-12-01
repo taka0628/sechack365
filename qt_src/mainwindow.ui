@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>347</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,17 +66,43 @@
      <string>対象ファイルをドラッグ</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_debug">
+   <widget class="QPushButton" name="pushButton_pass_register">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>10</y>
-      <width>89</width>
+      <x>278</x>
+      <y>0</y>
+      <width>121</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>debug</string>
+     <string>パスワード登録</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_clear">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>126</y>
+      <width>41</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>clear</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_usb_debug">
+    <property name="geometry">
+     <rect>
+      <x>90</x>
+      <y>240</y>
+      <width>171</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>usbID: </string>
     </property>
    </widget>
   </widget>

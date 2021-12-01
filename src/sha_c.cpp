@@ -1,7 +1,4 @@
-#include "sha_c.hpp"
-
-#define ERROR(comment) \
-    printf("[ERROR]\n\t%s: %d\n\t%s\n", __func__, __LINE__, comment);
+#include "../include/sha_c.hpp"
 
 SHA_c::SHA_c()
 {
@@ -164,6 +161,115 @@ string SHA_c::sha2_cal(const string &src, const SHA_c::SHA2_bit bit) const
     return nullptr;
 }
 
+bool SHA_c::sha2_cal(const dynamic_mem_c &in, dynamic_mem_c &out, const SHA2_bit bit) const
+{
+    string result;
+    if (bit == SHA_c::SHA2_bit::SHA_224)
+    {
+        SHA256_CTX ctx;
+        unsigned char *buf = static_cast<unsigned char *>(calloc(sizeof(unsigned char), SHA224_DIGEST_LENGTH + 1));
+        if (!SHA224_Init(&ctx))
+        {
+            ERROR("SHA224_Init");
+            return false;
+        }
+
+        if (!SHA224_Update(&ctx, in.mem_, in.size()))
+        {
+            ERROR("SHA224_Update");
+            return false;
+        }
+        if (!SHA224_Final(buf, &ctx))
+        {
+            ERROR("SHA224_Final");
+            return false;
+        }
+
+        memcpy(out.mem_, buf, SHA224_DIGEST_LENGTH);
+        free(buf);
+        buf = nullptr;
+        return true;
+    }
+    if (bit == SHA_c::SHA2_bit::SHA_256)
+    {
+        SHA256_CTX ctx;
+        unsigned char *buf = static_cast<unsigned char *>(calloc(sizeof(unsigned char), SHA256_DIGEST_LENGTH + 1));
+        if (!SHA256_Init(&ctx))
+        {
+            ERROR("SHA256_Init");
+            return false;
+        }
+        if (!SHA256_Update(&ctx, in.mem_, in.size()))
+        {
+            ERROR("SHA256_Update");
+            return false;
+        }
+        if (!SHA256_Final(buf, &ctx))
+        {
+            ERROR("SHA256_Final");
+            return false;
+        }
+        memcpy(out.mem_, buf, SHA256_DIGEST_LENGTH);
+        free(buf);
+        buf = nullptr;
+        return true;
+    }
+    if (bit == SHA_c::SHA2_bit::SHA_384)
+    {
+        SHA512_CTX ctx;
+        unsigned char *buf = static_cast<unsigned char *>(calloc(sizeof(unsigned char), SHA384_DIGEST_LENGTH + 1));
+        if (!SHA384_Init(&ctx))
+        {
+            ERROR("SHA384_Init");
+            return false;
+        }
+        if (!SHA384_Update(&ctx, in.mem_, in.size()))
+        {
+            ERROR("SHA384_Update");
+            return false;
+        }
+        if (!SHA384_Final(buf, &ctx))
+        {
+            ERROR("SHA384_Final");
+            return false;
+        }
+        memcpy(out.mem_, buf, SHA384_DIGEST_LENGTH);
+        free(buf);
+        buf = nullptr;
+        return true;
+    }
+    if (bit == SHA_c::SHA2_bit::SHA_512)
+    {
+        SHA512_CTX ctx;
+        unsigned char *buf = static_cast<unsigned char *>(calloc(sizeof(unsigned char), SHA512_DIGEST_LENGTH + 1));
+        SHA512_Init(&ctx);
+        SHA512_Update(&ctx, in.mem_, in.size());
+        SHA512_Final(buf, &ctx);
+        if (!SHA512_Init(&ctx))
+        {
+            ERROR("SHA512_Init");
+            return false;
+        }
+        if (!SHA512_Update(&ctx, in.mem_, in.size()))
+        {
+            ERROR("SHA512_Update");
+            return false;
+        }
+        if (!SHA512_Final(buf, &ctx))
+        {
+            ERROR("SHA512_Final");
+            return false;
+        }
+
+        memcpy(out.mem_, buf, SHA512_DIGEST_LENGTH);
+        free(buf);
+        buf = nullptr;
+        return true;
+    }
+
+    return false;
+}
+
 string SHA_c::str2hex(const string &src) const
 {
     stringstream buf;
@@ -171,6 +277,18 @@ string SHA_c::str2hex(const string &src) const
     for (uint i = 0; i < src.size(); i++)
     {
         sprintf(p, "%02x", (unsigned char)src[i]);
+        buf << p;
+    }
+    return buf.str();
+}
+
+string SHA_c::str2hex(const dynamic_mem_c &src) const
+{
+    stringstream buf;
+    char p[10];
+    for (uint i = 0; i < src.size(); i++)
+    {
+        sprintf(p, "%02x", src.mem_[i]);
         buf << p;
     }
     return buf.str();

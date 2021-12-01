@@ -2,7 +2,7 @@
 #define DIALOG_PASSWORD_H
 
 #include <QDialog>
-#include "../src/file_enc.hpp"
+#include "../include/file_enc.hpp"
 #include <chrono>
 
 namespace Ui {

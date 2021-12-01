@@ -1,0 +1,33 @@
+# !*.*
+# !Makefile
+# !makefile
+# !qt_src/
+# !src/
+# !test/
+# !include/
+build-qt_src*Debug/*
+.*
+
+*.txt
+*.o
+*.autosave
+*.user
+*.jpg
+*.out*
+*.csv
+.stash
+test/*
+
+!.vscode
+
+!test/*.cpp
+!test/*.hpp
+!test/.vscode
+!test/src
+!test/include
+!test/gps_sandbox
+
+!build-qt_src-Release/*.out
+nonce
+build-qt_src-Release/buffer_file_key_list
+build-qt_src-Release/crypt_temp

@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = qt_src
+TARGET = fileEncSys.out
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -22,7 +22,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-LIBS += -lcrypto -lssl -std=c++11 -d -O -Wall
+LIBS += -lcrypto -lssl
 
 SOURCES += \
         main.cpp \
@@ -32,20 +32,33 @@ SOURCES += \
     ../src/aes_c.cpp\
     ../src/sha_c.cpp \
     ../src/dynamic_mem_c.cpp \
-    dialog_dec_pass.cpp
+    ../src/key_list_c.cpp \
+    ../src/file_ptr_c.cpp \
+    ../src/error.cpp\
+    ../src/key_gen_c.cpp\
+    ../src/device_c.cpp\
+    dialog_dec_pass.cpp \
+    pass_check.cpp \
+    usb_select.cpp
 
 HEADERS += \
         mainwindow.h \
     dialog_password.h \
-    ../src/file_enc.hpp\
-    ../src/aes_c.hpp\
-    ../src/sha_c.hpp \
-    ../src/dynamic_mem_c.cpp \
-    dialog_dec_pass.h
+    ../include/file_enc.hpp\
+    ../include/aes_c.hpp\
+    ../include/sha_c.hpp \
+    ../include/dynamic_mem_c.hpp \
+    ../include/macro.hpp\
+    ../include/device_c.hpp\
+    dialog_dec_pass.h \
+    pass_check.h \
+    usb_select.h
 
 FORMS += \
         mainwindow.ui \
     dialog_password.ui \
-    dialog_dec_pass.ui
+    dialog_dec_pass.ui \
+    pass_check.ui \
+    usb_select.ui
 
 DISTFILES +=

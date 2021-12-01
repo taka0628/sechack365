@@ -12,25 +12,29 @@
 #include <vector>
 #include <sstream>
 
+#include "macro.hpp"
+
 class dynamic_mem_c
 {
 private:
-    dynamic_mem_c(const dynamic_mem_c &);
-    size_t size;
+    size_t size_;
     int usage_;
 
 public:
     dynamic_mem_c();
+    dynamic_mem_c(const uint size);
     ~dynamic_mem_c();
+    dynamic_mem_c(const dynamic_mem_c &from);
+    dynamic_mem_c &operator=(const dynamic_mem_c &from);
 
-    unsigned char *mem;
+    unsigned char *mem_;
 
-    void d_new(uint size);
+    void d_new(const uint size);
     void d_free();
-    int get_size() const;
+    size_t size() const;
     void copy(std::string &dest, const uint size) const;
     void reset();
-    void push_back();
+    bool empty() const;
 };
 
 #endif

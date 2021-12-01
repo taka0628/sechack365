@@ -15,6 +15,9 @@
 #include <string>
 #include <sstream>
 
+#include "dynamic_mem_c.hpp"
+#include "macro.hpp"
+
 class SHA_c
 {
 private:
@@ -33,8 +36,10 @@ public:
 
     std::string sha1_cal(const std::string &src) const;
     std::string sha2_cal(const std::string &src, const SHA2_bit bit) const;
+    bool sha2_cal(const dynamic_mem_c &in, dynamic_mem_c &out, const SHA2_bit bit) const;
 
     std::string str2hex(const std::string &src) const;
+    std::string str2hex(const dynamic_mem_c &src) const;
 };
 
 #endif
