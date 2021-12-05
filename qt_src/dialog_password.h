@@ -13,8 +13,8 @@ class Dialog_password;
 class Dialog_password : public QDialog {
     Q_OBJECT
 
-   public:
-    explicit Dialog_password(QWidget *parent = 0);
+public:
+    explicit Dialog_password(QWidget* parent = 0);
     ~Dialog_password();
 
     bool is_ok() const;
@@ -22,16 +22,16 @@ class Dialog_password : public QDialog {
 
     void set_file_path(std::string file_path);
 
-   private slots:
+private slots:
 
-    void on_lineEdit_password_check_textChanged(const QString &arg1);
+    void on_lineEdit_password_check_textChanged(const QString& arg1);
 
     void on_pushButton_OK_clicked();
 
     void on_pushButton_Cancel_clicked();
 
-   private:
-    Ui::Dialog_password *ui;
+private:
+    Ui::Dialog_password* ui;
 
     bool is_canceled_;
     bool is_ok_;
@@ -39,4 +39,4 @@ class Dialog_password : public QDialog {
     std::string file_path_;
 };
 
-#endif  // DIALOG_PASSWORD_H
+#endif // DIALOG_PASSWORD_H

@@ -2,8 +2,10 @@
 
 #include "ui_dialog_dec_pass.h"
 
-Dialog_dec_pass::Dialog_dec_pass(QWidget *parent)
-    : QDialog(parent), ui(new Ui::Dialog_dec_pass) {
+Dialog_dec_pass::Dialog_dec_pass(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::Dialog_dec_pass)
+{
     ui->setupUi(this);
 }
 
@@ -12,7 +14,8 @@ Dialog_dec_pass::~Dialog_dec_pass() { delete ui; }
 using namespace std;
 
 //ファイル復号
-void Dialog_dec_pass::on_buttonBox_accepted() {
+void Dialog_dec_pass::on_buttonBox_accepted()
+{
     QString pass = ui->lineEdit_dec_pass->text();
     if (pass.size() == 0) {
         return;
@@ -34,6 +37,7 @@ void Dialog_dec_pass::on_buttonBox_accepted() {
     this->close();
 }
 
-void Dialog_dec_pass::set_file_path(string file_path) {
+void Dialog_dec_pass::set_file_path(string file_path)
+{
     this->file_path_ = file_path;
 }

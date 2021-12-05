@@ -18,20 +18,20 @@ class usb_select;
 class usb_select : public QDialog, public device_c {
     Q_OBJECT
 
-   public:
-    explicit usb_select(QWidget *parent = 0);
+public:
+    explicit usb_select(QWidget* parent = 0);
     ~usb_select();
 
     bool update();
     std::string usbID_;
 
-   private slots:
-    void on_listWidget_select_itemClicked(QListWidgetItem *item);
+private slots:
+    void on_listWidget_select_itemClicked(QListWidgetItem* item);
 
     void on_pushButton_ok_clicked();
 
-   private:
-    Ui::usb_select *ui;
+private:
+    Ui::usb_select* ui;
 };
 
-#endif  // USB_SELECT_H
+#endif // USB_SELECT_H

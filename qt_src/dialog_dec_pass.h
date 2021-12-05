@@ -15,20 +15,20 @@ class Dialog_dec_pass;
 class Dialog_dec_pass : public QDialog {
     Q_OBJECT
 
-   public:
-    explicit Dialog_dec_pass(QWidget *parent = 0);
+public:
+    explicit Dialog_dec_pass(QWidget* parent = 0);
     ~Dialog_dec_pass();
 
     void set_file_path(std::string file_pass);
 
-   private slots:
+private slots:
 
     void on_buttonBox_accepted();
 
-   private:
-    Ui::Dialog_dec_pass *ui;
+private:
+    Ui::Dialog_dec_pass* ui;
 
     std::string file_path_;
 };
 
-#endif  // DIALOG_DEC_PASS_H
+#endif // DIALOG_DEC_PASS_H

@@ -6,8 +6,10 @@ using namespace std;
 
 bool IS_PASSWORD_CORRECT;
 
-Dialog_password::Dialog_password(QWidget *parent)
-    : QDialog(parent), ui(new Ui::Dialog_password) {
+Dialog_password::Dialog_password(QWidget* parent)
+    : QDialog(parent)
+    , ui(new Ui::Dialog_password)
+{
     ui->setupUi(this);
 
     IS_PASSWORD_CORRECT = false;
@@ -21,13 +23,15 @@ bool Dialog_password::is_ok() const { return this->is_ok_; }
 
 bool Dialog_password::is_calcel() const { return this->is_canceled_; }
 
-void Dialog_password::set_file_path(string file_path) {
+void Dialog_password::set_file_path(string file_path)
+{
     this->file_path_ = file_path;
 }
 
 //パスワード二重チェック
 void Dialog_password::on_lineEdit_password_check_textChanged(
-    const QString &arg1) {
+    const QString& arg1)
+{
     QString input_pass_ck = arg1;
     QString input_pass_origin = ui->lineEdit_password->text();
     QString out_put;
@@ -42,7 +46,8 @@ void Dialog_password::on_lineEdit_password_check_textChanged(
 }
 
 //暗号化を行う
-void Dialog_password::on_pushButton_OK_clicked() {
+void Dialog_password::on_pushButton_OK_clicked()
+{
     if (!IS_PASSWORD_CORRECT) {
         return;
     }

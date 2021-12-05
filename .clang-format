@@ -4,4 +4,4 @@ BasedOnStyle: WebKit
 IndentWidth: 4
 Language: Cpp
 Standard: Auto
-UseCRLF: false
+# UseCRLF: false

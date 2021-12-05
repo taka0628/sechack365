@@ -2,8 +2,10 @@
 
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
 }
 
@@ -15,7 +17,8 @@ namespace global {
 string selected_usbID;
 }
 
-void MainWindow::on_push_enc_clicked() {
+void MainWindow::on_push_enc_clicked()
+{
     static const string erase_string = "file://";
 
     string input_text = ui->lineEdit_file_path->text().toStdString();
@@ -26,7 +29,7 @@ void MainWindow::on_push_enc_clicked() {
 
     if (input_text.find(erase_string.c_str()) != string::npos) {
         input_text.erase(input_text.find(erase_string.c_str()),
-                         erase_string.size());
+            erase_string.size());
     }
 
     //暗号化
@@ -49,7 +52,8 @@ void MainWindow::on_push_enc_clicked() {
     ui->lineEdit_file_path->clear();
 }
 
-void MainWindow::on_push_dec_clicked() {
+void MainWindow::on_push_dec_clicked()
+{
     QString fail_path = ui->lineEdit_file_path->text();
     if (fail_path.size() == 0) {
         return;
@@ -63,7 +67,7 @@ void MainWindow::on_push_dec_clicked() {
 
     if (input_text.find(erase_string.c_str()) != string::npos) {
         input_text.erase(input_text.find(erase_string.c_str()),
-                         erase_string.size());
+            erase_string.size());
     }
 
     //ファイルが存在するか確認
@@ -83,11 +87,13 @@ void MainWindow::on_push_dec_clicked() {
     ui->lineEdit_file_path->clear();
 }
 
-void MainWindow::on_pushButton_clear_clicked() {
+void MainWindow::on_pushButton_clear_clicked()
+{
     ui->lineEdit_file_path->clear();
 }
 
-void MainWindow::on_pushButton_pass_register_clicked() {
+void MainWindow::on_pushButton_pass_register_clicked()
+{
     usb_select_wind = new usb_select(this);
     usb_select_wind->setModal(true);
     int ret = usb_select_wind->exec();
