@@ -36,7 +36,7 @@ private slots:
 
     void on_pushButton_pass_register_clicked();
 
-    void on_MainWindow_destroyed(QObject *arg1);
+//    void on_MainWindow_destroyed(QObject *arg1);
 
 private:
     Ui::MainWindow *ui;
