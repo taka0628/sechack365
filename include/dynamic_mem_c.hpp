@@ -3,24 +3,23 @@
 
 #include <memory.h>
 #include <stdio.h>
+
 #include <cstdio>
 #include <cstdlib>
-#include <vector>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <sstream>
 
 #include "macro.hpp"
 
-class dynamic_mem_c
-{
-private:
+class dynamic_mem_c {
+   private:
     size_t size_;
     int usage_;
 
-public:
+   public:
     dynamic_mem_c();
     dynamic_mem_c(const uint size);
     ~dynamic_mem_c();

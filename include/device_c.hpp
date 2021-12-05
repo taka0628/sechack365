@@ -1,39 +1,37 @@
 #ifndef ___DEVICE_HPP
 #define ___DEVICE_HPP
 
-#include "error.hpp"
-#include "macro.hpp"
-
-#include "string"
-#include "fstream"
-#include "iostream"
-#include "sstream"
-#include "vector"
-#include "cstdio"
-#include "algorithm"
-#include "memory"
-
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <unistd.h>
 
-class device_c
-{
-private:
-	std::string usb_id_;
-	std::string usb_serial_;
+#include "algorithm"
+#include "cstdio"
+#include "error.hpp"
+#include "fstream"
+#include "iostream"
+#include "macro.hpp"
+#include "memory"
+#include "sstream"
+#include "string"
+#include "vector"
 
-public:
-	device_c();
-	~device_c();
+class device_c {
+   private:
+    std::string usb_id_;
+    std::string usb_serial_;
 
-	std::vector<std::string> get_usbList() const;
-	bool set_usbID(const std::string);
-	std::string get_usbID() const;
+   public:
+    device_c();
+    ~device_c();
 
-	std::string get_usbSerial() const;
-	uint32_t get_usb_cnt() const;
+    std::vector<std::string> get_usbList() const;
+    bool set_usbID(const std::string);
+    std::string get_usbID() const;
+
+    std::string get_usbSerial() const;
+    uint32_t get_usb_cnt() const;
 };
 
 #endif
