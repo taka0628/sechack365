@@ -4,16 +4,17 @@
 #include "error.hpp"
 
 // エラー用マクロ
-#define ERROR(comment)                                                                   \
-	printf("[ERROR]\n\t__%s__/__%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, comment); \
-	push_error_log(comment, __FILE__, __func__, __LINE__)
+#define ERROR(comment)                                                         \
+    printf("[ERROR]\n\t__%s__/__%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, \
+           comment);                                                           \
+    push_error_log(comment, __FILE__, __func__, __LINE__)
 
 #define ERROR_NO_COMMENT                                                  \
-	printf("[ERROR]\n\t__%s__/__%s: %d\n", __FILE__, __func__, __LINE__); \
-	push_error_log("", __FILE__, __func__, __LINE__)
+    printf("[ERROR]\n\t__%s__/__%s: %d\n", __FILE__, __func__, __LINE__); \
+    push_error_log("", __FILE__, __func__, __LINE__)
 
 #define PRINT_ERROR_LOG(comment) \
-	push_error_log(comment, __FILE__, __func__, __LINE__)
+    push_error_log(comment, __FILE__, __func__, __LINE__)
 
 // -----------------------------------------------------------------------
 // 定数

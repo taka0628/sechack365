@@ -2,17 +2,14 @@
 
 using namespace std;
 
-TEST(KeyListCryptTest, EncryptTest)
-{
-
+TEST(KeyListCryptTest, EncryptTest) {
     key_list_c keyList;
     dynamic_mem_c key;
     string pass("hoge");
     SHA_c sha;
     string key_st = sha.sha2_cal(pass, SHA_c::SHA2_bit::SHA_256);
     key.d_new(SHA256_DIGEST_LENGTH);
-    for (size_t i = 0; i < key.size(); i++)
-    {
+    for (size_t i = 0; i < key.size(); i++) {
         key.mem_[i] = (unsigned char)key_st[i];
     }
     cout << sha.str2hex(key_st) << endl;
@@ -22,8 +19,7 @@ TEST(KeyListCryptTest, EncryptTest)
     ASSERT_TRUE(keyList.decrypt(key));
 }
 
-TEST(KeyListCryptError, DISABLED_KeySize)
-{
+TEST(KeyListCryptError, DISABLED_KeySize) {
     key_list_c keyList;
     dynamic_mem_c key;
     // 鍵のサイズが違う
@@ -33,8 +29,7 @@ TEST(KeyListCryptError, DISABLED_KeySize)
     ASSERT_FALSE(keyList.decrypt(key));
 }
 
-TEST(KeyListCryptError, DISABLED_NullKey)
-{
+TEST(KeyListCryptError, DISABLED_NullKey) {
     key_list_c keyList;
     dynamic_mem_c key;
     key.d_new(AES_SIZE);
@@ -42,8 +37,7 @@ TEST(KeyListCryptError, DISABLED_NullKey)
     ASSERT_FALSE(keyList.decrypt(key));
 }
 
-TEST(KeyListCryptError, DISABLED_DiffKey)
-{
+TEST(KeyListCryptError, DISABLED_DiffKey) {
     key_list_c keyList;
     dynamic_mem_c key;
     key.d_new(AES_SIZE);
