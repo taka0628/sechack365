@@ -33,6 +33,7 @@ public:
 	std::string get_usbID() const;
 
 	std::string get_usbSerial() const;
+	uint32_t get_usb_cnt() const;
 };
 
 #endif
