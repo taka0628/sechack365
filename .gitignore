@@ -18,6 +18,7 @@ build-qt_src*Debug/*
 .stash
 test/*
 
+!.clang-format
 !.vscode
 
 !test/*.cpp
