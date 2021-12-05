@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    paths-ignore: "build*/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: shenxianpeng/cpp-linter-action@master
+      id: linter
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        style: file
+    - name: failed on occurred error
+      if: steps.linter.outputs.checks-failed > 0
+      run: |
+        echo "Some files failed the linting checks!"

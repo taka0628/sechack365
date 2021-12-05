@@ -18,6 +18,8 @@ build-qt_src*Debug/*
 .stash
 test/*
 
+!.github/
+!.github/workflows/
 !.clang-format
 !.vscode
 
