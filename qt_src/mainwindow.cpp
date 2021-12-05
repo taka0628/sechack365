@@ -98,6 +98,13 @@ void MainWindow::on_pushButton_clear_clicked()
 void MainWindow::on_pushButton_pass_register_clicked()
 {
     usb_select_wind = new usb_select(this);
-    usb_select_wind->show();
-    printf("usbID: %s\n", usb_select_wind->usbID_);
+    usb_select_wind->setModal(true);
+    int ret = usb_select_wind->exec();
+    if(ret == QDialog::Accepted){
+        cout << "Accepted" << endl;
+        cout << "USB ID: "<< usb_select_wind->usbID_ << endl;
+
+    }else if(ret == QDialog::Rejected){
+        cout << "Rejected" << endl;
+    }
 }
