@@ -2,7 +2,8 @@
 
 using namespace std;
 
-TEST(deviceTest, usbList) {
+TEST(deviceTest, usbList)
+{
     device_c usb;
     vector<string> usb_list;
     usb_list = usb.get_usbList();
@@ -13,7 +14,8 @@ TEST(deviceTest, usbList) {
     }
 }
 
-TEST(deviceTest, setUsbID) {
+TEST(deviceTest, setUsbID)
+{
     device_c usb;
     ERROR_TEST;
     ASSERT_FALSE(usb.set_usbID("hoge"));

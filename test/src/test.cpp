@@ -2,7 +2,8 @@
 
 using namespace std;
 
-void create_rand_hash(dynamic_mem_c &hash) {
+void create_rand_hash(dynamic_mem_c& hash)
+{
     dynamic_mem_c temp(hash.size());
     RAND_bytes(temp.mem_, hash.size());
 
@@ -10,7 +11,8 @@ void create_rand_hash(dynamic_mem_c &hash) {
     sha.sha2_cal(temp, hash, SHA_c::SHA2_bit::SHA_256);
 }
 
-TEST(KeyListTest, TrueProcess) {
+TEST(KeyListTest, TrueProcess)
+{
     int crypt_size = 256 / 8;
     dynamic_mem_c hash(crypt_size), iv(crypt_size), key(crypt_size),
         temp(crypt_size);
@@ -43,7 +45,8 @@ TEST(KeyListTest, TrueProcess) {
     cout << "key: " << sha.str2hex(out_key) << endl;
 }
 
-TEST(KeyListTest, FalseProcess) {
+TEST(KeyListTest, FalseProcess)
+{
     int crypt_size = 256 / 8;
     dynamic_mem_c hash(crypt_size), iv(crypt_size), key(crypt_size),
         temp(crypt_size);
@@ -56,7 +59,8 @@ TEST(KeyListTest, FalseProcess) {
     ASSERT_FALSE(testKey.pop_file(temp, iv, key));
 }
 
-TEST(FileEncTest, Normal) {
+TEST(FileEncTest, Normal)
+{
     const string test_filepath("/home/taka/github/2021_sec/test/data.jpg");
     file_enc_c file_enc;
     ASSERT_TRUE(file_enc.set_file_path(test_filepath));
@@ -67,7 +71,8 @@ TEST(FileEncTest, Normal) {
     ASSERT_TRUE(file_enc.file_dec());
 }
 
-TEST(FileEncTest, ErrorProcess) {
+TEST(FileEncTest, ErrorProcess)
+{
     const string error_filepath(
         "/home/taka/github/2021_sec/test/hogehoge.huga");
     file_enc_c file_enc;

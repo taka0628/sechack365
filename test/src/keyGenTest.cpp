@@ -2,7 +2,8 @@
 
 using namespace std;
 
-TEST(keyGenMethodTest, setUsbId) {
+TEST(keyGenMethodTest, setUsbId)
+{
     key_gen_c key;
     ASSERT_TRUE(key.set_usbID("1d6b:0002"));
     ASSERT_FALSE(key.set_usbID(""));
@@ -12,13 +13,15 @@ TEST(keyGenMethodTest, setUsbId) {
     ASSERT_FALSE(key.set_usbID("1d6:0002"));
 }
 
-TEST(keyGenMethodTest, setPass) {
+TEST(keyGenMethodTest, setPass)
+{
     key_gen_c key;
     ASSERT_TRUE(key.set_pass("hoge"));
     ASSERT_FALSE(key.set_pass(""));
 }
 
-TEST(keyGenMethodTest, canKeyGen) {
+TEST(keyGenMethodTest, canKeyGen)
+{
     key_gen_c key;
     ASSERT_FALSE(key.canKeyGen());
     ASSERT_TRUE(key.set_pass("hoge"));
@@ -28,19 +31,22 @@ TEST(keyGenMethodTest, canKeyGen) {
     ASSERT_TRUE(key.canKeyGen());
 }
 
-TEST(errorLogTest, printError) {
+TEST(errorLogTest, printError)
+{
     key_gen_c key;
     PRINT_ERROR_LOG("test");
 }
 
-TEST(keyGenMethodTest, setUsbSerial) {
+TEST(keyGenMethodTest, setUsbSerial)
+{
     key_gen_c key;
     ASSERT_FALSE(key.set_UsbSerial());
     ASSERT_TRUE(key.set_usbID("1d6b:0002"));
     ASSERT_TRUE(key.set_UsbSerial());
 }
 
-TEST(keyGenMethodTest, nonce) {
+TEST(keyGenMethodTest, nonce)
+{
     key_gen_c key;
     dynamic_mem_c buf;
     ASSERT_TRUE(key.set_nonce());
@@ -57,7 +63,8 @@ TEST(keyGenMethodTest, nonce) {
     ASSERT_FALSE(key.get_nonce(buf));
 }
 
-TEST(keyGenMethodTest, keyGen) {
+TEST(keyGenMethodTest, keyGen)
+{
     TestLog_c test("鍵生成テスト");
     key_gen_c key;
     EXPECT_FALSE(key.new_key_gen());
@@ -73,7 +80,8 @@ TEST(keyGenMethodTest, keyGen) {
 }
 
 #if 1
-TEST(keyGenMethodTest, getKey) {
+TEST(keyGenMethodTest, getKey)
+{
     TestLog_c test("鍵入手テスト");
     key_gen_c key;
     ASSERT_TRUE(key.set_pass("hoge"));
@@ -86,7 +94,7 @@ TEST(keyGenMethodTest, getKey) {
     dynamic_mem_c key_2;
     try {
         key_1 = key.get_key();
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         FAIL();
     }
@@ -102,7 +110,7 @@ TEST(keyGenMethodTest, getKey) {
     ASSERT_TRUE(key_check.key_gen());
     try {
         key_2 = key_check.get_key();
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         FAIL();
     }

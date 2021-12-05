@@ -2,15 +2,17 @@
 
 using namespace std;
 
-key_gen_c::key_gen_c() {
+key_gen_c::key_gen_c()
+{
     this->pass_.clear();
     this->usbID_.clear();
     this->usbSerial_.clear();
 }
 
-key_gen_c::~key_gen_c() {}
+key_gen_c::~key_gen_c() { }
 
-bool key_gen_c::set_pass(std::string const pass) {
+bool key_gen_c::set_pass(std::string const pass)
+{
     if (pass.empty()) {
         ERROR_NO_COMMENT;
         return false;
@@ -19,21 +21,24 @@ bool key_gen_c::set_pass(std::string const pass) {
     return true;
 }
 
-string key_gen_c::get_pass() const {
+string key_gen_c::get_pass() const
+{
     if (this->pass_.empty()) {
         return "";
     }
     return this->pass_;
 }
 
-bool key_gen_c::canKeyGen() const {
+bool key_gen_c::canKeyGen() const
+{
     if (this->pass_.empty() || this->get_usbSerial().empty()) {
         return false;
     }
     return true;
 }
 
-string key_gen_c::get_usbSerial() const {
+string key_gen_c::get_usbSerial() const
+{
     if (this->usbSerial_.empty()) {
         PRINT_ERROR_LOG("USBのシリアル番号がセットされていません");
         return "";
@@ -41,12 +46,14 @@ string key_gen_c::get_usbSerial() const {
     return this->usbSerial_;
 }
 
-bool key_gen_c::new_key_gen() {
+bool key_gen_c::new_key_gen()
+{
     this->set_nonce();
     return this->key_gen();
 }
 
-bool key_gen_c::key_gen() {
+bool key_gen_c::key_gen()
+{
     if (this->canKeyGen() == false) {
         PRINT_ERROR_LOG("鍵の生成条件を満たしていません");
         return false;
@@ -87,7 +94,8 @@ bool key_gen_c::key_gen() {
     return true;
 }
 
-bool key_gen_c::get_nonce(dynamic_mem_c &to) const {
+bool key_gen_c::get_nonce(dynamic_mem_c& to) const
+{
     if (to.size() != NONCE_SIZE) {
         PRINT_ERROR_LOG("nonceを格納する大きさがありません");
         return false;
@@ -105,7 +113,8 @@ bool key_gen_c::get_nonce(dynamic_mem_c &to) const {
     return true;
 }
 
-bool key_gen_c::set_nonce() const {
+bool key_gen_c::set_nonce() const
+{
     file_ptr_c fp;
     if (fp.open(NONCE_FILE, "wb") == false) {
         PRINT_ERROR_LOG("nonceファイルが開けません");
@@ -118,13 +127,14 @@ bool key_gen_c::set_nonce() const {
     return true;
 }
 
-bool key_gen_c::set_UsbSerial() {
+bool key_gen_c::set_UsbSerial()
+{
     if (this->usbID_.empty()) {
         PRINT_ERROR_LOG("USBIDが指定されていません");
         return false;
     }
 
-    FILE *fp;
+    FILE* fp;
     string id = this->get_usbID();
 
     string cmdline = "sudo lsusb -d ";
@@ -147,7 +157,8 @@ bool key_gen_c::set_UsbSerial() {
     return true;
 }
 
-bool key_gen_c::set_usbID(string const id) {
+bool key_gen_c::set_usbID(string const id)
+{
     if (id.empty()) {
         PRINT_ERROR_LOG("idが空");
         return false;
@@ -160,13 +171,13 @@ bool key_gen_c::set_usbID(string const id) {
     string cmdline;
     cmdline += "lsusb | grep ";
     cmdline += id;
-    FILE *fp;
+    FILE* fp;
     if ((fp = popen(cmdline.c_str(), "r")) == NULL) {
         PRINT_ERROR_LOG("can not exec commad");
         return false;
     }
 
-    char buf[256] = {"0"};
+    char buf[256] = { "0" };
     string result;
     while (!feof(fp)) {
         fgets(buf, sizeof(buf), fp);
@@ -182,14 +193,16 @@ bool key_gen_c::set_usbID(string const id) {
     return true;
 }
 
-string key_gen_c::get_usbID() const {
+string key_gen_c::get_usbID() const
+{
     if (this->usbID_.empty()) {
         return "";
     }
     return this->usbID_;
 }
 
-dynamic_mem_c key_gen_c::get_key() const {
+dynamic_mem_c key_gen_c::get_key() const
+{
     if (this->key_.empty()) {
         PRINT_ERROR_LOG("鍵がありません");
     }

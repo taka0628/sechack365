@@ -19,12 +19,12 @@
 #include "openssl/evp.h"
 
 class aes_c {
-   private:
+private:
     std::vector<u_int8_t> key;
     std::vector<u_int8_t> iv;
-    aes_c(const aes_c &);
+    aes_c(const aes_c&);
 
-   public:
+public:
     aes_c();
     ~aes_c();
 
@@ -43,19 +43,19 @@ class aes_c {
     void create_iv(const int bit);
     void remove_iv();
 
-    bool set_iv_key(const dynamic_mem_c &iv, const dynamic_mem_c &key);
+    bool set_iv_key(const dynamic_mem_c& iv, const dynamic_mem_c& key);
 
     void reset();
 
-    void encrypt(std::string &out, const std::string in, const AES_bit_e bit);
-    void encrypt(dynamic_mem_c &out, const dynamic_mem_c &in,
-                 const AES_bit_e bit);
+    void encrypt(std::string& out, const std::string in, const AES_bit_e bit);
+    void encrypt(dynamic_mem_c& out, const dynamic_mem_c& in,
+        const AES_bit_e bit);
 
-    void decrypt(std::string &out, const std::string in, const AES_bit_e bit);
-    void decrypt(dynamic_mem_c &out, const dynamic_mem_c &in,
-                 const AES_bit_e bit);
+    void decrypt(std::string& out, const std::string in, const AES_bit_e bit);
+    void decrypt(dynamic_mem_c& out, const dynamic_mem_c& in,
+        const AES_bit_e bit);
 
-    void print_0x(const std::string header, const std::string &buf) const;
+    void print_0x(const std::string header, const std::string& buf) const;
     std::string ui2hex(const std::vector<uint8_t> src) const;
     std::string str2hex(const std::string src) const;
     std::string hex2str(const std::string src) const;

@@ -18,11 +18,11 @@
 #include "vector"
 
 class device_c {
-   private:
+private:
     std::string usb_id_;
     std::string usb_serial_;
 
-   public:
+public:
     device_c();
     ~device_c();
 

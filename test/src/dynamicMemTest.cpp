@@ -1,18 +1,20 @@
 #include "../include/test.hpp"
 
-TEST(DMem, copyConst) {
+TEST(DMem, copyConst)
+{
     dynamic_mem_c from;
     from.d_new(100);
     try {
         dynamic_mem_c to(from);
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         ERROR_NO_COMMENT;
         FAIL();
     }
 }
 
-TEST(DMem, equal) {
+TEST(DMem, equal)
+{
     dynamic_mem_c to, from;
     from.d_new(2);
     from.mem_[0] = 1;
@@ -30,7 +32,7 @@ TEST(DMem, equal) {
         from.d_new(2);
         from.mem_[0] = 1;
         to = from;
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         FAIL();
     }
@@ -38,7 +40,8 @@ TEST(DMem, equal) {
     EXPECT_FALSE(to.empty());
 }
 
-TEST(DMem, empty) {
+TEST(DMem, empty)
+{
     dynamic_mem_c test;
     ASSERT_TRUE(test.empty());
     test.d_new(2);

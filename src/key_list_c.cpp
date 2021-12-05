@@ -4,9 +4,10 @@ using namespace std;
 
 key_list_c::key_list_c() { file_ptr_c fp(KEY_FILE_NAME, "a"); }
 
-key_list_c::~key_list_c() {}
+key_list_c::~key_list_c() { }
 
-string key_list_c::get_file_name() const {
+string key_list_c::get_file_name() const
+{
     if (this->key_file_name_.empty()) {
         ERROR("ファイル名が指定されていません");
         return nullptr;
@@ -14,8 +15,9 @@ string key_list_c::get_file_name() const {
     return this->key_file_name_;
 }
 
-bool key_list_c::pop_file(dynamic_mem_c const &hash, dynamic_mem_c &iv,
-                          dynamic_mem_c &key) {
+bool key_list_c::pop_file(dynamic_mem_c const& hash, dynamic_mem_c& iv,
+    dynamic_mem_c& key)
+{
     if (hash.empty()) {
         return false;
     }
@@ -57,7 +59,8 @@ bool key_list_c::pop_file(dynamic_mem_c const &hash, dynamic_mem_c &iv,
     return true;
 }
 
-bool key_list_c::plug(const dynamic_mem_c &hash) {
+bool key_list_c::plug(const dynamic_mem_c& hash)
+{
     // 読み取りファイル
     file_ptr_c fp(this->get_file_name().c_str(), "rb");
 
@@ -91,8 +94,9 @@ bool key_list_c::plug(const dynamic_mem_c &hash) {
     return true;
 }
 
-bool key_list_c::add_file(dynamic_mem_c const &hash, dynamic_mem_c const &iv,
-                          dynamic_mem_c const &key) const {
+bool key_list_c::add_file(dynamic_mem_c const& hash, dynamic_mem_c const& iv,
+    dynamic_mem_c const& key) const
+{
     // hashに値は入っているか？
     if (hash.empty() == true || iv.empty() == true || key.empty() == true) {
         return false;
@@ -108,7 +112,8 @@ bool key_list_c::add_file(dynamic_mem_c const &hash, dynamic_mem_c const &iv,
     return true;
 }
 
-bool key_list_c::encrypt(dynamic_mem_c const &key) const {
+bool key_list_c::encrypt(dynamic_mem_c const& key) const
+{
     if (key.empty() || key.size() != AES_SIZE) {
         ERROR_NO_COMMENT;
         return false;
@@ -144,7 +149,8 @@ bool key_list_c::encrypt(dynamic_mem_c const &key) const {
     return true;
 }
 
-bool key_list_c::decrypt(dynamic_mem_c const &key) const {
+bool key_list_c::decrypt(dynamic_mem_c const& key) const
+{
     if (key.empty() || key.size() != AES_SIZE) {
         ERROR_NO_COMMENT;
         return false;
@@ -204,7 +210,8 @@ bool key_list_c::decrypt(dynamic_mem_c const &key) const {
     return true;
 }
 
-bool key_list_c::key_check(dynamic_mem_c const &key) const {
+bool key_list_c::key_check(dynamic_mem_c const& key) const
+{
     if (key.size() < AES_SIZE || key.empty()) {
         ERROR_NO_COMMENT;
         return false;
@@ -233,7 +240,8 @@ bool key_list_c::key_check(dynamic_mem_c const &key) const {
     return false;
 }
 
-bool key_list_c::key_list_pkey_update(dynamic_mem_c const &key) const {
+bool key_list_c::key_list_pkey_update(dynamic_mem_c const& key) const
+{
     if (key.mem_ == nullptr || key.size() != AES_SIZE) {
         ERROR_NO_COMMENT;
         return false;

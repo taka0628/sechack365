@@ -1,8 +1,7 @@
 # DefaultSetting
 # ref: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
-BasedOnStyle: Google
+BasedOnStyle: WebKit
 IndentWidth: 4
 Language: Cpp
 Standard: Auto
 UseCRLF: false
-

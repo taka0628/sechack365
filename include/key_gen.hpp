@@ -18,8 +18,8 @@
 #include "string"
 
 class key_gen_c {
-   private:
-    key_gen_c(const key_gen_c &);
+private:
+    key_gen_c(const key_gen_c&);
 
     dynamic_mem_c key_;
     std::string pass_;
@@ -29,8 +29,7 @@ class key_gen_c {
     std::string get_pass() const;
     std::string get_usbSerial() const;
 
-   protected:
-   public:
+public:
     key_gen_c();
     ~key_gen_c();
 
@@ -43,7 +42,7 @@ class key_gen_c {
     std::string get_usbID() const;
     bool set_UsbSerial();
 
-    bool get_nonce(dynamic_mem_c &to) const;
+    bool get_nonce(dynamic_mem_c& to) const;
     bool set_nonce() const;
 
     dynamic_mem_c get_key() const;

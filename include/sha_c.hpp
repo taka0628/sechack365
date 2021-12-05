@@ -20,10 +20,10 @@
 #include "openssl/sha.h"
 
 class SHA_c {
-   private:
-    SHA_c(const SHA_c &);
+private:
+    SHA_c(const SHA_c&);
 
-   public:
+public:
     SHA_c();
     ~SHA_c();
     enum class SHA2_bit {
@@ -33,13 +33,13 @@ class SHA_c {
         SHA_512,
     };
 
-    std::string sha1_cal(const std::string &src) const;
-    std::string sha2_cal(const std::string &src, const SHA2_bit bit) const;
-    bool sha2_cal(const dynamic_mem_c &in, dynamic_mem_c &out,
-                  const SHA2_bit bit) const;
+    std::string sha1_cal(const std::string& src) const;
+    std::string sha2_cal(const std::string& src, const SHA2_bit bit) const;
+    bool sha2_cal(const dynamic_mem_c& in, dynamic_mem_c& out,
+        const SHA2_bit bit) const;
 
-    std::string str2hex(const std::string &src) const;
-    std::string str2hex(const dynamic_mem_c &src) const;
+    std::string str2hex(const std::string& src) const;
+    std::string str2hex(const dynamic_mem_c& src) const;
 };
 
 #endif

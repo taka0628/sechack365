@@ -2,7 +2,8 @@
 
 using namespace std;
 
-file_enc_c::file_enc_c() {
+file_enc_c::file_enc_c()
+{
     this->isDir_ = false;
     this->isFile_ = false;
     this->isEncrypt_ = false;
@@ -10,9 +11,10 @@ file_enc_c::file_enc_c() {
     this->isExit_ = false;
 }
 
-file_enc_c::~file_enc_c() {}
+file_enc_c::~file_enc_c() { }
 
-bool file_enc_c::set_file_path(string filepath) {
+bool file_enc_c::set_file_path(string filepath)
+{
     if (filepath.size() > FILE_PATH_SIZE_LIM) {
         ERROR("ファイルパスが長すぎます");
         return false;
@@ -47,14 +49,16 @@ bool file_enc_c::set_file_path(string filepath) {
     return true;
 }
 
-bool file_enc_c::is_file_exit() const {
+bool file_enc_c::is_file_exit() const
+{
     if (this->isFile_ && this->isExit_) {
         return true;
     }
     return false;
 }
 
-bool file_enc_c::set_password(string pass) {
+bool file_enc_c::set_password(string pass)
+{
     if (pass.size() == 0) {
         ERROR("パスワードが入力されていません");
         return false;
@@ -73,7 +77,8 @@ bool file_enc_c::set_password(string pass) {
     return true;
 }
 
-bool file_enc_c::file_enc() {
+bool file_enc_c::file_enc()
+{
     if (this->file_path_.size() == 0 || this->is_file_exit() == false) {
         ERROR("");
         return false;
@@ -123,7 +128,8 @@ bool file_enc_c::file_enc() {
     return true;
 }
 
-bool file_enc_c::file_dec() {
+bool file_enc_c::file_dec()
+{
     // エラーチェック
     if (this->file_path_.size() == 0 || this->is_file_exit() == false) {
         ERROR_NO_COMMENT;
@@ -171,7 +177,8 @@ bool file_enc_c::file_dec() {
 string file_enc_c::get_file_pass() const { return this->file_path_; }
 
 // ファイルポインタは先頭にして返す
-size_t file_enc_c::getFileSize(FILE *fp) const {
+size_t file_enc_c::getFileSize(FILE* fp) const
+{
     if (fp == NULL) {
         return -1;
     }
@@ -184,12 +191,14 @@ size_t file_enc_c::getFileSize(FILE *fp) const {
     return file_size;
 }
 
-void file_enc_c::file_delete(string const file_path) const {
+void file_enc_c::file_delete(string const file_path) const
+{
     file_ptr_c fp(file_path.c_str(), "wb");
 }
 
-bool file_enc_c::crypt_process(aes_c &aes,
-                               file_enc_c::CRYPT_MODE const mode) const {
+bool file_enc_c::crypt_process(aes_c& aes,
+    file_enc_c::CRYPT_MODE const mode) const
+{
     const int BUF_SIZE = 2048;
     const string buff_file_name(CRYPT_BUFFER_FILE);
 
@@ -208,27 +217,27 @@ bool file_enc_c::crypt_process(aes_c &aes,
 
     // 暗号化/復号
     switch (mode) {
-        case file_enc_c::CRYPT_MODE::ENCRYPT:
-            while ((read_size = fread(buf.mem_, 1, 1024, FP.fp_)) > 0) {
-                aes.encrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
-                fwrite(out_buf.mem_, 1, read_size, FP_buffer.fp_);
-                // out_buf.reset();
-                buf.reset();
-            }
-            break;
+    case file_enc_c::CRYPT_MODE::ENCRYPT:
+        while ((read_size = fread(buf.mem_, 1, 1024, FP.fp_)) > 0) {
+            aes.encrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
+            fwrite(out_buf.mem_, 1, read_size, FP_buffer.fp_);
+            // out_buf.reset();
+            buf.reset();
+        }
+        break;
 
-        case file_enc_c::CRYPT_MODE::DECRYPT:
-            while ((read_size = fread(buf.mem_, 1, 1024, FP.fp_)) > 0) {
-                aes.decrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
-                fwrite(out_buf.mem_, 1, read_size, FP_buffer.fp_);
-                out_buf.reset();
-                buf.reset();
-            }
-            break;
+    case file_enc_c::CRYPT_MODE::DECRYPT:
+        while ((read_size = fread(buf.mem_, 1, 1024, FP.fp_)) > 0) {
+            aes.decrypt(out_buf, buf, aes_c::AES_bit_e::aes_256);
+            fwrite(out_buf.mem_, 1, read_size, FP_buffer.fp_);
+            out_buf.reset();
+            buf.reset();
+        }
+        break;
 
-        default:
-            ERROR("");
-            break;
+    default:
+        ERROR("");
+        break;
     }
 
     // ファイル出力
@@ -244,7 +253,8 @@ bool file_enc_c::crypt_process(aes_c &aes,
 }
 
 bool file_enc_c::calc_file_hash(const string file_name,
-                                dynamic_mem_c &out) const {
+    dynamic_mem_c& out) const
+{
     file_ptr_c FP;
     FP.open(file_name, "rb");
 
@@ -265,29 +275,30 @@ bool file_enc_c::calc_file_hash(const string file_name,
     return true;
 }
 
-void file_enc_c::extemsion_set(const file_enc_c::CRYPT_MODE mode) {
+void file_enc_c::extemsion_set(const file_enc_c::CRYPT_MODE mode)
+{
     // 拡張子変更
     string new_file_name = this->get_file_pass();
     switch (mode) {
-        case file_enc_c::CRYPT_MODE::ENCRYPT:
-            new_file_name += ".enc";
-            if (rename(this->get_file_pass().c_str(), new_file_name.c_str())) {
-                ERROR("ファイル名の変更に失敗");
-                return;
-            }
-            break;
+    case file_enc_c::CRYPT_MODE::ENCRYPT:
+        new_file_name += ".enc";
+        if (rename(this->get_file_pass().c_str(), new_file_name.c_str())) {
+            ERROR("ファイル名の変更に失敗");
+            return;
+        }
+        break;
 
-        case file_enc_c::CRYPT_MODE::DECRYPT:
-            if (new_file_name.find(".enc") != string::npos) {
-                new_file_name.erase(new_file_name.find(".enc"), 4);
-            }
-            if (rename(this->get_file_pass().c_str(), new_file_name.c_str())) {
-                ERROR("ファイル名の変更に失敗");
-                return;
-            }
-            break;
+    case file_enc_c::CRYPT_MODE::DECRYPT:
+        if (new_file_name.find(".enc") != string::npos) {
+            new_file_name.erase(new_file_name.find(".enc"), 4);
+        }
+        if (rename(this->get_file_pass().c_str(), new_file_name.c_str())) {
+            ERROR("ファイル名の変更に失敗");
+            return;
+        }
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }

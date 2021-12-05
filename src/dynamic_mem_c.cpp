@@ -1,10 +1,12 @@
 #include "../include/dynamic_mem_c.hpp"
 
-dynamic_mem_c::dynamic_mem_c() {
+dynamic_mem_c::dynamic_mem_c()
+{
     this->size_ = 0;
     this->mem_ = nullptr;
 }
-dynamic_mem_c::dynamic_mem_c(const uint size) {
+dynamic_mem_c::dynamic_mem_c(const uint size)
+{
     this->size_ = size;
     try {
         this->mem_ = new u_char[size];
@@ -14,13 +16,15 @@ dynamic_mem_c::dynamic_mem_c(const uint size) {
     memset(this->mem_, 0, size);
 }
 
-dynamic_mem_c::~dynamic_mem_c() {
+dynamic_mem_c::~dynamic_mem_c()
+{
     if (this->mem_) {
         delete this->mem_;
     }
 }
 
-dynamic_mem_c::dynamic_mem_c(const dynamic_mem_c &from) {
+dynamic_mem_c::dynamic_mem_c(const dynamic_mem_c& from)
+{
     size_ = from.size_;
     if (from.size_ > 0) {
         mem_ = new u_char[size_];
@@ -33,7 +37,8 @@ dynamic_mem_c::dynamic_mem_c(const dynamic_mem_c &from) {
 
 using namespace std;
 
-dynamic_mem_c &dynamic_mem_c::operator=(const dynamic_mem_c &from) {
+dynamic_mem_c& dynamic_mem_c::operator=(const dynamic_mem_c& from)
+{
     if (this == &from) {
         return *this;
     }
@@ -55,7 +60,8 @@ dynamic_mem_c &dynamic_mem_c::operator=(const dynamic_mem_c &from) {
     return *this;
 }
 
-void dynamic_mem_c::d_new(const uint size) {
+void dynamic_mem_c::d_new(const uint size)
+{
     if (this->mem_) {
         delete this->mem_;
         this->mem_ = nullptr;
@@ -65,7 +71,8 @@ void dynamic_mem_c::d_new(const uint size) {
     this->size_ = size;
 }
 
-void dynamic_mem_c::d_free() {
+void dynamic_mem_c::d_free()
+{
     if (this->mem_) {
         delete this->mem_;
         this->mem_ = nullptr;
@@ -75,7 +82,8 @@ void dynamic_mem_c::d_free() {
 
 size_t dynamic_mem_c::size() const { return this->size_; }
 
-void dynamic_mem_c::copy(string &dest, const uint size) const {
+void dynamic_mem_c::copy(string& dest, const uint size) const
+{
     if (this->mem_) {
         for (uint i = 0; i < size; i++) {
             dest.push_back(this->mem_[i]);
@@ -83,13 +91,15 @@ void dynamic_mem_c::copy(string &dest, const uint size) const {
     }
 }
 
-void dynamic_mem_c::reset() {
+void dynamic_mem_c::reset()
+{
     if (this->mem_) {
         memset(this->mem_, 0, this->size());
     }
 }
 
-bool dynamic_mem_c::empty() const {
+bool dynamic_mem_c::empty() const
+{
     if (this->size() == 0 || this->mem_ == nullptr) {
         return true;
     }

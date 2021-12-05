@@ -1,14 +1,15 @@
 #include "../include/device_c.hpp"
 
-device_c::device_c() {}
+device_c::device_c() { }
 
-device_c::~device_c() {}
+device_c::~device_c() { }
 
 using namespace std;
 
 namespace local {
-vector<string> cmdline2List(string cmd) {
-    FILE *fp;
+vector<string> cmdline2List(string cmd)
+{
+    FILE* fp;
     vector<string> cmdstring;
     if ((fp = popen(cmd.c_str(), "r")) == NULL) {
         PRINT_ERROR_LOG("can not exec commad");
@@ -29,15 +30,16 @@ vector<string> cmdline2List(string cmd) {
     (void)pclose(fp);
 
     // 改行文字を処理
-    for (string &in : cmdstring) {
+    for (string& in : cmdstring) {
         if (in.find("\n", 1) != string::npos) {
             in.erase(in.find("\n", 1), 1);
         }
     }
     return cmdstring;
 }
-string cmdline(string cmd) {
-    FILE *fp;
+string cmdline(string cmd)
+{
+    FILE* fp;
     string cmdstring;
     if ((fp = popen(cmd.c_str(), "r")) == NULL) {
         PRINT_ERROR_LOG("can not exec commad");
@@ -59,15 +61,17 @@ string cmdline(string cmd) {
     }
     return cmdstring;
 }
-}  // namespace local
-vector<string> device_c::get_usbList() const {
+} // namespace local
+vector<string> device_c::get_usbList() const
+{
     string cmdline = "lsusb | cut -d ' ' -f 5- ";
     std::vector<std::string> usb_list;
     usb_list = local::cmdline2List(cmdline);
     return usb_list;
 }
 
-bool device_c::set_usbID(const string usbID) {
+bool device_c::set_usbID(const string usbID)
+{
     if (usbID.empty() || usbID.size() != 9) {
         PRINT_ERROR_LOG("usbIDが不正");
         return false;
@@ -90,7 +94,7 @@ bool device_c::set_usbID(const string usbID) {
             this->usb_serial_ = temp;
             this->usb_id_ = usbID;
         }
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         PRINT_ERROR_LOG(e.what());
     }
@@ -98,22 +102,24 @@ bool device_c::set_usbID(const string usbID) {
     return true;
 }
 
-string device_c::get_usbID() const {
+string device_c::get_usbID() const
+{
     if (this->usb_id_.empty()) {
         return "";
     }
     return this->usb_id_;
 }
 
-string device_c::get_usbSerial() const {
+string device_c::get_usbSerial() const
+{
     if (this->usb_serial_.empty()) {
         return "";
     }
     return this->usb_serial_;
 }
 
-uint32_t device_c::get_usb_cnt() const {
-    uint32_t usb_size =
-        static_cast<uint32_t>(stoi(local::cmdline("lsusb | wc -l")));
+uint32_t device_c::get_usb_cnt() const
+{
+    uint32_t usb_size = static_cast<uint32_t>(stoi(local::cmdline("lsusb | wc -l")));
     return usb_size;
 }

@@ -6,7 +6,7 @@
 // エラー用マクロ
 #define ERROR(comment)                                                         \
     printf("[ERROR]\n\t__%s__/__%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, \
-           comment);                                                           \
+        comment);                                                              \
     push_error_log(comment, __FILE__, __func__, __LINE__)
 
 #define ERROR_NO_COMMENT                                                  \

@@ -2,7 +2,8 @@
 
 using namespace std;
 
-TEST(KeyListCryptTest, EncryptTest) {
+TEST(KeyListCryptTest, EncryptTest)
+{
     key_list_c keyList;
     dynamic_mem_c key;
     string pass("hoge");
@@ -19,7 +20,8 @@ TEST(KeyListCryptTest, EncryptTest) {
     ASSERT_TRUE(keyList.decrypt(key));
 }
 
-TEST(KeyListCryptError, DISABLED_KeySize) {
+TEST(KeyListCryptError, DISABLED_KeySize)
+{
     key_list_c keyList;
     dynamic_mem_c key;
     // 鍵のサイズが違う
@@ -29,7 +31,8 @@ TEST(KeyListCryptError, DISABLED_KeySize) {
     ASSERT_FALSE(keyList.decrypt(key));
 }
 
-TEST(KeyListCryptError, DISABLED_NullKey) {
+TEST(KeyListCryptError, DISABLED_NullKey)
+{
     key_list_c keyList;
     dynamic_mem_c key;
     key.d_new(AES_SIZE);
@@ -37,7 +40,8 @@ TEST(KeyListCryptError, DISABLED_NullKey) {
     ASSERT_FALSE(keyList.decrypt(key));
 }
 
-TEST(KeyListCryptError, DISABLED_DiffKey) {
+TEST(KeyListCryptError, DISABLED_DiffKey)
+{
     key_list_c keyList;
     dynamic_mem_c key;
     key.d_new(AES_SIZE);
