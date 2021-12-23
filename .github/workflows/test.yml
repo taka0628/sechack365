@@ -4,7 +4,6 @@ on:
   push:
     paths-ignore:
       - "build/**"
-      - "test/include/google**"
 
 jobs:
   lint:
