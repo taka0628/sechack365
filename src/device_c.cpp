@@ -92,7 +92,7 @@ bool device_c::set_usbID(const string usbID)
                 temp.erase(temp.find("\n", 1));
             }
             this->usb_serial_ = temp;
-            this->usb_id_ = usbID;
+            this->usb_id_     = usbID;
         }
     } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';

@@ -13,7 +13,7 @@
 
 #include "macro.hpp"
 
-void push_error_log(const char *comment, const char *file, const char *func,
-                    const int line);
+void push_error_log(const char* comment, const char* file, const char* func,
+    const int line);
 
 #endif

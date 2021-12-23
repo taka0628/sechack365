@@ -4,4 +4,7 @@ BasedOnStyle: WebKit
 IndentWidth: 4
 Language: Cpp
 Standard: Auto
-# UseCRLF: false
+# イコールを揃える
+AlignConsecutiveAssignments: true
+# コメントを揃える
+AlignTrailingComments: true

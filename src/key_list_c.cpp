@@ -25,7 +25,7 @@ bool key_list_c::pop_file(dynamic_mem_c const& hash, dynamic_mem_c& iv,
     file_ptr_c fp(this->get_file_name().c_str(), "rb");
     fseek(fp.fp_, 0, SEEK_SET);
 
-    bool isFindHash = false;
+    bool isFindHash      = false;
     const uint line_size = HASH_SIZE + AES_SIZE * 2;
     dynamic_mem_c buffer(line_size);
     u_char temp[HASH_SIZE];
@@ -50,7 +50,7 @@ bool key_list_c::pop_file(dynamic_mem_c const& hash, dynamic_mem_c& iv,
 
     // iv, keyをコピー
     for (size_t i = 0; i < HASH_SIZE; i++) {
-        iv.mem_[i] = buffer.mem_[i + HASH_SIZE];
+        iv.mem_[i]  = buffer.mem_[i + HASH_SIZE];
         key.mem_[i] = buffer.mem_[i + HASH_SIZE + AES_SIZE];
     }
 

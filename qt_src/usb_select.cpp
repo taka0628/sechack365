@@ -12,7 +12,7 @@ usb_select::usb_select(QWidget* parent)
     this->update();
 }
 
-usb_select::~usb_select() {}
+usb_select::~usb_select() { }
 
 using namespace std;
 
@@ -36,7 +36,7 @@ bool usb_select::update()
 // USB IDを抽出
 void usb_select::on_listWidget_select_itemClicked(QListWidgetItem* item)
 {
-    string selected_usb{ item->text().toStdString() };
+    string selected_usb { item->text().toStdString() };
     this->usbID_ = selected_usb.substr(3, 9);
     ui->label_selected_usbID->setText(QString::fromStdString(this->usbID_));
 }

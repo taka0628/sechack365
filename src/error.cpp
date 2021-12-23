@@ -16,8 +16,8 @@ void push_error_log(const char* comment, const char* file, const char* func,
     }
 
     /* 時間取得 */
-    timer = time(NULL);
-    date = localtime(&timer);
+    timer         = time(NULL);
+    date          = localtime(&timer);
     char buf[512] = { "0" };
     strftime(buf, sizeof(buf), "[%Y/%x %H:%M:%S] ", date);
 

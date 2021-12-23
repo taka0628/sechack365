@@ -31,7 +31,7 @@ TEST(DMem, equal)
         from.d_free();
         from.d_new(2);
         from.mem_[0] = 1;
-        to = from;
+        to           = from;
     } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
         FAIL();

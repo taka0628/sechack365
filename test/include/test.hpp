@@ -18,7 +18,7 @@
 #include "../../include/file_enc.hpp"
 #include "../../include/key_gen.hpp"
 #include "../../include/sha_c.hpp"
-#include "gtest/gtest.h"
+#include "googletest-release-1.11.0/googletest/include/gtest/gtest.h"
 #include "openssl/rand.h"
 
 #define ERROR_TEST        \
@@ -32,10 +32,10 @@
 #define TEST_END testLogIns.~TestLog_c()
 
 class TestLog_c {
-   private:
+private:
     /* data */
 
-   public:
+public:
     TestLog_c();
     TestLog_c(const std::string comment);
     void errorTest();

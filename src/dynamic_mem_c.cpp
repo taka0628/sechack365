@@ -3,7 +3,7 @@
 dynamic_mem_c::dynamic_mem_c()
 {
     this->size_ = 0;
-    this->mem_ = nullptr;
+    this->mem_  = nullptr;
 }
 dynamic_mem_c::dynamic_mem_c(const uint size)
 {

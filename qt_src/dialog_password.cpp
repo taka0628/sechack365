@@ -13,8 +13,8 @@ Dialog_password::Dialog_password(QWidget* parent)
     ui->setupUi(this);
 
     IS_PASSWORD_CORRECT = false;
-    this->is_canceled_ = false;
-    this->is_ok_ = false;
+    this->is_canceled_  = false;
+    this->is_ok_        = false;
 }
 
 Dialog_password::~Dialog_password() { delete ui; }
@@ -32,7 +32,7 @@ void Dialog_password::set_file_path(string file_path)
 void Dialog_password::on_lineEdit_password_check_textChanged(
     const QString& arg1)
 {
-    QString input_pass_ck = arg1;
+    QString input_pass_ck     = arg1;
     QString input_pass_origin = ui->lineEdit_password->text();
     QString out_put;
     if (input_pass_origin == input_pass_ck) {

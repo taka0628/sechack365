@@ -4,11 +4,11 @@ using namespace std;
 
 file_enc_c::file_enc_c()
 {
-    this->isDir_ = false;
-    this->isFile_ = false;
-    this->isEncrypt_ = false;
+    this->isDir_       = false;
+    this->isFile_      = false;
+    this->isEncrypt_   = false;
     this->isNoEncrypt_ = false;
-    this->isExit_ = false;
+    this->isExit_      = false;
 }
 
 file_enc_c::~file_enc_c() { }

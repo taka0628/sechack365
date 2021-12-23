@@ -60,7 +60,7 @@ void MainWindow::on_push_dec_clicked()
     }
 
     static const string erase_string = "file://";
-    string input_text = ui->lineEdit_file_path->text().toStdString();
+    string input_text                = ui->lineEdit_file_path->text().toStdString();
     if (input_text.empty()) {
         return;
     }
