@@ -14,6 +14,7 @@ jobs:
     - name: build
       run: |
         cd test
+        make clean
         make
     - name: run
       run: |
