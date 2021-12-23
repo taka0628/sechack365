@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
-    paths-ignore: "build*/**"
+    paths-ignore:
+      - "build/**"
+      - "test/include/google**"
 
 jobs:
   lint:
@@ -19,3 +21,8 @@ jobs:
       if: steps.linter.outputs.checks-failed > 0
       run: |
         echo "Some files failed the linting checks!"
+    - name: unit test
+      run: |
+        cd test
+        make
+        make run
