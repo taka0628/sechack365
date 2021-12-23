@@ -10,8 +10,8 @@ dynamic_mem_c::dynamic_mem_c(const uint size)
     this->size_ = size;
     try {
         this->mem_ = new u_char[size];
-    } catch (std::bad_alloc) {
-        ERROR("");
+    } catch (std::bad_alloc& e) {
+        ERROR(e.what());
     }
     memset(this->mem_, 0, size);
 }
