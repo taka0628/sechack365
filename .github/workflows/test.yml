@@ -1,0 +1,21 @@
+name: TEST
+
+on:
+  push:
+    paths-ignore:
+      - "build/**"
+      - "test/include/google**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: build
+      run: |
+        cd test
+        make
+    - name: run
+      run: |
+        cd test
+        make run
