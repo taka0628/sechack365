@@ -18,17 +18,10 @@
 class master_key_c {
 private:
     master_key_c(const master_key_c&);
+
 public:
     master_key_c(/* args */);
     ~master_key_c();
 };
-
-master_key_c::master_key_c(/* args */)
-{
-}
-
-master_key_c::~master_key_c()
-{
-}
 
 #endif
