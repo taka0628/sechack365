@@ -5,7 +5,8 @@ using namespace std;
 TEST(keyGenMethodTest, setUsbId)
 {
     key_gen_c key;
-    ASSERT_TRUE(key.set_usbID("1d6b:0002"));
+    ASSERT_TRUE(key.set_usbID("1d6b:0001"));
+    ERROR_TEST;
     ASSERT_FALSE(key.set_usbID(""));
     ASSERT_FALSE(key.set_usbID("hoge"));
     ASSERT_FALSE(key.set_usbID("1d6b"));
@@ -17,18 +18,22 @@ TEST(keyGenMethodTest, setPass)
 {
     key_gen_c key;
     ASSERT_TRUE(key.set_pass("hoge"));
+    ERROR_TEST;
     ASSERT_FALSE(key.set_pass(""));
 }
 
 TEST(keyGenMethodTest, canKeyGen)
 {
     key_gen_c key;
-    ASSERT_FALSE(key.canKeyGen());
-    ASSERT_TRUE(key.set_pass("hoge"));
-    ASSERT_FALSE(key.canKeyGen());
     ASSERT_TRUE(key.set_usbID("1d6b:0002"));
     ASSERT_TRUE(key.set_UsbSerial());
     ASSERT_TRUE(key.canKeyGen());
+
+    ERROR_TEST;
+    key_gen_c keyError;
+    ASSERT_FALSE(keyError.canKeyGen());
+    ASSERT_TRUE(keyError.set_pass("hoge"));
+    ASSERT_FALSE(keyError.canKeyGen());
 }
 
 TEST(errorLogTest, printError)
@@ -40,9 +45,12 @@ TEST(errorLogTest, printError)
 TEST(keyGenMethodTest, setUsbSerial)
 {
     key_gen_c key;
-    ASSERT_FALSE(key.set_UsbSerial());
     ASSERT_TRUE(key.set_usbID("1d6b:0002"));
     ASSERT_TRUE(key.set_UsbSerial());
+
+    ERROR_TEST;
+    key_gen_c keyError;
+    ASSERT_FALSE(keyError.set_UsbSerial());
 }
 
 TEST(keyGenMethodTest, nonce)

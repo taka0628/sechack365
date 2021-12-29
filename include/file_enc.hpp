@@ -8,6 +8,7 @@
 
 #include "aes_c.hpp"
 #include "cstdio"
+#include "error.hpp"
 #include "fstream"
 #include "iostream"
 #include "macro.hpp"
