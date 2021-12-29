@@ -22,12 +22,21 @@ bool master_key_c::isCorrect() const
     return true;
 }
 
-vector<u_char> master_key_c::get_master_key() const
+vector<u_char> master_key_c::get_key() const
 {
     if (this->isCorrect() == false) {
         ERROR("master key is false");
-        log::push_value("master_key", this->master_key_);
+        log::push_value(TO_STRING(master_key_), this->master_key_);
         exit(1);
     }
     return this->master_key_;
+}
+
+bool master_key_c::add_authorization(const vector<u_char> current_key, const vector<u_char> new_key)
+{
+    if (current_key.empty() || current_key.size() != AES_SIZE) {
+        ERROR("与えられた鍵のサイズが不正");
+        log::push_value(TO_STRING(current_key), current_key);
+        return false;
+    }
 }

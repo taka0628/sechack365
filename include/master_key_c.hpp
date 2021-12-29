@@ -24,11 +24,13 @@ public:
     master_key_c(/* args */);
     ~master_key_c();
     // Mkeyが正しく取得できない場合は異常終了
-    std::vector<u_char> get_master_key() const;
+    std::vector<u_char> get_key() const;
     // 認証情報を含みMKeyをリセット
     bool reset();
     // Mkeyが復号され、メンバ変数に正しく格納されているか確認
     bool isCorrect() const;
+    // Mkeyに使用する認証情報を追加
+    bool add_authorization(const std::vector<u_char> current_key, const std::vector<u_char> new_key);
 };
 
 #endif

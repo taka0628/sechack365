@@ -15,6 +15,8 @@
 #define PRINT_ERROR_LOG(comment) \
     log::push_log(comment, __FILE__, __func__, __LINE__)
 
+#define TO_STRING(VariableName) #VariableName
+
 // -----------------------------------------------------------------------
 // 定数
 // 処理するファイルパスの上限
