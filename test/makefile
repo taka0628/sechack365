@@ -12,7 +12,8 @@ SRCS	= key_list_c.cpp\
 	aes_c.cpp\
 	key_gen_c.cpp\
 	error.cpp\
-	device_c.cpp
+	device_c.cpp\
+	master_key_c.cpp
 
 TESTSRC	= keyGenTest.cpp\
 	key_list_test.cpp\
@@ -58,6 +59,7 @@ ${OBJDIR}/%.o: $(TESTDIR)/%.cpp
 # 	${CXX} ${addprefix ../, ${TESTSRC}} -c ${addprefix ../${SRCDIR},${SRCS}} ${CFLAGS}
 
 run: ${TARGET}
+	cp /dev/null errorLog.txt
 	./${TARGET}
 
 clean:
