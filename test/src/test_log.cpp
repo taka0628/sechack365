@@ -12,7 +12,7 @@ TestLog_c::TestLog_c(const string comment)
     PRINT_ERROR_LOG(text.c_str());
 }
 
-TestLog_c::~TestLog_c() { PRINT_ERROR_LOG("===TEST END==="); }
+TestLog_c::~TestLog_c() { PRINT_ERROR_LOG("<<<<TEST END==="); }
 
 void TestLog_c::correctTest()
 {
@@ -24,8 +24,8 @@ void TestLog_c::correctTest()
 
 void TestLog_c::errorTest()
 {
-    string text = "===";
+    string text = "====";
     text += "Error Test";
-    text += "===";
+    text += ">>>>";
     PRINT_ERROR_LOG(text.c_str());
 }

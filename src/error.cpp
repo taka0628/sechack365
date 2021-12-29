@@ -1,17 +1,19 @@
 #include "../include/error.hpp"
 
+// using namespace std;
+
+// namespace log {
+
 using namespace std;
 
-void push_error_log(const char* comment, const char* file, const char* func,
-    const int line)
+void log::push_log(const char* comment, const char* file, const char* func, const int line)
 {
     time_t timer;
     struct tm* date;
 
-    string message;
-    ofstream ofp(ERROR_LOG_FILE, ios_base::app);
+    std::string message;
+    std::ofstream ofp(ERROR_LOG_FILE, std::ios_base::app);
     if (!ofp) {
-        ERROR_NO_COMMENT;
         return;
     }
 
@@ -28,3 +30,18 @@ void push_error_log(const char* comment, const char* file, const char* func,
     ofp << comment << "\n"
         << endl;
 }
+template <typename T>
+void log::push_value(std::string name, T value)
+{
+    string message;
+    ofstream ofp(ERROR_LOG_FILE, ios_base::app);
+    if (!ofp) {
+        ERROR_NO_COMMENT;
+        return;
+    }
+
+    // ファイル出力
+    ofp << "\n\t" << name << ": " << value << "\n"
+        << endl;
+}
+// } // namespace error

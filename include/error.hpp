@@ -13,7 +13,11 @@
 
 #include "macro.hpp"
 
-void push_error_log(const char* comment, const char* file, const char* func,
+namespace log {
+void push_log(const char* comment, const char* file, const char* func,
     const int line);
+template <typename T>
+void push_value(std::string name, T value);
+} // namespace log
 
 #endif
