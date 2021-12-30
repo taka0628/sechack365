@@ -21,7 +21,7 @@ private:
     std::vector<u_char> master_key_;
 
 public:
-    master_key_c(/* args */);
+    master_key_c();
     ~master_key_c();
     // Mkeyが正しく取得できない場合は異常終了
     std::vector<u_char> get_key() const;

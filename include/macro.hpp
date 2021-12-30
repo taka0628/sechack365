@@ -44,6 +44,8 @@
 
 #define ERROR_LOG_FILE "errorLog.txt"
 
+constexpr char MASTER_KEY_LIST_FILE[] = "mkeyList";
+
 // ------------------------------------------------------------------------
 // nonce設定
 #define NONCE_FILE "nonce"

@@ -1,8 +1,9 @@
 #include "../include/master_key_c.hpp"
 #include "../include/error.hpp"
 
-master_key_c::master_key_c(/* args */)
+master_key_c::master_key_c()
 {
+    this->master_key_.clear();
 }
 
 master_key_c::~master_key_c()
@@ -39,4 +40,10 @@ bool master_key_c::add_authorization(const vector<u_char> current_key, const vec
         log::push_value(TO_STRING(current_key), current_key);
         return false;
     }
+}
+
+bool master_key_c::reset()
+{
+    vector<u_char> mkey;
+    RAND_bytes(mkey.data(), AES_SIZE);
 }

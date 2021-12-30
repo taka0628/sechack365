@@ -4,7 +4,7 @@ using namespace std;
 
 key_list_c::key_list_c() { file_ptr_c fp(KEY_FILE_NAME, "a"); }
 
-key_list_c::~key_list_c() { }
+key_list_c::~key_list_c() {}
 
 string key_list_c::get_file_name() const
 {
