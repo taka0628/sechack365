@@ -16,8 +16,9 @@
 namespace log {
 void push_log(const char* comment, const char* file, const char* func,
     const int line);
-template <typename T>
-void push_value(std::string name, T value);
+void push_value(std::string name, const std::string value);
+void push_value(std::string name, const size_t value);
+
 } // namespace log
 
 #endif

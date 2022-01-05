@@ -9,7 +9,7 @@
     log::push_log(comment, __FILE__, __func__, __LINE__)
 
 #define PUSH_VALUE(arg) \
-    log::push_value(TO_STRING(arg), arg);
+    log::push_value(TO_STRING(arg), arg)
 
 #define ERROR_NO_COMMENT                                                  \
     printf("[ERROR]\n\t__%s__/__%s: %d\n", __FILE__, __func__, __LINE__); \
@@ -18,7 +18,7 @@
 #define PRINT_ERROR_LOG(comment) \
     log::push_log(comment, __FILE__, __func__, __LINE__)
 
-#define TO_STRING(VariableName) #VariableName
+#define TO_STRING(VariableName) (#VariableName)
 
 // -----------------------------------------------------------------------
 // 定数
