@@ -34,6 +34,8 @@ public:
     void copy(std::string& dest, const uint size) const;
     void reset();
     bool empty() const;
+    std::vector<u_char> to_vector() const;
+    bool from_vector(const std::vector<u_char>& src);
 };
 
 #endif

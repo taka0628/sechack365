@@ -50,7 +50,7 @@ dynamic_mem_c& dynamic_mem_c::operator=(const dynamic_mem_c& from)
     if (this->size() != from.size()) {
         this->size_ = from.size();
         if (this->mem_ != nullptr) {
-            delete this->mem_;
+            this->d_free();
         }
         this->mem_ = new u_char[this->size()];
     }
@@ -63,7 +63,7 @@ dynamic_mem_c& dynamic_mem_c::operator=(const dynamic_mem_c& from)
 void dynamic_mem_c::d_new(const uint size)
 {
     if (this->mem_) {
-        delete this->mem_;
+        delete[] this->mem_;
         this->mem_ = nullptr;
     }
     this->mem_ = new unsigned char[size];
@@ -74,7 +74,7 @@ void dynamic_mem_c::d_new(const uint size)
 void dynamic_mem_c::d_free()
 {
     if (this->mem_) {
-        delete this->mem_;
+        delete[] this->mem_;
         this->mem_ = nullptr;
     }
     this->size_ = 0;
@@ -114,4 +114,32 @@ bool dynamic_mem_c::empty() const
         return true;
     }
     return false;
+}
+
+std::vector<u_char> dynamic_mem_c::to_vector() const
+{
+    vector<u_char> result;
+    if (this->size() == 0) {
+        result.clear();
+        return result;
+    }
+    for (size_t i = 0; i < this->size(); i++) {
+        result.push_back(this->mem_[i]);
+    }
+    return result;
+}
+
+bool dynamic_mem_c::from_vector(const std::vector<u_char>& src)
+{
+    if (src.empty()) {
+        return false;
+    }
+    if (this->size() != 0) {
+        this->d_free();
+    }
+    this->d_new(src.size());
+    for (size_t i = 0; i < src.size(); i++) {
+        this->mem_[i] = src[i];
+    }
+    return true;
 }
