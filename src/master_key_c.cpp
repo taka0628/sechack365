@@ -33,17 +33,52 @@ vector<u_char> master_key_c::get_key() const
     return this->master_key_;
 }
 
-bool master_key_c::add_authorization(const vector<u_char> current_key, const vector<u_char> new_key)
+bool master_key_c::init(string usb_id, string pass_word)
 {
-    if (current_key.empty() || current_key.size() != AES_SIZE) {
-        ERROR("与えられた鍵のサイズが不正");
-        log::push_value(TO_STRING(current_key), current_key);
+    if (usb_id.empty() || pass_word.empty()) {
+        ERROR("引数が空");
+        PUSH_VALUE(usb_id);
+        PUSH_VALUE(pass_word);
         return false;
     }
+
+    dynamic_mem_c mkey(AES_SIZE);
+    RAND_bytes(mkey.mem_, AES_SIZE);
+
+    key_gen_c crypt_key;
+    if (!crypt_key.set_pass(pass_word)) {
+        ERROR("パスワードをセットできません");
+        PUSH_VALUE(pass_word);
+        return false;
+    }
+    if (!crypt_key.set_usbID(usb_id)) {
+        ERROR("usbIDがセットできません");
+        PUSH_VALUE(usb_id);
+        return false;
+    }
+    if (!crypt_key.set_UsbSerial()) {
+        ERROR("usb serialがセットできません");
+        return false;
+    }
+    if (!crypt_key.key_gen()) {
+        ERROR("鍵生成ができませんでした");
+        return false;
+    }
+    crypt_key.get_key();
 }
 
-bool master_key_c::reset()
+vector<u_char> master_key_c::get_hash() const
 {
-    vector<u_char> mkey;
-    RAND_bytes(mkey.data(), AES_SIZE);
+    assert(!this->master_key_.empty());
+    vector<u_char> result;
+    if (!this->isCorrect()) {
+        result.clear();
+        return result;
+    }
+    SHA_c sha;
+    dynamic_mem_c mkey;
+    mkey.from_vector(this->master_key_);
+    dynamic_mem_c hash(AES_SIZE);
+    sha.sha2_cal(mkey, hash, SHA_c::SHA2_bit::SHA_256);
+    return result = hash.to_vector();
 }
