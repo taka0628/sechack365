@@ -57,34 +57,11 @@ TEST(keyGenMethodTest, nonce)
 {
     key_gen_c key;
     dynamic_mem_c buf;
-    ASSERT_TRUE(key.set_nonce());
-    ASSERT_FALSE(key.get_nonce(buf));
-
-    buf.d_new(1);
-    ASSERT_FALSE(key.get_nonce(buf));
-    buf.d_new(NONCE_SIZE - 1);
-    ASSERT_FALSE(key.get_nonce(buf));
-
-    buf.d_new(NONCE_SIZE);
-    ASSERT_TRUE(key.get_nonce(buf));
-    buf.d_new(NONCE_SIZE * 2);
-    ASSERT_FALSE(key.get_nonce(buf));
 }
-
 TEST(keyGenMethodTest, keyGen)
 {
     TestLog_c test("鍵生成テスト");
     key_gen_c key;
-    EXPECT_FALSE(key.new_key_gen());
-
-    ASSERT_TRUE(key.set_pass("hoge"));
-    EXPECT_FALSE(key.new_key_gen());
-
-    ASSERT_TRUE(key.set_usbID("1d6b:0002"));
-    EXPECT_FALSE(key.new_key_gen());
-
-    ASSERT_TRUE(key.set_UsbSerial());
-    ASSERT_TRUE(key.new_key_gen());
 }
 
 #if 1
@@ -96,7 +73,7 @@ TEST(keyGenMethodTest, getKey)
     ASSERT_TRUE(key.set_usbID("1d6b:0002"));
     ASSERT_TRUE(key.set_UsbSerial());
     ASSERT_TRUE(key.canKeyGen());
-    ASSERT_TRUE(key.new_key_gen());
+    ASSERT_TRUE(key.key_gen());
 
     dynamic_mem_c key_1;
     dynamic_mem_c key_2;

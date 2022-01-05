@@ -30,10 +30,20 @@ void log::push_log(const char* comment, const char* file, const char* func, cons
     ofp << comment << "\n"
         << endl;
 }
-template <typename T>
-void log::push_value(std::string name, T value)
+void log::push_value(std::string name, const string value)
 {
-    string message;
+    ofstream ofp(ERROR_LOG_FILE, ios_base::app);
+    if (!ofp) {
+        ERROR_NO_COMMENT;
+        return;
+    }
+
+    // ファイル出力
+    ofp << "\n\t" << name << ": " << value << "\n"
+        << endl;
+}
+void log::push_value(std::string name, const size_t value)
+{
     ofstream ofp(ERROR_LOG_FILE, ios_base::app);
     if (!ofp) {
         ERROR_NO_COMMENT;
