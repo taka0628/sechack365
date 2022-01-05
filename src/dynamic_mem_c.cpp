@@ -19,7 +19,7 @@ dynamic_mem_c::dynamic_mem_c(const uint size)
 dynamic_mem_c::~dynamic_mem_c()
 {
     if (this->mem_) {
-        delete this->mem_;
+        delete[] this->mem_;
     }
 }
 
@@ -52,7 +52,7 @@ dynamic_mem_c& dynamic_mem_c::operator=(const dynamic_mem_c& from)
         if (this->mem_ != nullptr) {
             this->d_free();
         }
-        this->mem_ = new u_char[this->size()];
+        this->d_new(from.size());
     }
     for (size_t i = 0; i < this->size(); i++) {
         this->mem_[i] = from.mem_[i];
