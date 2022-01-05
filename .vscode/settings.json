@@ -1,5 +1,5 @@
 {
-    "files.associations": {
+	"files.associations": {
 		"iosfwd": "cpp",
 		"iostream": "cpp",
 		"string": "cpp",
@@ -66,6 +66,16 @@
 		"cfenv": "cpp",
 		"typeindex": "cpp",
 		"variant": "cpp",
-		"bit": "cpp"
+		"bit": "cpp",
+		"cassert": "cpp",
+		"cerrno": "cpp",
+		"cfloat": "cpp",
+		"ciso646": "cpp",
+		"climits": "cpp",
+		"ios": "cpp",
+		"locale": "cpp",
+		"queue": "cpp",
+		"stack": "cpp",
+		"cstdbool": "cpp"
 	}
 }
