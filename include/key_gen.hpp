@@ -28,12 +28,14 @@ private:
 
     std::string get_pass() const;
     std::string get_usbSerial() const;
+    bool get_nonce(dynamic_mem_c& to) const;
+    bool generate_nonce() const;
 
 public:
     key_gen_c();
     ~key_gen_c();
 
-    bool new_key_gen();
+    // bool new_key_gen();
     bool key_gen();
 
     bool set_pass(std::string const pass);
@@ -41,9 +43,6 @@ public:
     bool set_usbID(std::string const id);
     std::string get_usbID() const;
     bool set_UsbSerial();
-
-    bool get_nonce(dynamic_mem_c& to) const;
-    bool set_nonce() const;
 
     dynamic_mem_c get_key() const;
     bool canKeyGen() const;

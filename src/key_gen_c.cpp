@@ -7,6 +7,7 @@ key_gen_c::key_gen_c()
     this->pass_.clear();
     this->usbID_.clear();
     this->usbSerial_.clear();
+    this->key_.reset();
 }
 
 key_gen_c::~key_gen_c() { }
@@ -44,12 +45,6 @@ string key_gen_c::get_usbSerial() const
         return "";
     }
     return this->usbSerial_;
-}
-
-bool key_gen_c::new_key_gen()
-{
-    this->set_nonce();
-    return this->key_gen();
 }
 
 bool key_gen_c::key_gen()
@@ -113,7 +108,7 @@ bool key_gen_c::get_nonce(dynamic_mem_c& to) const
     return true;
 }
 
-bool key_gen_c::set_nonce() const
+bool key_gen_c::generate_nonce() const
 {
     file_ptr_c fp;
     if (fp.open(NONCE_FILE, "wb") == false) {
