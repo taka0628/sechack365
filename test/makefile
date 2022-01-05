@@ -68,3 +68,7 @@ clean:
 debug:
 	make clean
 	make "CFLAGS = ${CFLAGS} -g -O0"
+
+rebuild:
+	make clean
+	make
