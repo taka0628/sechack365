@@ -25,7 +25,8 @@ TEST(keyGenMethodTest, setPass)
 TEST(keyGenMethodTest, canKeyGen)
 {
     key_gen_c key;
-    ASSERT_TRUE(key.set_usbID("1d6b:0002"));
+    string usbID = "80ee:0021";
+    ASSERT_TRUE(key.set_usbID(usbID));
     ASSERT_TRUE(key.set_UsbSerial());
     ASSERT_TRUE(key.canKeyGen());
 

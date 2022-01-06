@@ -42,5 +42,7 @@ public:
     void correctTest();
     ~TestLog_c();
 };
-
+namespace local {
+std::string test_cmdline(const std::string cmd);
+}
 #endif
