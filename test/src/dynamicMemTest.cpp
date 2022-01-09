@@ -1,5 +1,7 @@
 #include "../include/test.hpp"
 
+using namespace std;
+
 TEST(DMem, copyConst)
 {
     dynamic_mem_c from;
@@ -48,4 +50,30 @@ TEST(DMem, empty)
     ASSERT_TRUE(test.empty());
     test.mem_[0] = 1;
     ASSERT_FALSE(test.empty());
+}
+
+TEST(DMem, CopyConstractor)
+{
+    dynamic_mem_c mem1(100);
+    for (size_t i = 0; i < mem1.size(); i++) {
+        mem1.mem_[i] = 3;
+    }
+    dynamic_mem_c mem2;
+    mem2 = mem1;
+    ASSERT_FALSE(mem2.empty());
+    ASSERT_EQ(mem1.size(), mem2.size());
+    for (size_t i = 0; i < mem2.size(); i++) {
+        if (mem1.mem_[i] != mem2.mem_[i]) {
+            FAIL();
+        }
+    }
+}
+
+TEST(DMem, toString)
+{
+    dynamic_mem_c nonce(NONCE_SIZE);
+    file_ptr_c fp;
+    ASSERT_TRUE(fp.open(NONCE_FILE, "rb"));
+    fread(nonce.mem_, 1, NONCE_SIZE, fp.fp_);
+    // std::cout << TO_STRING(nonce.to_string()) << " :" << nonce.to_string() << endl;
 }

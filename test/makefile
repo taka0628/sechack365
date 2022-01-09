@@ -21,7 +21,8 @@ TESTSRC	= keyGenTest.cpp\
 	dynamicMemTest.cpp\
 	test_log.cpp\
 	deviceTest.cpp\
-	cmdline.cpp
+	cmdline.cpp\
+	nonceTest.cpp
 
 TESTDIR = src
 

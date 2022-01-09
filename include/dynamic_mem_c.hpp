@@ -18,6 +18,7 @@ class dynamic_mem_c {
 private:
     size_t size_;
     int usage_;
+    std::string to_string_table(const u_int i) const;
 
 public:
     dynamic_mem_c();
@@ -36,6 +37,7 @@ public:
     bool empty() const;
     std::vector<u_char> to_vector() const;
     bool from_vector(const std::vector<u_char>& src);
+    std::string to_string() const;
 };
 
 #endif

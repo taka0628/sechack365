@@ -82,12 +82,17 @@ bool device_c::set_usbID(const string usbID)
     cmdline += " -v | grep iSerial | awk '{print $3}' | tail -n -1";
 
     string temp = local::cmdline(cmdline);
+    cout << "temp: " << temp << endl;
     try {
         // 4文字未満のシリアル番号はエラーとみなす
         if (temp.empty() || temp.size() < 4) {
             PRINT_ERROR_LOG("コマンドラインから出力を得られませんでした");
             return false;
         } else {
+            string fail_string = "can't get debug descriptor: Resource temporarily unavailable";
+            if (temp.find(fail_string) != string::npos) {
+                temp.erase(temp.find(fail_string, fail_string.size()));
+            }
             if (temp.find("\n", 1) != string::npos) {
                 temp.erase(temp.find("\n", 1));
             }

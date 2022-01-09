@@ -21,6 +21,7 @@ dynamic_mem_c::~dynamic_mem_c()
     if (this->mem_) {
         delete[] this->mem_;
     }
+    this->size_ = 0;
 }
 
 dynamic_mem_c::dynamic_mem_c(const dynamic_mem_c& from)
@@ -116,7 +117,7 @@ bool dynamic_mem_c::empty() const
     return false;
 }
 
-std::vector<u_char> dynamic_mem_c::to_vector() const
+vector<u_char> dynamic_mem_c::to_vector() const
 {
     vector<u_char> result;
     if (this->size() == 0) {
@@ -142,4 +143,65 @@ bool dynamic_mem_c::from_vector(const std::vector<u_char>& src)
         this->mem_[i] = src[i];
     }
     return true;
+}
+
+std::string dynamic_mem_c::to_string_table(const u_int i) const
+{
+    if (i > 15) {
+        ERROR("index error");
+        exit(1);
+    }
+    switch (i) {
+    case 0:
+        return "0";
+    case 1:
+        return "1";
+    case 2:
+        return "2";
+    case 3:
+        return "3";
+    case 4:
+        return "4";
+    case 5:
+        return "5";
+    case 6:
+        return "6";
+    case 7:
+        return "7";
+    case 8:
+        return "8";
+    case 9:
+        return "9";
+    case 10:
+        return "A";
+    case 11:
+        return "B";
+    case 12:
+        return "C";
+    case 13:
+        return "D";
+    case 14:
+        return "E";
+    case 15:
+        return "F";
+
+    default:
+        ERROR("unexpected arg");
+        cout << "mem_: " << (u_int)this->mem_[i] << endl;
+        exit(1);
+    }
+}
+
+string dynamic_mem_c::to_string() const
+{
+    if (this->size() == 0) {
+        return "";
+    }
+    string result(this->size(), 0);
+    for (size_t i = 0; i < this->size(); i++) {
+        int temp = this->mem_[i];
+        result += this->to_string_table((temp >> 4));
+        result += this->to_string_table((temp & 0x0F));
+    }
+    return result;
 }
