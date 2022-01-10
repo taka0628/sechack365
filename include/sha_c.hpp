@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "dynamic_mem_c.hpp"
+#include "error.hpp"
 #include "macro.hpp"
 #include "openssl/aes.h"
 #include "openssl/evp.h"

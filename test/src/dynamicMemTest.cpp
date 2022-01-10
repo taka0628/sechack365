@@ -6,13 +6,7 @@ TEST(DMem, copyConst)
 {
     dynamic_mem_c from;
     from.d_new(100);
-    try {
-        dynamic_mem_c to(from);
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << '\n';
-        ERROR_NO_COMMENT;
-        FAIL();
-    }
+    dynamic_mem_c to(from);
 }
 
 TEST(DMem, equal)

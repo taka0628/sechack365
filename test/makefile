@@ -22,7 +22,8 @@ TESTSRC	= keyGenTest.cpp\
 	test_log.cpp\
 	deviceTest.cpp\
 	cmdline.cpp\
-	nonceTest.cpp
+	nonceTest.cpp\
+	masterKeyTest.cpp
 
 TESTDIR = src
 

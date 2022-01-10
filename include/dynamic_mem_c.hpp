@@ -32,7 +32,8 @@ public:
     void d_new(const uint size);
     void d_free();
     size_t size() const;
-    void copy(std::string& dest, const uint size) const;
+    void copy(const dynamic_mem_c from, const uint size);
+    void copy(const dynamic_mem_c from);
     void reset();
     bool empty() const;
     std::vector<u_char> to_vector() const;

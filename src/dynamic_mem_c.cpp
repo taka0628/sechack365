@@ -7,6 +7,11 @@ dynamic_mem_c::dynamic_mem_c()
 }
 dynamic_mem_c::dynamic_mem_c(const uint size)
 {
+    if (size == 0) {
+        this->mem_  = nullptr;
+        this->size_ = size;
+        return;
+    }
     this->size_ = size;
     try {
         this->mem_ = new u_char[size];
@@ -20,18 +25,22 @@ dynamic_mem_c::~dynamic_mem_c()
 {
     if (this->mem_) {
         delete[] this->mem_;
+        this->mem_ = nullptr;
     }
     this->size_ = 0;
 }
 
 dynamic_mem_c::dynamic_mem_c(const dynamic_mem_c& from)
 {
-    size_ = from.size_;
-    if (from.size_ > 0) {
-        mem_ = new u_char[size_];
+    if (from.size() == 0) {
+        this->size_ = 0;
+        this->mem_  = nullptr;
+        return;
     }
-    for (size_t i = 0; i < size_; i++) {
-        mem_[i] = from.mem_[i];
+    this->mem_  = new u_char[from.size()];
+    this->size_ = from.size();
+    for (size_t i = 0; i < this->size(); i++) {
+        this->mem_[i] = from.mem_[i];
     }
     return;
 }
@@ -83,12 +92,31 @@ void dynamic_mem_c::d_free()
 
 size_t dynamic_mem_c::size() const { return this->size_; }
 
-void dynamic_mem_c::copy(string& dest, const uint size) const
+void dynamic_mem_c::copy(const dynamic_mem_c from, const uint size)
 {
+    if (from.size() == 0 || size == 0) {
+        return;
+    }
     if (this->mem_) {
-        for (uint i = 0; i < size; i++) {
-            dest.push_back(this->mem_[i]);
-        }
+        this->d_free();
+    }
+    this->d_new(size);
+    for (size_t i = 0; i < size; i++) {
+        this->mem_[i] = from.mem_[i];
+    }
+}
+
+void dynamic_mem_c::copy(const dynamic_mem_c from)
+{
+    if (from.size() == 0) {
+        return;
+    }
+    if (this->mem_) {
+        this->d_free();
+    }
+    this->d_new(from.size());
+    for (size_t i = 0; i < from.size(); i++) {
+        this->mem_[i] = from.mem_[i];
     }
 }
 
