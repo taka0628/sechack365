@@ -233,3 +233,22 @@ string dynamic_mem_c::to_string() const
     }
     return result;
 }
+
+bool dynamic_mem_c::equal(const dynamic_mem_c& arg) const
+{
+    if (this->size() != arg.size()) {
+        return false;
+    }
+    // どちらかのサイズが0の場合はメモリへにアクセスするのは危険
+    // 確保されていることが保証されていない
+    if (this->size() == 0 || arg.size() == 0) {
+        return true;
+    }
+    assert(this->size() == arg.size());
+    for (size_t i = 0; i < this->size(); i++) {
+        if (this->mem_[i] != arg.mem_[i]) {
+            return false;
+        }
+    }
+    return true;
+}

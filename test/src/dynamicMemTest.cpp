@@ -71,3 +71,17 @@ TEST(DMem, toString)
     fread(nonce.mem_, 1, NONCE_SIZE, fp.fp_);
     // std::cout << TO_STRING(nonce.to_string()) << " :" << nonce.to_string() << endl;
 }
+
+TEST(DMem, equalTest)
+{
+    dynamic_mem_c temp1, temp2;
+    ASSERT_TRUE(temp1.equal(temp2));
+    temp1.d_new(100);
+    ASSERT_FALSE(temp1.equal(temp2));
+    temp2.d_new(100);
+    ASSERT_TRUE(temp1.equal(temp2));
+    temp1.mem_[0] = 1;
+    ASSERT_FALSE(temp1.equal(temp2));
+    temp2.mem_[0] = 1;
+    ASSERT_TRUE(temp1.equal(temp2));
+}

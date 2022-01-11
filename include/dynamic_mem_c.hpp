@@ -4,6 +4,7 @@
 #include <memory.h>
 #include <stdio.h>
 
+#include <assert.h>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
@@ -38,7 +39,10 @@ public:
     bool empty() const;
     std::vector<u_char> to_vector() const;
     bool from_vector(const std::vector<u_char>& src);
+    // 16進数表記へ変換 %02X
     std::string to_string() const;
+    // サイズと内容が等しいか？
+    bool equal(const dynamic_mem_c& arg) const;
 };
 
 #endif
