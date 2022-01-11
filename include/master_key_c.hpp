@@ -53,7 +53,7 @@ public:
     // 認証情報を含みMKeyをリセット
     bool init(std::string usb_id, std::string pass_word);
     // Mkeyに使用する認証情報を追加
-    bool add_authorization(const std::vector<u_char> current_key, const std::vector<u_char> new_key);
+    bool add_authorization(const std::string root_usb_id, const std::string password, const std::string new_usb_id);
 };
 
 #endif

@@ -254,3 +254,37 @@ dynamic_mem_c master_key_c::get_iv() const
 {
     return this->iv_;
 }
+
+bool master_key_c::add_authorization(const string root_usb_id, const string password, const string new_usb_id)
+{
+    if (root_usb_id.empty() || password.empty() || new_usb_id.empty()) {
+        ERROR("引数が空");
+        PUSH_VALUE(root_usb_id.empty());
+        PUSH_VALUE(password.empty());
+        PUSH_VALUE(new_usb_id.empty());
+        return false;
+    }
+    dynamic_mem_c master_key = this->get_master_key(root_usb_id, password);
+    if (master_key.size() != AES_SIZE) {
+        ERROR("マスターキーのサイズが不正");
+        PUSH_VALUE(master_key.to_string());
+        return false;
+    }
+    dynamic_mem_c new_crypt_key = this->generate_crypt_key(new_usb_id, password);
+    if (new_crypt_key.size() != AES_SIZE) {
+        ERROR("共通鍵の生成エラー");
+        PUSH_VALUE(new_crypt_key.to_string());
+        return false;
+    }
+    dynamic_mem_c enc_master_key = this->enc_mkey(new_crypt_key);
+    if (enc_master_key.size() != AES_SIZE) {
+        ERROR("mkeyを暗号化できません");
+        PUSH_VALUE(enc_master_key.to_string());
+        return false;
+    }
+    if (!this->push_key(new_crypt_key, this->get_iv(), enc_master_key)) {
+        ERROR("mkeyをファイルへ追加できませんでした");
+        return false;
+    }
+    return true;
+}

@@ -4,11 +4,14 @@
 
 using namespace std;
 
+// テストに使用するUSB_ID
+constexpr char USB_ID[] = "8564:1000";
+
 TEST(masterKeyTest, generateCryptKey)
 {
     TestLog_c test("マスターキーの暗号鍵生成テスト");
     master_key_c mkey;
-    dynamic_mem_c crypt_mkey = mkey.generate_crypt_key("1d6b:0003", "hoge");
+    dynamic_mem_c crypt_mkey = mkey.generate_crypt_key(USB_ID, "hoge");
     ASSERT_EQ(crypt_mkey.size(), AES_SIZE);
 
     ERROR_TEST;
@@ -23,7 +26,7 @@ TEST(masterKeyTest, reset)
     TestLog_c testname("マスターキー初期化テスト");
     // mkeyを初期化できるかテスト
     master_key_c mkey;
-    ASSERT_TRUE(mkey.init("1d6b:0003", "hoge"));
+    ASSERT_TRUE(mkey.init(USB_ID, "hoge"));
     dynamic_mem_c master_key = mkey.get_master_key();
 
     // mkeyがファイルに暗号化されて出力されたか確認
@@ -47,7 +50,7 @@ TEST(masterKeyTest, reset)
     }
     aes_c aes;
     dynamic_mem_c plain(AES_SIZE);
-    dynamic_mem_c crypt_key = mkey.generate_crypt_key("1d6b:0003", "hoge");
+    dynamic_mem_c crypt_key = mkey.generate_crypt_key(USB_ID, "hoge");
     ASSERT_EQ(crypt_key.size(), AES_SIZE);
     ASSERT_TRUE(aes.set_iv_key(iv, crypt_key));
     aes.decrypt(plain, enc_mkey, aes_c::AES_bit_e::aes_256);
@@ -67,10 +70,10 @@ TEST(masterKeyTest, decMey)
 {
     TestLog_c test("マスターキー復号テスト");
     master_key_c mkey;
-    ASSERT_TRUE(mkey.init("1d6b:0003", "hoge"));
+    ASSERT_TRUE(mkey.init(USB_ID, "hoge"));
     dynamic_mem_c master_key_origin = mkey.get_master_key();
 
-    dynamic_mem_c master_key_dec = mkey.get_master_key("1d6b:0003", "hoge");
+    dynamic_mem_c master_key_dec = mkey.get_master_key(USB_ID, "hoge");
     ASSERT_EQ(master_key_dec.size(), AES_SIZE);
     for (size_t i = 0; i < AES_SIZE; i++) {
         if (master_key_origin.mem_[i] != master_key_dec.mem_[i]) {
@@ -83,4 +86,16 @@ TEST(masterKeyTest, decMey)
     ERROR_TEST;
     dynamic_mem_c temp = mkey.get_master_key("hoge", "hoge");
     ASSERT_EQ(temp.size(), 0);
+}
+
+constexpr char SUB_USB_ID[] = "1d6b:0003";
+TEST(masterKeyTest, addAuthorization)
+{
+    TestLog_c test("認証追加テスト");
+    master_key_c mkey;
+    ASSERT_TRUE(mkey.add_authorization(USB_ID, "hoge", SUB_USB_ID));
+    // 鍵が復号できるか確認
+    dynamic_mem_c master_key_1 = mkey.get_master_key(SUB_USB_ID, "hoge");
+    dynamic_mem_c master_key_2 = mkey.get_master_key(USB_ID, "hoge");
+    ASSERT_TRUE(master_key_1.equal(master_key_2));
 }
