@@ -39,8 +39,7 @@ void log::push_value(std::string name, const string value)
     }
 
     // ファイル出力
-    ofp << "\t" << name << ": " << value << "\n"
-        << endl;
+    ofp << "\t" << name << ": " << value << endl;
 }
 void log::push_value(std::string name, const size_t value)
 {
@@ -51,7 +50,6 @@ void log::push_value(std::string name, const size_t value)
     }
 
     // ファイル出力
-    ofp << "\t" << name << ": " << value << "\n"
-        << endl;
+    ofp << "\t" << name << ": " << value << endl;
 }
 // } // namespace error
