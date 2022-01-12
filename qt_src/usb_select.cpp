@@ -7,7 +7,6 @@ usb_select::usb_select(QWidget* parent)
     , ui(new Ui::usb_select)
 {
     ui->setupUi(this);
-
     //起動時処理
     this->update();
 }
@@ -15,10 +14,6 @@ usb_select::usb_select(QWidget* parent)
 usb_select::~usb_select() { }
 
 using namespace std;
-
-// namespace global {
-// int usbID;
-//}
 
 bool usb_select::update()
 {
@@ -37,7 +32,7 @@ bool usb_select::update()
 void usb_select::on_listWidget_select_itemClicked(QListWidgetItem* item)
 {
     string selected_usb { item->text().toStdString() };
-    this->usbID_ = selected_usb.substr(3, 9);
+    this->usbID_ = selected_usb.substr(0, 9);
     ui->label_selected_usbID->setText(QString::fromStdString(this->usbID_));
 }
 
@@ -46,6 +41,14 @@ void usb_select::on_pushButton_ok_clicked()
     if (this->usbID_.empty()) {
         return;
     }
-    //    this->set_usbID(global::usbID)
+
+    device_c usb;
+    if (!usb.add_usbID2file(this->usbID_)) {
+        QMessageBox msgBox(this);
+        msgBox.setText("指定されたUSBを設定できません");
+        msgBox.exec();
+        return;
+    }
+
     this->done(1);
 }

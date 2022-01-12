@@ -252,3 +252,18 @@ bool dynamic_mem_c::equal(const dynamic_mem_c& arg) const
     }
     return true;
 }
+
+bool dynamic_mem_c::from_string(const string& src)
+{
+    if (src.empty()) {
+        return false;
+    }
+    if (this->size() != src.size()) {
+        this->d_free();
+        this->d_new(src.size());
+    }
+    for (size_t i = 0; i < this->size(); i++) {
+        this->mem_[i] = static_cast<u_char>(src[i]);
+    }
+    return true;
+}

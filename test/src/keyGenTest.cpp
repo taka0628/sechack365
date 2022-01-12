@@ -109,3 +109,16 @@ TEST(keyGenMethodTest, getKey)
     }
 }
 #endif
+
+TEST(keyGenMethodTest, PasswordCheck)
+{
+    TestLog_c test("パスワードチェックテスト");
+    key_gen_c keygen;
+    ASSERT_TRUE(keygen.set_pass2file("hoge"));
+    ASSERT_TRUE(keygen.set_pass("hoge"));
+    ASSERT_TRUE(keygen.is_pass_correct());
+
+    ERROR_TEST;
+    ASSERT_TRUE(keygen.set_pass("huga"));
+    ASSERT_FALSE(keygen.is_pass_correct());
+}

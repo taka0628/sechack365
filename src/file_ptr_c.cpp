@@ -27,6 +27,7 @@ bool file_ptr_c::open(const string filepath, const string option)
     this->fp_ = fopen(filepath.c_str(), option.c_str());
     if (this->fp_ == NULL) {
         ERROR("file cant open");
+        PUSH_VALUE(filepath);
         return false;
     }
     return true;

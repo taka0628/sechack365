@@ -45,23 +45,18 @@ void Dialog_password::on_lineEdit_password_check_textChanged(
     ui->label_show_pass_check->setText(out_put);
 }
 
-//暗号化を行う
+//設定
 void Dialog_password::on_pushButton_OK_clicked()
 {
     if (!IS_PASSWORD_CORRECT) {
         return;
     }
-
-    this->is_ok_ = true;
-    file_enc_c file_enc;
-    file_enc.set_file_path(this->file_path_);
-    if (file_enc.is_file_exit() == false) {
-        return;
-    }
-
-    file_enc.set_password(ui->lineEdit_password->text().toStdString());
-    if (file_enc.file_enc() == false) {
-        cerr << "暗号化に失敗しました" << endl;
+    key_gen_c keygen;
+    string password = ui->lineEdit_password->text().toStdString();
+    if (!keygen.set_pass2file(password)) {
+        ERROR("パスワードを設定できません");
+        PUSH_VALUE(password);
+        exit(1);
     }
 
     this->close();

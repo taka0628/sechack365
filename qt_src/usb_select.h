@@ -5,6 +5,7 @@
 
 #include <QDialog>
 #include <QListWidgetItem>
+#include <QMessageBox>
 #include <QWidget>
 #include <string>
 #include <vector>

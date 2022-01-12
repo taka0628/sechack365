@@ -39,6 +39,7 @@ public:
     bool empty() const;
     std::vector<u_char> to_vector() const;
     bool from_vector(const std::vector<u_char>& src);
+    bool from_string(const std::string& src);
     // 16進数表記へ変換 %02X
     std::string to_string() const;
     // サイズと内容が等しいか？

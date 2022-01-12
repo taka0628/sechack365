@@ -35,11 +35,15 @@ private slots:
 
     //    void on_MainWindow_destroyed(QObject *arg1);
 
+    void on_action_menue_PasswordSetting_triggered();
+
+    void on_action_menue_USBSetting_triggered();
+
 private:
     Ui::MainWindow* ui;
-    Dialog_password* get_password_wind;
+    //    Dialog_password* get_password_wind;
     Dialog_dec_pass* get_dec_pass_wind;
-    usb_select* usb_select_wind;
+    //    usb_select* usb_select_wind;
 };
 
 #endif // MAINWINDOW_H

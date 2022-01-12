@@ -212,3 +212,57 @@ dynamic_mem_c key_gen_c::get_key() const
 
     return this->key_;
 }
+
+bool key_gen_c::is_pass_correct() const
+{
+    if (this->get_pass().empty()) {
+        return false;
+    }
+    file_ptr_c fp;
+    fp.open(PASSWORD_HASH_FILE, "rb");
+    dynamic_mem_c password_hash_from_file(HASH_SIZE);
+    int read_size = fread(password_hash_from_file.mem_, 1, HASH_SIZE, fp.fp_);
+    if (read_size != HASH_SIZE) {
+        ERROR("パスワードのハッシュ値を取得できません");
+        PUSH_VALUE(password_hash_from_file.to_string());
+        return false;
+    }
+
+    SHA_c sha;
+    dynamic_mem_c password, password_hash(HASH_SIZE);
+    password.from_string(this->get_pass());
+    if (!sha.sha2_cal(password, password_hash, SHA_c::SHA2_bit::SHA_256)) {
+        ERROR("ハッシュ値の生成に失敗");
+        PUSH_VALUE(this->get_pass());
+        return false;
+    }
+    if (!password_hash.equal(password_hash_from_file)) {
+        return false;
+    }
+    return true;
+}
+
+bool key_gen_c::set_pass2file(string const pass) const
+{
+    if (pass.empty()) {
+        return false;
+    }
+    dynamic_mem_c temp, password_hash(HASH_SIZE);
+    temp.from_string(pass);
+    SHA_c sha;
+    if (!sha.sha2_cal(temp, password_hash, SHA_c::SHA2_bit::SHA_256)) {
+        ERROR("ハッシュ値の生成に失敗");
+        PUSH_VALUE(pass);
+        return false;
+    }
+
+    file_ptr_c fp;
+    fp.open(PASSWORD_HASH_FILE, "wb");
+    int write_size = fwrite(password_hash.mem_, 1, password_hash.size(), fp.fp_);
+    if (write_size != HASH_SIZE) {
+        ERROR("書き込みサイズがハッシュサイズと一致しません");
+        PUSH_VALUE(write_size);
+        return false;
+    }
+    return true;
+}

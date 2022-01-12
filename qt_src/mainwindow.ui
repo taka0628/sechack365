@@ -115,6 +115,15 @@
      <height>28</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>メニュー</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="action_menue_PasswordSetting"/>
+    <addaction name="action_menue_USBSetting"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="movable">
@@ -134,6 +143,16 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_menue_PasswordSetting">
+   <property name="text">
+    <string>パスワード設定</string>
+   </property>
+  </action>
+  <action name="action_menue_USBSetting">
+   <property name="text">
+    <string>USB登録</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

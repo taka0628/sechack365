@@ -80,10 +80,6 @@ void MainWindow::on_push_dec_clicked()
     if (file_dec.file_dec() == false) {
         cerr << "復号に失敗しました" << endl;
     }
-    //    get_dec_pass_wind = new Dialog_dec_pass(this);
-    //    get_dec_pass_wind->set_file_path(input_text);
-    //    get_dec_pass_wind->show();
-    //    ui->lineEdit_file_path->clear();
     ui->lineEdit_file_path->clear();
 }
 
@@ -94,14 +90,20 @@ void MainWindow::on_pushButton_clear_clicked()
 
 void MainWindow::on_pushButton_pass_register_clicked()
 {
-    usb_select_wind = new usb_select(this);
-    usb_select_wind->setModal(true);
-    int ret = usb_select_wind->exec();
-    if (ret == QDialog::Accepted) {
-        cout << "Accepted" << endl;
-        cout << "USB ID: " << usb_select_wind->usbID_ << endl;
+    usb_select usb_select_wind;
+    usb_select_wind.exec();
+}
 
-    } else if (ret == QDialog::Rejected) {
-        cout << "Rejected" << endl;
-    }
+void MainWindow::on_action_menue_PasswordSetting_triggered()
+{
+    Dialog_password password_window;
+    password_window.exec();
+}
+
+void MainWindow::on_action_menue_USBSetting_triggered()
+{
+    usb_select usb_select_wind;
+    usb_select_wind.exec();
+    usb_select_wind.get_usbID();
+    ui->label_usb_debug->setText(QString::fromStdString(usb_select_wind.usbID_));
 }

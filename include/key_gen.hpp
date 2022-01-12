@@ -39,6 +39,11 @@ public:
     bool key_gen();
 
     bool set_pass(std::string const pass);
+    // パスワードは正しいか？
+    // ハッシュ値で比較
+    bool is_pass_correct() const;
+    // パスワードのハッシュ値をファイルに書き込む
+    bool set_pass2file(std::string const pass) const;
 
     bool set_usbID(std::string const id);
     std::string get_usbID() const;

@@ -5,6 +5,7 @@
 #include <chrono>
 
 #include "../include/file_enc.hpp"
+#include "../include/key_gen.hpp"
 
 namespace Ui {
 class Dialog_password;

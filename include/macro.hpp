@@ -59,8 +59,12 @@
 
 // 鍵リストのファイル名
 #define KEY_FILE_NAME "keyList"
-
+// 鍵リストの共通鍵のハッシュ値
 #define KEY_HASH_FILE "key_hash"
+// パスワードのハッシュ値
+#define PASSWORD_HASH_FILE "pass_hash"
+// USB IDのファイル名
+#define USB_ID_LIST "usb_ID"
 
 #define ERROR_LOG_FILE "errorLog.txt"
 
