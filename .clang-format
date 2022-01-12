@@ -7,4 +7,4 @@ Standard: Auto
 # イコールを揃える
 AlignConsecutiveAssignments: true
 # コメントを揃える
-AlignTrailingComments: true
+# AlignTrailingComments: true

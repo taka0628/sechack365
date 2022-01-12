@@ -75,3 +75,9 @@ debug:
 rebuild:
 	make clean
 	make
+
+format:
+	clang-format -i -style=file $(shell find ../src/ -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h")
+	clang-format -i -style=file $(shell find ../include/ -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h")
+	clang-format -i -style=file $(shell find ../qt_src/ -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h")
+	clang-format -i -style=file $(shell find ../test/ -path "*gtest" -prune -or -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h" | grep -v "gtest")
