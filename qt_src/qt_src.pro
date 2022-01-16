@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 LIBS += -lcrypto -lssl
 
 SOURCES += \
+    ../src/master_key_c.cpp \
         main.cpp \
         mainwindow.cpp \
     dialog_password.cpp\
@@ -42,6 +43,7 @@ SOURCES += \
     usb_select.cpp
 
 HEADERS += \
+    ../include/master_key_c.hpp \
         mainwindow.h \
     dialog_password.h \
     ../include/file_enc.hpp\

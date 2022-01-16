@@ -106,8 +106,15 @@ bool key_gen_c::get_nonce(dynamic_mem_c& to) const
 
     file_ptr_c fp;
     if (fp.open(NONCE_FILE, "rb") == false) {
-        ERROR("nonceファイルを読み取れません");
-        return false;
+        fp.close();
+        if (!this->generate_nonce()) {
+            ERROR("nonceファイルの生成に失敗");
+            return false;
+        }
+        if (fp.open(NONCE_FILE, "rb") == false) {
+            ERROR("nonceファイルを開けません");
+            return false;
+        }
     }
     if (fread(to.mem_, 1, NONCE_SIZE, fp.fp_) != NONCE_SIZE) {
         ERROR("nonceのサイズが違います");

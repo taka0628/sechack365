@@ -51,7 +51,7 @@ public:
     // mkeyを暗号化するための鍵生成
     dynamic_mem_c generate_crypt_key(const std::string usb_id, const std::string password) const;
     // 認証情報を含みMKeyをリセット
-    bool init(std::string usb_id, std::string pass_word);
+    bool init(const std::string usb_id, const std::string pass_word);
     // Mkeyに使用する認証情報を追加
     bool add_authorization(const std::string root_usb_id, const std::string password, const std::string new_usb_id);
 };

@@ -115,7 +115,8 @@ bool key_list_c::add_file(dynamic_mem_c const& hash, dynamic_mem_c const& iv,
 bool key_list_c::encrypt(dynamic_mem_c const& key) const
 {
     if (key.empty() || key.size() != AES_SIZE) {
-        ERROR_NO_COMMENT;
+        ERROR("鍵のサイズが不正");
+        PUSH_VALUE(key.size());
         return false;
     }
 
@@ -131,7 +132,11 @@ bool key_list_c::encrypt(dynamic_mem_c const& key) const
     RAND_bytes(iv.mem_, iv.size());
     aes.set_iv_key(iv, key);
     file_enc_c file_enc;
-    file_enc.set_file_path(this->get_file_name());
+    if (!file_enc.set_file_path(this->get_file_name())) {
+        ERROR("ファイルパスの設定エラー");
+        PUSH_VALUE(this->get_file_name());
+        return false;
+    }
 
     if (file_enc.crypt_process(aes, file_enc_c::CRYPT_MODE::ENCRYPT) == false) {
         ERROR_NO_COMMENT;
@@ -199,7 +204,11 @@ bool key_list_c::decrypt(dynamic_mem_c const& key) const
     aes_c aes;
     aes.set_iv_key(iv, key);
     file_enc_c file_enc;
-    file_enc.set_file_path(this->get_file_name() + ".enc");
+    if (!file_enc.set_file_path(this->get_file_name() + ".enc")) {
+        ERROR("ファイルパスの設定エラー");
+        PUSH_VALUE(this->get_file_name() + ".enc");
+        return false;
+    }
 
     if (file_enc.crypt_process(aes, file_enc_c::CRYPT_MODE::DECRYPT) == false) {
         ERROR_NO_COMMENT;
@@ -262,5 +271,33 @@ bool key_list_c::key_list_pkey_update(dynamic_mem_c const& key) const
         ERROR_NO_COMMENT;
         return false;
     }
+    return true;
+}
+
+bool key_list_c::init() const
+{
+    file_ptr_c fp;
+    bool isFind = false;
+    if (fp.open(this->get_file_name(), "rb")) {
+        fp.close();
+    }
+    if (fp.open(this->get_file_name() + ".enc", "rb")) {
+        fp.close();
+        file_enc_c file_rename;
+        if (!file_rename.set_file_path(this->get_file_name() + ".enc")) {
+            ERROR("鍵リストを開けません");
+            PUSH_VALUE(this->get_file_name() + ".enc");
+            return false;
+        }
+        file_rename.extemsion_set(file_enc_c::CRYPT_MODE::DECRYPT);
+    }
+    fp.open(this->get_file_name(), "wb");
+    dynamic_mem_c dummy(AES_SIZE);
+    RAND_bytes(dummy.mem_, AES_SIZE);
+    // 空の状態で暗号化できないのでダミーデータを作成
+    fwrite(dummy.mem_, 1, dummy.size(), fp.fp_);
+    fwrite(dummy.mem_, 1, dummy.size(), fp.fp_);
+    fwrite(dummy.mem_, 1, dummy.size(), fp.fp_);
+
     return true;
 }

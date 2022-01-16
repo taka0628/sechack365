@@ -50,5 +50,10 @@ void usb_select::on_pushButton_ok_clicked()
         return;
     }
 
+    this->done(0);
+}
+
+void usb_select::on_pushButton_cansel_clicked()
+{
     this->done(1);
 }

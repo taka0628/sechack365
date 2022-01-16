@@ -6,6 +6,7 @@
 
 #include "../include/file_enc.hpp"
 #include "../include/key_gen.hpp"
+#include "../include/master_key_c.hpp"
 
 namespace Ui {
 class Dialog_password;
@@ -22,6 +23,7 @@ public:
     bool is_calcel() const;
 
     void set_file_path(std::string file_path);
+    std::string get_pass() const;
 
 private slots:
 
@@ -36,6 +38,7 @@ private:
 
     bool is_canceled_;
     bool is_ok_;
+    std::string pass_;
 
     std::string file_path_;
 };

@@ -139,7 +139,7 @@ uint32_t device_c::get_usb_cnt() const
 bool device_c::set_usbID_form_file()
 {
     file_ptr_c fp;
-    if (fp.open(USB_ID_LIST, "r")) {
+    if (!fp.open(USB_ID_LIST, "r")) {
         ERROR("ファイルが開けません");
         return false;
     }

@@ -58,8 +58,14 @@ void Dialog_password::on_pushButton_OK_clicked()
         PUSH_VALUE(password);
         exit(1);
     }
+    this->pass_ = password;
 
-    this->close();
+    this->done(0);
 }
 
 void Dialog_password::on_pushButton_Cancel_clicked() { this->close(); }
+
+std::string Dialog_password::get_pass() const
+{
+    return this->pass_;
+}

@@ -148,7 +148,7 @@ bool master_key_c::push_key(const dynamic_mem_c crypt_key, const dynamic_mem_c i
     return true;
 }
 
-bool master_key_c::init(string usb_id, string pass_word)
+bool master_key_c::init(const string usb_id, const string pass_word)
 {
     if (usb_id.empty() || pass_word.empty()) {
         ERROR("引数が空");

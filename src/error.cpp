@@ -21,7 +21,7 @@ void log::push_log(const char* comment, const char* file, const char* func, cons
     timer         = time(NULL);
     date          = localtime(&timer);
     char buf[512] = { "0" };
-    strftime(buf, sizeof(buf), "[%Y/%x %H:%M:%S] ", date);
+    strftime(buf, sizeof(buf), "[%x %H:%M:%S] ", date);
 
     // ファイル出力
     ofp << buf << "\n\t";

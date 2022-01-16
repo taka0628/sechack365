@@ -86,6 +86,8 @@ public:
     bool key_check(dynamic_mem_c const& key) const;
     // 鍵リストの共通鍵のハッシュ値をファイルに上書き
     bool key_list_pkey_update(dynamic_mem_c const& key) const;
+    // 鍵リストの初期化
+    bool init() const;
 };
 
 class file_ptr_c {
