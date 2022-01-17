@@ -152,6 +152,7 @@ bool device_c::set_usbID_form_file()
         memset(buf, 0, sizeof(buf));
         fseek(fp.fp_, this->file_read_cnt * 9, SEEK_SET);
         int read_size = fread(buf, 1, 9, fp.fp_);
+        this->file_read_cnt++;
         if (read_size != 9) {
             return false;
         }
