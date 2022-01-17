@@ -1,6 +1,9 @@
 #include "../include/device_c.hpp"
 
-device_c::device_c() { }
+device_c::device_c()
+{
+    this->file_read_cnt = 0;
+}
 
 device_c::~device_c() { }
 
@@ -147,12 +150,17 @@ bool device_c::set_usbID_form_file()
     uint looplim = 100;
     while (looplim--) {
         memset(buf, 0, sizeof(buf));
+        fseek(fp.fp_, this->file_read_cnt * 9, SEEK_SET);
         int read_size = fread(buf, 1, 9, fp.fp_);
         if (read_size != 9) {
             return false;
         }
         if (this->set_usbID(buf)) {
+            this->file_read_cnt++;
             return true;
+        }
+        if (read_size <= 0) {
+            return false;
         }
     }
     return false;
@@ -227,16 +235,13 @@ bool device_c::is_exist_usbID_in_file(const string usbID) const
         return false;
     }
     char buf[16] = { "0" };
-    uint looplim = 100;
-    while (looplim--) {
-        memset(buf, 0, sizeof(buf));
-        int read_size = fread(buf, 1, 9, fp.fp_);
-        if (read_size != 9) {
-            return false;
-        }
-        if (memcmp(buf, usbID.c_str(), 9) == 0) {
-            return true;
-        }
+    memset(buf, 0, sizeof(buf));
+    int read_size = fread(buf, 1, 9, fp.fp_);
+    if (read_size != 9) {
+        return false;
+    }
+    if (memcmp(buf, usbID.c_str(), 9) == 0) {
+        return true;
     }
     return false;
 }

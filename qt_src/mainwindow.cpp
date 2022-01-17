@@ -193,8 +193,15 @@ void MainWindow::on_action_menue_USBSetting_triggered()
     }
     master_key_c mkey;
     device_c usb;
-    mkey.add_authorization()
-        usb_select_wind.get_usbID();
+    if (!usb.set_usbID_form_file()) {
+        ERROR("USBIDをセットできません");
+        return;
+    }
+    if (mkey.add_authorization(usb.get_usbID(), pass_window.get_pass(), usb_select_wind.usbID_ )) {
+        ERROR("Mkeyの共通鍵を追加できません");
+        return;
+    }
+
     ui->label_usb_debug->setText(QString::fromStdString(usb_select_wind.usbID_));
 }
 

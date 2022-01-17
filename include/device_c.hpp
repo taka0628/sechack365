@@ -23,6 +23,7 @@ class device_c {
 private:
     std::string usb_id_;
     std::string usb_serial_;
+    uint file_read_cnt;
 
 public:
     device_c();
