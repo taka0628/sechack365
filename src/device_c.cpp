@@ -92,7 +92,7 @@ bool device_c::set_usbID(const string usbID)
     cmdline += " -v | grep iSerial | awk '{print $3}' | tail -n -1";
 
     string temp = local::cmdline(cmdline);
-    cout << "temp: " << temp << endl;
+    // cout << "temp: " << temp << endl;
     try {
         // 4文字未満のシリアル番号はエラーとみなす
         if (temp.empty() || temp.size() < 4) {

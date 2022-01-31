@@ -197,7 +197,7 @@ void MainWindow::on_action_menue_USBSetting_triggered()
         ERROR("USBIDをセットできません");
         return;
     }
-    if (mkey.add_authorization(usb.get_usbID(), pass_window.get_pass(), usb_select_wind.usbID_ )) {
+    if (mkey.add_authorization(usb.get_usbID(), pass_window.get_pass(), usb_select_wind.usbID_)) {
         ERROR("Mkeyの共通鍵を追加できません");
         return;
     }
@@ -230,7 +230,7 @@ void MainWindow::on_action_menue_Init_triggered()
         ERROR("鍵リストの暗号化に失敗");
         exit(1);
     }
-    cout << "usb id: " << usb_select_window.usbID_ << "\n"
-         << "pass: " << pass_window.get_pass() << endl;
+    // cout << "usb id: " << usb_select_window.usbID_ << "\n"
+    //  << "pass: " << pass_window.get_pass() << endl;
     return;
 }
