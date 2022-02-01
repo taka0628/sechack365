@@ -1,0 +1,30 @@
+name: TEST
+
+on:
+  push:
+    paths-ignore:
+      - "build/**"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: install
+      run: |
+        sudo apt install cmake
+        wget https://github.com/google/googletest/archive/refs/tags/release-1.11.0.zip
+        unzip release-1.11.0.zip
+        cd googletest-release-1.11.0
+        cmake .
+        make
+        sudo make install
+    - name: build
+      run: |
+        cd test
+        make clean
+        make
+    - name: run
+      run: |
+        cd test
+        make run

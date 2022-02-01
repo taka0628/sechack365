@@ -3,38 +3,47 @@
 
 #include <memory.h>
 #include <stdio.h>
+
+#include <assert.h>
 #include <cstdio>
 #include <cstdlib>
-#include <vector>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <sstream>
 
 #include "macro.hpp"
 
-class dynamic_mem_c
-{
+class dynamic_mem_c {
 private:
     size_t size_;
     int usage_;
+    std::string to_string_table(const u_int i) const;
 
 public:
     dynamic_mem_c();
     dynamic_mem_c(const uint size);
     ~dynamic_mem_c();
-    dynamic_mem_c(const dynamic_mem_c &from);
-    dynamic_mem_c &operator=(const dynamic_mem_c &from);
+    dynamic_mem_c(const dynamic_mem_c& from);
+    dynamic_mem_c& operator=(const dynamic_mem_c& from);
 
-    unsigned char *mem_;
+    unsigned char* mem_;
 
     void d_new(const uint size);
     void d_free();
     size_t size() const;
-    void copy(std::string &dest, const uint size) const;
+    void copy(const dynamic_mem_c from, const uint size);
+    void copy(const dynamic_mem_c from);
     void reset();
     bool empty() const;
+    std::vector<u_char> to_vector() const;
+    bool from_vector(const std::vector<u_char>& src);
+    bool from_string(const std::string& src);
+    // 16進数表記へ変換 %02X
+    std::string to_string() const;
+    // サイズと内容が等しいか？
+    bool equal(const dynamic_mem_c& arg) const;
 };
 
 #endif

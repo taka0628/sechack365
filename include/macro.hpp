@@ -4,16 +4,38 @@
 #include "error.hpp"
 
 // エラー用マクロ
+
+// エラーメッセージをコンソールに出力するか
+// 1: 出力, 0: ログファイルにのみ出力
+#define ___MACRO_IS_PRINTF 0
+
+#if ___MACRO_IS_PRINTF
+
 #define ERROR(comment)                                                                   \
-	printf("[ERROR]\n\t__%s__/__%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, comment); \
-	push_error_log(comment, __FILE__, __func__, __LINE__)
+    printf("[ERROR]\n\t__%s__/__%s: %d\n\t%s\n", __FILE__, __func__, __LINE__, comment); \
+    log::push_log(comment, __FILE__, __func__, __LINE__)
 
 #define ERROR_NO_COMMENT                                                  \
-	printf("[ERROR]\n\t__%s__/__%s: %d\n", __FILE__, __func__, __LINE__); \
-	push_error_log("", __FILE__, __func__, __LINE__)
+    printf("[ERROR]\n\t__%s__/__%s: %d\n", __FILE__, __func__, __LINE__); \
+    log::push_log("", __FILE__, __func__, __LINE__)
+
+#else
+
+#define ERROR(comment) \
+    log::push_log(comment, __FILE__, __func__, __LINE__)
+
+#define ERROR_NO_COMMENT \
+    log::push_log("", __FILE__, __func__, __LINE__)
+
+#endif
 
 #define PRINT_ERROR_LOG(comment) \
-	push_error_log(comment, __FILE__, __func__, __LINE__)
+    log::push_log(comment, __FILE__, __func__, __LINE__)
+
+#define PUSH_VALUE(arg) \
+    log::push_value(TO_STRING(arg), arg)
+
+#define TO_STRING(VariableName) (#VariableName)
 
 // -----------------------------------------------------------------------
 // 定数
@@ -37,10 +59,16 @@
 
 // 鍵リストのファイル名
 #define KEY_FILE_NAME "keyList"
-
+// 鍵リストの共通鍵のハッシュ値
 #define KEY_HASH_FILE "key_hash"
+// パスワードのハッシュ値
+#define PASSWORD_HASH_FILE "pass_hash"
+// USB IDのファイル名
+#define USB_ID_LIST "usb_ID"
 
 #define ERROR_LOG_FILE "errorLog.txt"
+
+constexpr char MASTER_KEY_LIST_FILE[] = "mkeyList";
 
 // ------------------------------------------------------------------------
 // nonce設定

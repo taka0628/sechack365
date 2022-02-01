@@ -1,0 +1,10 @@
+# DefaultSetting
+# ref: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+BasedOnStyle: WebKit
+IndentWidth: 4
+Language: Cpp
+Standard: Auto
+# イコールを揃える
+AlignConsecutiveAssignments: true
+# コメントを揃える
+# AlignTrailingComments: true

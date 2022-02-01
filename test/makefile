@@ -12,14 +12,18 @@ SRCS	= key_list_c.cpp\
 	aes_c.cpp\
 	key_gen_c.cpp\
 	error.cpp\
-	device_c.cpp
+	device_c.cpp\
+	master_key_c.cpp
 
 TESTSRC	= keyGenTest.cpp\
 	key_list_test.cpp\
 	test.cpp\
 	dynamicMemTest.cpp\
 	test_log.cpp\
-	deviceTest.cpp
+	deviceTest.cpp\
+	cmdline.cpp\
+	nonceTest.cpp\
+	masterKeyTest.cpp
 
 TESTDIR = src
 
@@ -58,6 +62,7 @@ ${OBJDIR}/%.o: $(TESTDIR)/%.cpp
 # 	${CXX} ${addprefix ../, ${TESTSRC}} -c ${addprefix ../${SRCDIR},${SRCS}} ${CFLAGS}
 
 run: ${TARGET}
+	cp /dev/null errorLog.txt
 	./${TARGET}
 
 clean:
@@ -66,3 +71,13 @@ clean:
 debug:
 	make clean
 	make "CFLAGS = ${CFLAGS} -g -O0"
+
+rebuild:
+	make clean
+	make
+
+format:
+	clang-format -i -style=file $(shell find ../src/ -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h")
+	clang-format -i -style=file $(shell find ../include/ -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h")
+	clang-format -i -style=file $(shell find ../qt_src/ -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h")
+	clang-format -i -style=file $(shell find ../test/ -path "*gtest" -prune -or -type f -name "*.cpp" -or -name "*.c" -or -name "*.hpp" -or -name "*.h" | grep -v "gtest")

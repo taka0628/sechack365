@@ -1,0 +1,39 @@
+@startuml class
+class file_enc_c{
+	- file_path_ : 	string
+	- file_buff_ : 	string
+	- enc_buf_ :	string
+    - password_ : 	string
+    - safe_pass_:	string
+    - isExit_: 		bool
+    - isFile_: 		bool
+    - isDir_: 		bool
+    - isEncrypt_: 	bool
+    - isNoEncrypt_: bool
+
+	- file_enc_c(const file_ecn_c &)
+	- size_t getFileSize(FILE*) const
+	- void	file_delete(const string) const
+	+ enum CRYPT_MODE{DECRYPT, ENCRYPT}
+	+ bool set_file_path(string)
+	+ bool set_password(string)
+    + bool file_enc()
+    + bool file_dec()
+    + bool crypt_process(aes_c&, const file_enc_c::CRYPT_MODE) const
+    + bool calc_file_hash(const string , dynamic_mem_c&) const
+    + void extemsion_set(const file_enc_c::CRYPT_MODE)
+    + std::string get_file_pass() const
+    + bool is_file_exit() const
+    + bool is_file() const
+    + bool is_dir() const
+    + bool is_enc() const
+    + bool is_no_enc() const
+}
+class key_list_c
+class file_ptr_c
+class key_gen_c
+class aes_c
+class device_c
+class dynamic_mem_c
+class sha_c
+@enduml
