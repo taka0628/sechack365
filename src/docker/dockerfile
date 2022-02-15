@@ -21,23 +21,28 @@ ENV LANGUAGE ja_JP:jp
 ENV LC_ALL ja_JP.UTF-8
 RUN update-locale LANG=ja_JP.UTF-8
 
-# GUI出力のためのパッケージ
-RUN apt-get update
-RUN apt-get install -y xterm && apt-get install -y x11-xserver-utils\
-	dbus-x11\
-	x11-apps -y\
-	libcanberra-gtk*
-
-# レスキュー実行のためのパッケージ
+# コンパイルに必要なパッケージ
 RUN apt-get update
 RUN apt-get install -y curl && apt-get install -y wget\
 	git\
 	gnome-terminal\
 	nano\
-	nautilus
+	nautilus\
+	make\
+	g++\
+	cmake\
+	libssl-dev
 
 ENV DIRPATH home/${DOCKER_USER_}
 WORKDIR $DIRPATH
+
+RUN wget https://github.com/google/googletest/archive/refs/tags/release-1.11.0.tar.gz && tar xvzf release-1.11.0.tar.gz && \
+	cd googletest-release-1.11.0 &&\
+	cd googletest &&\
+	cmake .. &&\
+	make &&\
+	make install
+
 
 # RUN groupadd rescue
 RUN useradd ${DOCKER_USER_}
@@ -49,17 +54,13 @@ RUN chown -R ${DOCKER_USER_} /${DIRPATH}
 ARG CACHEBUST=1
 RUN echo CACHEBUST: $CACHEBUST
 
-# Docker内でupgradeは避けたほうがいいと言われているが、rescueはウェブサーバでは無いのでupgradeを使う
 USER root
 RUN apt-get update && apt-get -y upgrade
 
 USER ${DOCKER_USER_}
 
-RUN mkdir /home/${NAME}/temp &&	chmod 777 temp
-
 # コンテナ内でgnome-terminalを開くと出てくるdbusのエラーを解消
 ENV NO_AT_BRIDGE 1
 ENV ENABLE_CJK_FONT 1
 
-# 起動時にはランチャーの実行が楽になるようにランチャーのあるディレクトリから始める
-WORKDIR /${DIRPATH}/temp
+WORKDIR /${DIRPATH}

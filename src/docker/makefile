@@ -1,4 +1,4 @@
-NAME := guest_container
+CONTAINER_NAME := guest_container
 TS := `date +%Y%m%d%H%M%S`
 SCORE_FILE := score.csv
 DOCKER_USER_NAME := RDocker
@@ -8,76 +8,33 @@ RescueSRC := RIORescue
 
 # キャッシュ有りでビルド
 build:
-	docker image build -t ${NAME} \
+	docker image build -t ${CONTAINER_NAME} \
 	--build-arg CACHEBUST=${TS} .
 
 # コンテナ実行
 run:
-	docker container stop ${NAME} &2>/dev/null
-	xhost local:
+	docker container stop ${CONTAINER_NAME} &2>/dev/null
 	docker container run \
 	-it \
 	--rm \
 	-d \
-	--name ${NAME} \
-	-e DISPLAY=unix${DISPLAY} \
-	-v /tmp/.X11-unix/:/tmp/.X11-unix \
-	${NAME}:latest
-	bash FileCopyToContainer.sh ../../errorLog.txt ${NAME}
-	docker container exec -it ${NAME} bash
-	docker container stop ${NAME}
-
-
-rioneLauncher:
-	xhost local:
-	bash rescue2docker.sh
-	bash dockerContainerStop.sh ${NAME}
-	docker container run \
-	-it \
-	--rm \
-	-d \
-	--name ${NAME} \
-	--mount type=bind,src=$(PWD)/${SCORE_FILE},dst=${DOCKER_HOME_DIR}/RioneLauncher/${SCORE_FILE} \
-	-e DISPLAY=unix${DISPLAY} \
-	-v /tmp/.X11-unix/:/tmp/.X11-unix \
-	${NAME}:latest
-	bash dockerCp.sh ${NAME} ${DOCKER_HOME_DIR}
-	bash execRioneLauncherInDocker.sh ${NAME}
+	--name ${CONTAINER_NAME} \
+	${CONTAINER_NAME}:latest
+	docker container cp ../../../2021_sec/ ${CONTAINER_NAME}:/home/guest
+	docker container exec -it ${CONTAINER_NAME} /bin/bash -c "cd /home/guest/2021_sec/test/ && make -j$(nproc)" || :
+	docker cp ${CONTAINER_NAME}:/home/guest/2021_sec/test/build/ ../../test/
+	docker cp ${CONTAINER_NAME}:/home/guest/2021_sec/test/crypt_temp ../../test/
+	docker container stop ${CONTAINER_NAME}
 
 
 # dockerのリソースを開放
 clean:
 	docker system prune
 
-# キャッシュを使わずにビルド
-rebuild:
-	@echo "コンテナの再構築には時間がかかります"
-	@echo "コンテナを再構築しますか？ (y/n)"
-	@read -p "->" ans;\
-	if [ "$$ans" != y ]; then  \
-      exit 1;\
-    fi
-	bash rescue2docker.sh
-	docker image build -t ${NAME} \
-	--build-arg CACHEBUST=${TS} \
-	--pull \
-	--no-cache=true .
 
 # root権限で起動中のコンテナに接続
 connect:
-	docker exec -u root -it ${NAME} /bin/bash
-
-sync:
-	bash rescue2docker.sh
-ifeq ($(shell docker container ls | grep "rescue_d:latest"),)
-	@echo "コンテナが起動していません"
-	exit 1
-endif
-	docker cp ${RescueSRC}/ ${NAME}:/${DOCKER_USER_NAME}/
-
-update:
-	git pull
-	make build
+	docker exec -u root -it ${CONTAINER_NAME} /bin/bash
 
 # 環境構築
 install:
@@ -105,8 +62,8 @@ test:
 	-it \
 	--rm \
 	-d \
-	--name ${NAME} \
+	--name ${CONTAINER_NAME} \
 	--mount type=bind,src=$(PWD)/${SCORE_FILE},dst=${DOCKER_HOME_DIR}/RioneLauncher/${SCORE_FILE} \
 	-e DISPLAY=unix${DISPLAY} \
 	-v /tmp/.X11-unix/:/tmp/.X11-unix \
-	${NAME}:latest
+	${CONTAINER_NAME}:latest
