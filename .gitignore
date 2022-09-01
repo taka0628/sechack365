@@ -6,7 +6,7 @@
 # !test/
 # !include/
 build-qt_src*Debug/*
-.*
+# .*
 
 *.txt
 *.o
@@ -16,19 +16,19 @@ build-qt_src*Debug/*
 *.out*
 *.csv
 .stash
-test/*
+# test/*
 
 !.github/
 !.github/workflows/
 !.clang-format
 !.vscode
 
-!test/*.cpp
-!test/*.hpp
-!test/.vscode
-!test/src
-!test/include
-!test/gps_sandbox
+# !test/*.cpp
+# !test/*.hpp
+# !test/.vscode
+# !test/src
+# !test/include
+# !test/gps_sandbox
 
 !build-qt_src-Release/*.out
 nonce
