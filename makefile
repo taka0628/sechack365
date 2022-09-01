@@ -1,5 +1,7 @@
 .PHONY : build
 
+SHELL := /bin/bash
+
 # コンテナ名
 CONTAINER-NAME := build-container
 # コンテナのホームディレクトリ
@@ -7,15 +9,17 @@ DOCKER_HOME_DIR := /home/guest
 # ビルドディレクトリ
 BUILD_DIR := build
 
+# Docker exec用オプション
+ARG :=
 
 build:
 	@make -s pre-exec
-	-docker container exec -t ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
+	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
 	@make -s post-exec
 
 rebuild:
 	make -s pre-exec
-	-docker container exec -t ${CONTAINER-NAME}  /bin/bash -c "cd ${BUILD_DIR} && make clean &&  make -j$(nproc) "
+	-docker container exec -t ${ARG} ${CONTAINER-NAME}  /bin/bash -c "cd ${BUILD_DIR} && make clean &&  make -j4 "
 	make -s post-exec
 
 bash:

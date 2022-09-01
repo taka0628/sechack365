@@ -39,15 +39,17 @@ LDGFLAGS	:= -lpthread \
 	-lgtest_main \
 	-lgtest
 
-LDFLAGS	:= -lcrypto \
+LDFLAGS	:= -static \
+	-lcrypto \
 	-lssl \
+	-ldl \
 	-pthread
 
 CFLAGS	:= -Wall\
 	-std=c++11
 
 ${TARGET}: ${OBJS}
-	${CXX} -o $@ $^ ${LDFLAGS} ${LDGFLAGS}
+	${CXX} -o $@ $^ ${LDGFLAGS} ${LDFLAGS}
 
 ${OBJDIR}/%.o: $(SRCDIR)/%.cpp
 	mkdir -p build
@@ -92,15 +94,17 @@ DOCKER_HOME_DIR := /home/guest
 # ビルドディレクトリ
 BUILD_DIR := sechack365/test
 
+# Docker exec用オプション
+ARG :=
 
 build:
-	@make -s pre-exec
-	-docker container exec -t ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
-	@make -s post-exec
+	make -s pre-exec
+	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
+	make -s post-exec
 
 rebuild:
 	make -s pre-exec
-	-docker container exec -t ${CONTAINER-NAME}  /bin/bash -c "cd ${BUILD_DIR} && make clean &&  make -j$(nproc) "
+	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make clean && make -j4 "
 	make -s post-exec
 
 debug:
@@ -110,7 +114,7 @@ debug:
 
 bash:
 	make -s pre-exec
-	-docker container exec -it ${CONTAINER-NAME} /bin/bash
+	-docker container exec -it ${ARG} ${CONTAINER-NAME} /bin/bash
 	make -s post-exec
 
 docker-build:
@@ -132,13 +136,12 @@ docker-rebuild:
 # コンテナ実行する際の前処理
 # 起動，ファイルのコピーを行う
 pre-exec:
-ifneq ($(shell docker container ls -a | grep -c ${CONTAINER-NAME}),0)
+ifneq ($(shell docker container ls -a 2>/dev/null | grep -c ${CONTAINER-NAME}),0)
 	docker container stop ${CONTAINER-NAME}
 endif
 	@docker container run \
 	-it \
 	--rm \
-	--network none \
 	-d \
 	--name ${CONTAINER-NAME} \
 	${CONTAINER-NAME}:latest 1>/dev/null

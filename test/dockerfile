@@ -1,0 +1,47 @@
+# googletestのインストール
+FROM ubuntu:20.04 AS googletest
+
+COPY --chown=root:root sources.list /etc/apt/sources.list
+
+RUN apt-get update \
+	&&  apt-get install -y \
+	g++\
+	make\
+	wget\
+	cmake
+
+RUN wget https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz\
+	&& tar xzf release-1.12.1.tar.gz\
+	&& cd googletest-release-1.12.1/googletest\
+	&& mkdir build\
+	&& cmake ..\
+	&& make\
+	&& make install
+
+#-----------------
+# ビルド用コンテナ
+#-----------------
+
+FROM ubuntu:20.04 AS builder
+
+# ユーザーを作成
+ARG DOCKER_USER_=guest
+
+COPY --chown=root:root sources.list /etc/apt/sources.list
+
+RUN apt-get update \
+	&&  apt-get install -y \
+	g++\
+	make\
+	libssl-dev
+
+COPY --from=googletest /usr/local/include /usr/local/include
+COPY --from=googletest /usr/local/lib /usr/local/lib
+
+ENV DIRPATH home/${DOCKER_USER_}
+WORKDIR $DIRPATH
+
+# ユーザ設定
+RUN useradd ${DOCKER_USER_}
+RUN chown -R ${DOCKER_USER_} /${DIRPATH}
+USER ${DOCKER_USER_}

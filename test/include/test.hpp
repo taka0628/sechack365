@@ -18,8 +18,8 @@
 #include "../../include/file_enc.hpp"
 #include "../../include/key_gen.hpp"
 #include "../../include/sha_c.hpp"
-#include "googletest/include/gtest/gtest.h"
 #include "openssl/rand.h"
+#include "gtest/gtest.h"
 
 #define ERROR_TEST        \
     TestLog_c testLogIns; \
