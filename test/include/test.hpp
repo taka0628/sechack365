@@ -18,7 +18,7 @@
 #include "../../include/file_enc.hpp"
 #include "../../include/key_gen.hpp"
 #include "../../include/sha_c.hpp"
-#include "../include/googletest/include/gtest/gtest.h"
+#include "googletest/include/gtest/gtest.h"
 #include "openssl/rand.h"
 
 #define ERROR_TEST        \

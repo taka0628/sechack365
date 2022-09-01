@@ -37,7 +37,7 @@ TEST(masterKeyTest, reset)
     dynamic_mem_c buffer(line_size);
     if ((read_size = fread(buffer.mem_, 1, line_size, fp.fp_)) < 0) {
         ERROR("ファイルの読み込みサイズエラー");
-        log::push_value(TO_STRING(read_size), read_size);
+        ErrorMsg::push_value(TO_STRING(read_size), read_size);
         FAIL();
     }
     dynamic_mem_c iv(AES_SIZE);

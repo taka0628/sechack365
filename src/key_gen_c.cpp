@@ -39,8 +39,8 @@ bool key_gen_c::canKeyGen() const
 {
     if (this->pass_.empty() || this->get_usbSerial().empty()) {
         ERROR("pass or serial is empty");
-        log::push_value(TO_STRING(pass_.empty()), this->pass_.empty());
-        log::push_value(TO_STRING(get_usbSerial.empty()), this->get_usbSerial().empty());
+        ErrorMsg::push_value(TO_STRING(pass_.empty()), this->pass_.empty());
+        ErrorMsg::push_value(TO_STRING(get_usbSerial.empty()), this->get_usbSerial().empty());
         return false;
     }
     return true;

@@ -1,12 +1,11 @@
 #include "../include/error.hpp"
+#include "../include/macro.hpp"
 
 // using namespace std;
 
-// namespace log {
-
 using namespace std;
 
-void log::push_log(const char* comment, const char* file, const char* func, const int line)
+void ErrorMsg::push_log(const char* comment, const char* file, const char* func, const int line)
 {
     time_t timer;
     struct tm* date;
@@ -30,7 +29,7 @@ void log::push_log(const char* comment, const char* file, const char* func, cons
     ofp << comment << "\n"
         << endl;
 }
-void log::push_value(std::string name, const string value)
+void ErrorMsg::push_value(std::string name, const string value)
 {
     ofstream ofp(ERROR_LOG_FILE, ios_base::app);
     if (!ofp) {
@@ -41,7 +40,7 @@ void log::push_value(std::string name, const string value)
     // ファイル出力
     ofp << "\t" << name << ": " << value << endl;
 }
-void log::push_value(std::string name, const size_t value)
+void ErrorMsg::push_value(std::string name, const size_t value)
 {
     ofstream ofp(ERROR_LOG_FILE, ios_base::app);
     if (!ofp) {
