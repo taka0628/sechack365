@@ -149,5 +149,7 @@ endif
 # コンテナ終了時の後処理
 # コンテナ内のファイルをローカルへコピー，コンテナの削除を行う
 post-exec:
-	docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/sechack365/test/ ../
+	-docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/sechack365/test/build/ .
+	-docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/sechack365/test/test.out .
+	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libcrypto.so.1.1 .
 	@docker container stop ${CONTAINER-NAME} 1>/dev/null
