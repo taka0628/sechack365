@@ -15,6 +15,7 @@ ARG :=
 build:
 	@make -s pre-exec
 	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
+	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
 	@make -s post-exec
 
 rebuild:
