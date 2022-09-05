@@ -1,5 +1,14 @@
 .PHONY : build
 
+# コンテナ名
+CONTAINER-NAME := test-container
+DOCKER_HOME_DIR := /home/guest
+# ビルドディレクトリ
+BUILD_DIR := sechack365/test
+
+# Docker exec用オプション
+ARG :=
+
 CXX := g++
 
 SHELL := /bin/bash
@@ -39,11 +48,10 @@ LDGFLAGS	:= -lpthread \
 	-lgtest_main \
 	-lgtest
 
-LDFLAGS	:= -static \
-	-lcrypto \
-	-lssl \
+LDFLAGS	:= -lssl \
 	-ldl \
-	-pthread
+	-pthread \
+	-Wl,-rpath=./ -lcrypto
 
 CFLAGS	:= -Wall\
 	-std=c++11
@@ -87,15 +95,6 @@ format:
 # Docker用コマンド
 
 # --------------------------
-
-# コンテナ名
-CONTAINER-NAME := test-container
-DOCKER_HOME_DIR := /home/guest
-# ビルドディレクトリ
-BUILD_DIR := sechack365/test
-
-# Docker exec用オプション
-ARG :=
 
 build:
 	make -s pre-exec

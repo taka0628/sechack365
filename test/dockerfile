@@ -1,7 +1,8 @@
 # googletestのインストール
 FROM ubuntu:20.04 AS googletest
 
-COPY --chown=root:root sources.list /etc/apt/sources.list
+COPY net.sh /net.sh
+RUN sh /net.sh
 
 RUN apt-get update \
 	&&  apt-get install -y \
@@ -27,7 +28,8 @@ FROM ubuntu:20.04 AS builder
 # ユーザーを作成
 ARG DOCKER_USER_=guest
 
-COPY --chown=root:root sources.list /etc/apt/sources.list
+COPY net.sh /net.sh
+RUN sh /net.sh
 
 RUN apt-get update \
 	&&  apt-get install -y \
