@@ -1,0 +1,10 @@
+*
+!gps_sandbox/
+!include/
+!src/
+
+!dockerignore
+!.gitignore
+!dockerfile
+!makefile
+!net.sh
