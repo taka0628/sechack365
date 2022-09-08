@@ -49,6 +49,7 @@ pre-exec:
 ifneq ($(shell docker container ls -a | grep -c ${CONTAINER-NAME}),0)
 	docker container stop ${CONTAINER-NAME}
 endif
+	sed -i "s/LOCAL_TEST 0/LOCAL_TEST 1/g" include/macro.hpp
 	@docker container run \
 	-it \
 	--rm \
@@ -63,3 +64,28 @@ endif
 post-exec:
 	docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/build .
 	@docker container stop ${CONTAINER-NAME} 1>/dev/null
+
+
+installDev:
+	sudo apt update
+	sudo apt install \
+	libssl-dev \
+	qtbase5-dev \
+	qttools5-dev-tools \
+	qtcreator \
+	make \
+	cmake \
+	clang-format
+	make googletest -s
+
+googletest:
+	wget https://github.com/google/googletest/archive/refs/tags/release-1.12.1.tar.gz
+	tar xaf release-1.12.1.tar.gz
+	rm release-1.12.1.tar.gz
+	cd googletest-release-1.12.1 && \
+	mkdir build && \
+	cd build &&\
+	cmake .. &&\
+	make &&\
+	sudo make install
+	rm -rf googletest-release-1.12.1

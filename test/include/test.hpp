@@ -34,7 +34,6 @@
 // ローカルの実行環境でテスト
 // USBを物理的にさしてテストする場合は1
 // Actions上などUSBの設定ができない環境では0
-#define LOCAL_TEST 0
 
 class TestLog_c {
 private:

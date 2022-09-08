@@ -210,13 +210,9 @@ dynamic_mem_c master_key_c::generate_crypt_key(const string usb_id, const string
         PUSH_VALUE(password);
         return error;
     }
-    if (!key_gen.set_usbID(usb_id)) {
+    if (!key_gen.set_usb(usb_id)) {
         ERROR("usbIDがセットできません");
         PUSH_VALUE(usb_id);
-        return error;
-    }
-    if (!key_gen.set_UsbSerial()) {
-        ERROR("usb serialがセットできません");
         return error;
     }
     if (!key_gen.key_gen()) {

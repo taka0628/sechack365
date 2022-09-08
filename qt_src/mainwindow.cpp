@@ -39,13 +39,13 @@ void MainWindow::on_push_enc_clicked()
         return;
     }
 
-    //file:の文字を消去
+    // file:の文字を消去
     static const string erase_string = "file://";
     if (input_text.find(erase_string.c_str()) != string::npos) {
         input_text.erase(input_text.find(erase_string.c_str()),
             erase_string.size());
     }
-    //USB idの取得
+    // USB idの取得
     device_c usb;
     if (!usb.set_usbID_form_file()) {
         ERROR("usbIDを取得できません");
@@ -58,7 +58,7 @@ void MainWindow::on_push_enc_clicked()
         return;
     }
 
-    //Mkeyの復号
+    // Mkeyの復号
     master_key_c mkey;
 
     //鍵リストの復号
@@ -106,7 +106,7 @@ void MainWindow::on_push_dec_clicked()
     if (input_text.empty()) {
         return;
     }
-    //file:の文字を消去
+    // file:の文字を消去
     if (input_text.find(erase_string.c_str()) != string::npos) {
         input_text.erase(input_text.find(erase_string.c_str()),
             erase_string.size());
@@ -125,7 +125,7 @@ void MainWindow::on_push_dec_clicked()
         return;
     }
 
-    //USB idの取得
+    // USB idの取得
     device_c usb;
     usb.set_usbID_form_file();
     if (!usb.has_serial(usb.get_usbID())) {
@@ -134,7 +134,7 @@ void MainWindow::on_push_dec_clicked()
         return;
     }
 
-    //Mkeyの復号
+    // Mkeyの復号
     master_key_c mkey;
 
     //鍵リストの復号
@@ -180,7 +180,7 @@ void MainWindow::on_action_menue_PasswordSetting_triggered()
     password_window.exec();
 }
 
-//USBのセット
+// USBのセット
 void MainWindow::on_action_menue_USBSetting_triggered()
 {
     usb_select usb_select_wind;

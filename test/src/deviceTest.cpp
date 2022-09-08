@@ -4,6 +4,8 @@ using namespace std;
 
 constexpr char USB_ID[] = "8564:1000";
 
+#if LOCAL_TEST
+
 TEST(deviceTest, usbList)
 {
     device_c usb;
@@ -50,3 +52,18 @@ TEST(deviceTest, UsbidFile)
     ASSERT_FALSE(error_usb.is_exist_usbID_in_file("1111:1111"));
     ASSERT_FALSE(error_usb.add_usbID2file("1111:1111"));
 }
+
+#else
+
+TEST(debugUsbTest, test)
+{
+    usb_debug usb;
+    ASSERT_EQ(usb.get_usbID().size(), 0);
+    ASSERT_EQ(usb.get_usbSerial().size(), 0);
+
+    ASSERT_TRUE(usb.set_usbID("1111:2222"));
+    ASSERT_NE(usb.get_usbID().size(), 0);
+    ASSERT_NE(usb.get_usbSerial().size(), 0);
+}
+
+#endif

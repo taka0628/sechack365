@@ -277,7 +277,6 @@ bool key_list_c::key_list_pkey_update(dynamic_mem_c const& key) const
 bool key_list_c::init() const
 {
     file_ptr_c fp;
-    bool isFind = false;
     if (fp.open(this->get_file_name(), "rb")) {
         fp.close();
     }

@@ -17,13 +17,14 @@ jobs:
       - name: build check
         run: |
           rm -f build/*.out
+          sed -i "s/LOCAL_TEST 0/LOCAL_TEST 1/g" include/macro.hpp
           make rebuild ARG="--user root"
           if [[ -z $(find build -name "fileEncSys.out" -type f) ]]; then
             ls -l build
             exit 1
           fi
 
-  test-build:
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -37,6 +38,7 @@ jobs:
           make docker-rebuild
       - name: build
         run: |
+          sed -i "s/LOCAL_TEST 1/LOCAL_TEST 0/g" include/macro.hpp
           cd test
           make rebuild ARG="--user root"
       - name: run

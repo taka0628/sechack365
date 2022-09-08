@@ -28,9 +28,12 @@ private:
 public:
     device_c();
     ~device_c();
+    device_c(const device_c&)            = delete;
+    device_c& operator=(const device_c&) = delete;
 
     bool has_serial(const std::string usb_id) const;
     std::vector<std::string> get_usbList() const;
+    // USB_IDとシリアル番号を設定
     bool set_usbID(const std::string);
     bool set_usbID_form_file();
 

@@ -17,30 +17,13 @@ TARGET	:= test.out
 
 SRCDIR := ../src
 
-SRCS	:= key_list_c.cpp\
-	dynamic_mem_c.cpp\
-	file_ptr_c.cpp\
-	sha_c.cpp\
-	file_enc.cpp\
-	aes_c.cpp\
-	key_gen_c.cpp\
-	error.cpp\
-	device_c.cpp\
-	master_key_c.cpp
-
-TESTSRC	:= keyGenTest.cpp\
-	key_list_test.cpp\
-	test.cpp\
-	dynamicMemTest.cpp\
-	test_log.cpp\
-	deviceTest.cpp\
-	cmdline.cpp\
-	nonceTest.cpp\
-	masterKeyTest.cpp
-
 TESTDIR := src
 
 OBJDIR := build
+
+SRCS	:= $(shell cd ${SRCDIR} && find . -name "*.cpp" -type f)
+
+TESTSRC	:= $(shell cd ${TESTDIR} && find . -name "*.cpp" -type f)
 
 OBJS	:= ${SRCS:%.cpp=${OBJDIR}/%.o} ${TESTSRC:%.cpp=${OBJDIR}/%.o}
 
