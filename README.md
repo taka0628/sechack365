@@ -15,7 +15,7 @@
 * 認証方法
   * パスワード+USBメモリのシリアル番号
 * 詳しい動作はこちらを参照
-  * https://sechack365.nict.go.jp/achievement/2021/index.html
+  * https://sechack365.nict.go.jp/achievement/2021/pdf/r3.pdf
 
 ## INSTALL
 * 使用パッケージ
