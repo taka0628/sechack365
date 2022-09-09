@@ -2,12 +2,16 @@
 
 SHELL := /bin/bash
 
+TARGET := fileEncSysCmd.out
+
 # コンテナ名
 CONTAINER-NAME := build-container
 # コンテナのホームディレクトリ
 DOCKER_HOME_DIR := /home/guest
 # ビルドディレクトリ
 BUILD_DIR := build
+
+SRCDIR := src
 
 # Docker exec用オプション
 ARG :=
@@ -16,16 +20,28 @@ build:
 	@make -s pre-exec
 	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
 	@make -s post-exec
+	make cmdapp -s
 
 rebuild:
 	make -s pre-exec
 	-docker container exec -t ${ARG} ${CONTAINER-NAME}  /bin/bash -c "cd ${BUILD_DIR} && make clean &&  make -j4 "
 	make -s post-exec
+	make cmdapp -s
+
 
 bash:
 	make -s pre-exec
 	-docker container exec -it ${CONTAINER-NAME} /bin/bash
 	make -s post-exec
+
+clean:
+	rm build/*.o
+	rm src/*.o
+
+cmdapp:
+	@make -s pre-exec
+	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${SRCDIR} && make -j4 && rm *.o && mv ${TARGET} ../build "
+	@make -s post-exec
 
 docker-build:
 	DOCKER_BUILDKIT=1 docker image build -t ${CONTAINER-NAME} \

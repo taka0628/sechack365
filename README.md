@@ -33,32 +33,65 @@ cd build
 
 ## 使い方
 
-### 暗号化
-注) 暗号化と復号の際には初期化時に選択したUSBメモリが必要です
+### 初期化
 
+#### CUI
+   ```
+   #buildディレクトリ内
+   ./fileEncSysCmd.out -i -p "${password}" -u "${usb id}"
+   ```
+
+#### GUI
 1. プログラムを実行
   	```
 	cd build
 	./fileEncSys.out
  	```
 1. "メニュー" --> "初期化"を選択
+	* 初回実行時のみ
 
 	![init](img/init.png)
 2. パスワードを入力
 3. 使用するUSBメモリを選択
    * root権限が必要
-4. 暗号化するファイルを入力し"encrypt"をクリック
+
+### 暗号化
+注) 暗号化と復号の際には初期化時に選択したUSBメモリが必要です
+
+#### CUI
+```
+./fileEncSysCmd.out -e -p "${password}" -f "${file path}"
+```
+
+#### GUI
+1. プログラムを実行
+  	```
+	cd build
+	./fileEncSys.out
+ 	```
+1. 暗号化するファイルを入力し"encrypt"をクリック
 
 	![alt](img/path.png)
-5. パスワードを入力
-6. 暗号化完了！
+1. パスワードを入力
+1. 暗号化完了！
 
 ### 復号
+#### CUI
+```
+./fileEncSysCmd.out -d -p "${password}" -f "${file path}"
+```
+
+#### GUI
 1. 復号するファイルを入力
 2. パスワードを入力
 3. 復号完了！
 
 ### USBメモリの追加
+#### CUI
+```
+./fileEncSysCmd.out -a -p "${password}" -u "${usb id}"
+```
+#### GUI
 1. 初期化時に登録したUSBメモリが刺さった状態で”メニュー” --> ”USB登録”を選択
 
 	![alt](img/addUsb.png)
