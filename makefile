@@ -15,7 +15,6 @@ ARG :=
 build:
 	@make -s pre-exec
 	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
-	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
 	@make -s post-exec
 
 rebuild:
@@ -64,8 +63,15 @@ endif
 post-exec:
 	docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/build .
 	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libcrypto.so.1.1 build/
+	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libQt5Core.so.5 build/
+	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libQt5Widgets.so.5 build/
 	@docker container stop ${CONTAINER-NAME} 1>/dev/null
 
+install:
+	sudo apt update
+	sudo apt install \
+	qtbase5-dev \
+	qttools5-dev-tools
 
 installDev:
 	sudo apt update

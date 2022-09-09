@@ -1,0 +1,35 @@
+name: env
+
+on:
+  push:
+    paths-ignore:
+      - "build/**"
+
+jobs:
+  ubuntu18:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - name: install test
+        run: make install
+      - name: install dev test
+        run: make installDev
+  ubuntu20:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - name: install test
+        run: make install
+      - name: install dev test
+        run: make installDev
+  ubuntu22:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - name: install test
+        run: make install
+      - name: install dev test
+        run: make installDev
