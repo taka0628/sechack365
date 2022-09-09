@@ -37,11 +37,9 @@ private slots:
 
     void on_pushButton_clear_clicked();
 
-    void on_pushButton_pass_register_clicked();
 
     //    void on_MainWindow_destroyed(QObject *arg1);
 
-    void on_action_menue_PasswordSetting_triggered();
 
     void on_action_menue_USBSetting_triggered();
 

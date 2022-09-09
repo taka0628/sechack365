@@ -15,8 +15,8 @@ EQ            = =
 CC            = gcc
 CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -O1 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O1 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I../qt_src -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
@@ -37,12 +37,12 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = fileEncSys.out1.0.0
-DISTDIR = /home/taka/git/sechack365/build/.tmp/fileEncSys.out1.0.0
+DISTDIR = /home/guest/build/.tmp/fileEncSys.out1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
-LIBS          = $(SUBLIBS) -lcrypto -lssl /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread
+LIBS          = $(SUBLIBS) -lssl -Wl,-rpath=./ -lcrypto /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread   
 AR            = ar cqs
-RANLIB        =
+RANLIB        = 
 SED           = sed
 STRIP         = strip
 
@@ -168,7 +168,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../qt_src/qt_src.pro ../include/master_key_c.hpp \
+		../qt_src/qt_src.pro ../include/error.hpp \
+		../include/key_gen.hpp \
+		../include/master_key_c.hpp \
 		../qt_src/mainwindow.h \
 		../qt_src/dialog_password.h \
 		../include/file_enc.hpp \
@@ -196,14 +198,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../qt_src/pass_check.cpp \
 		../qt_src/usb_select.cpp
 QMAKE_TARGET  = fileEncSys.out
-DESTDIR       =
+DESTDIR       = 
 TARGET        = fileEncSys.out
 
 
 first: all
 ####### Build rules
 
-fileEncSys.out: ui_mainwindow.h ui_dialog_password.h ui_dialog_dec_pass.h ui_pass_check.h ui_usb_select.h $(OBJECTS)
+fileEncSys.out: ui_mainwindow.h ui_dialog_password.h ui_dialog_dec_pass.h ui_pass_check.h ui_usb_select.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: ../qt_src/qt_src.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -374,18 +376,18 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../include/master_key_c.hpp ../qt_src/mainwindow.h ../qt_src/dialog_password.h ../include/file_enc.hpp ../include/aes_c.hpp ../include/sha_c.hpp ../include/dynamic_mem_c.hpp ../include/macro.hpp ../include/device_c.hpp ../qt_src/dialog_dec_pass.h ../qt_src/pass_check.h ../qt_src/usb_select.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../include/error.hpp ../include/key_gen.hpp ../include/master_key_c.hpp ../qt_src/mainwindow.h ../qt_src/dialog_password.h ../include/file_enc.hpp ../include/aes_c.hpp ../include/sha_c.hpp ../include/dynamic_mem_c.hpp ../include/macro.hpp ../include/device_c.hpp ../qt_src/dialog_dec_pass.h ../qt_src/pass_check.h ../qt_src/usb_select.h $(DISTDIR)/
 	$(COPY_FILE) --parents ../src/master_key_c.cpp ../qt_src/main.cpp ../qt_src/mainwindow.cpp ../qt_src/dialog_password.cpp ../src/file_enc.cpp ../src/aes_c.cpp ../src/sha_c.cpp ../src/dynamic_mem_c.cpp ../src/key_list_c.cpp ../src/file_ptr_c.cpp ../src/error.cpp ../src/key_gen_c.cpp ../src/device_c.cpp ../qt_src/dialog_dec_pass.cpp ../qt_src/pass_check.cpp ../qt_src/usb_select.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../qt_src/mainwindow.ui ../qt_src/dialog_password.ui ../qt_src/dialog_dec_pass.ui ../qt_src/pass_check.ui ../qt_src/usb_select.ui $(DISTDIR)/
 
 
-clean: compiler_clean
+clean: compiler_clean 
 	-$(DEL_FILE) $(OBJECTS)
 	-$(DEL_FILE) *~ core *.core
 
 
-distclean: clean
-	-$(DEL_FILE) $(TARGET)
+distclean: clean 
+	-$(DEL_FILE) $(TARGET) 
 	-$(DEL_FILE) .qmake.stash
 	-$(DEL_FILE) Makefile
 
@@ -421,13 +423,14 @@ moc_mainwindow.cpp: ../qt_src/mainwindow.h \
 		../include/master_key_c.hpp \
 		../include/device_c.hpp \
 		../include/key_gen.hpp \
+		../test/include/usb_debug.hpp \
 		../qt_src/dialog_dec_pass.h \
 		../qt_src/dialog_password.h \
 		../qt_src/pass_check.h \
 		../qt_src/usb_select.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/taka/git/sechack365/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/taka/git/sechack365/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/guest/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/guest/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/mainwindow.h -o moc_mainwindow.cpp
 
 moc_dialog_password.cpp: ../qt_src/dialog_password.h \
 		../include/file_enc.hpp \
@@ -437,11 +440,12 @@ moc_dialog_password.cpp: ../qt_src/dialog_password.h \
 		../include/error.hpp \
 		../include/sha_c.hpp \
 		../include/key_gen.hpp \
-		../include/master_key_c.hpp \
 		../include/device_c.hpp \
+		../test/include/usb_debug.hpp \
+		../include/master_key_c.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/taka/git/sechack365/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/taka/git/sechack365/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/dialog_password.h -o moc_dialog_password.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/guest/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/guest/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/dialog_password.h -o moc_dialog_password.cpp
 
 moc_dialog_dec_pass.cpp: ../qt_src/dialog_dec_pass.h \
 		../include/file_enc.hpp \
@@ -452,7 +456,7 @@ moc_dialog_dec_pass.cpp: ../qt_src/dialog_dec_pass.h \
 		../include/sha_c.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/taka/git/sechack365/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/taka/git/sechack365/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/dialog_dec_pass.h -o moc_dialog_dec_pass.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/guest/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/guest/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/dialog_dec_pass.h -o moc_dialog_dec_pass.cpp
 
 moc_pass_check.cpp: ../qt_src/pass_check.h \
 		../include/key_gen.hpp \
@@ -462,9 +466,11 @@ moc_pass_check.cpp: ../qt_src/pass_check.h \
 		../include/file_enc.hpp \
 		../include/aes_c.hpp \
 		../include/sha_c.hpp \
+		../include/device_c.hpp \
+		../test/include/usb_debug.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/taka/git/sechack365/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/taka/git/sechack365/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/pass_check.h -o moc_pass_check.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/guest/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/guest/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/pass_check.h -o moc_pass_check.cpp
 
 moc_usb_select.cpp: ../qt_src/usb_select.h \
 		../include/device_c.hpp \
@@ -476,7 +482,7 @@ moc_usb_select.cpp: ../qt_src/usb_select.h \
 		../include/sha_c.hpp \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/taka/git/sechack365/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/taka/git/sechack365/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/usb_select.h -o moc_usb_select.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/guest/build/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/guest/qt_src -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../qt_src/usb_select.h -o moc_usb_select.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -511,7 +517,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
 
@@ -523,7 +529,8 @@ master_key_c.o: ../src/master_key_c.cpp ../include/master_key_c.hpp \
 		../include/device_c.hpp \
 		../include/file_enc.hpp \
 		../include/sha_c.hpp \
-		../include/key_gen.hpp
+		../include/key_gen.hpp \
+		../test/include/usb_debug.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o master_key_c.o ../src/master_key_c.cpp
 
 main.o: ../qt_src/main.cpp ../qt_src/mainwindow.h \
@@ -536,6 +543,7 @@ main.o: ../qt_src/main.cpp ../qt_src/mainwindow.h \
 		../include/master_key_c.hpp \
 		../include/device_c.hpp \
 		../include/key_gen.hpp \
+		../test/include/usb_debug.hpp \
 		../qt_src/dialog_dec_pass.h \
 		../qt_src/dialog_password.h \
 		../qt_src/pass_check.h \
@@ -552,6 +560,7 @@ mainwindow.o: ../qt_src/mainwindow.cpp ../qt_src/mainwindow.h \
 		../include/master_key_c.hpp \
 		../include/device_c.hpp \
 		../include/key_gen.hpp \
+		../test/include/usb_debug.hpp \
 		../qt_src/dialog_dec_pass.h \
 		../qt_src/dialog_password.h \
 		../qt_src/pass_check.h \
@@ -567,8 +576,9 @@ dialog_password.o: ../qt_src/dialog_password.cpp ../qt_src/dialog_password.h \
 		../include/error.hpp \
 		../include/sha_c.hpp \
 		../include/key_gen.hpp \
-		../include/master_key_c.hpp \
 		../include/device_c.hpp \
+		../test/include/usb_debug.hpp \
+		../include/master_key_c.hpp \
 		ui_dialog_password.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialog_password.o ../qt_src/dialog_password.cpp
 
@@ -623,7 +633,9 @@ key_gen_c.o: ../src/key_gen_c.cpp ../include/key_gen.hpp \
 		../include/error.hpp \
 		../include/file_enc.hpp \
 		../include/aes_c.hpp \
-		../include/sha_c.hpp
+		../include/sha_c.hpp \
+		../include/device_c.hpp \
+		../test/include/usb_debug.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o key_gen_c.o ../src/key_gen_c.cpp
 
 device_c.o: ../src/device_c.cpp ../include/device_c.hpp \
@@ -653,6 +665,8 @@ pass_check.o: ../qt_src/pass_check.cpp ../qt_src/pass_check.h \
 		../include/file_enc.hpp \
 		../include/aes_c.hpp \
 		../include/sha_c.hpp \
+		../include/device_c.hpp \
+		../test/include/usb_debug.hpp \
 		ui_pass_check.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pass_check.o ../qt_src/pass_check.cpp
 
@@ -667,19 +681,19 @@ usb_select.o: ../qt_src/usb_select.cpp ../qt_src/usb_select.h \
 		ui_usb_select.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o usb_select.o ../qt_src/usb_select.cpp
 
-moc_mainwindow.o: moc_mainwindow.cpp
+moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
-moc_dialog_password.o: moc_dialog_password.cpp
+moc_dialog_password.o: moc_dialog_password.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialog_password.o moc_dialog_password.cpp
 
-moc_dialog_dec_pass.o: moc_dialog_dec_pass.cpp
+moc_dialog_dec_pass.o: moc_dialog_dec_pass.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialog_dec_pass.o moc_dialog_dec_pass.cpp
 
-moc_pass_check.o: moc_pass_check.cpp
+moc_pass_check.o: moc_pass_check.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_pass_check.o moc_pass_check.cpp
 
-moc_usb_select.o: moc_usb_select.cpp
+moc_usb_select.o: moc_usb_select.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_usb_select.o moc_usb_select.cpp
 
 ####### Install

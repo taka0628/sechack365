@@ -159,6 +159,9 @@ void MainWindow::on_push_dec_clicked()
         this->error_messege_box("鍵リストの暗号化に失敗");
         return;
     }
+
+
+
     ui->lineEdit_file_path->clear();
 }
 
@@ -167,18 +170,6 @@ void MainWindow::on_pushButton_clear_clicked()
     ui->lineEdit_file_path->clear();
 }
 
-void MainWindow::on_pushButton_pass_register_clicked()
-{
-    usb_select usb_select_wind;
-    usb_select_wind.exec();
-}
-
-//パスワードのセット
-void MainWindow::on_action_menue_PasswordSetting_triggered()
-{
-    Dialog_password password_window;
-    password_window.exec();
-}
 
 // USBのセット
 void MainWindow::on_action_menue_USBSetting_triggered()

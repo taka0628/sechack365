@@ -1,0 +1,7 @@
+*
+!.qmake.stash
+!.gitignore
+
+!*.cpp
+!*.h
+!Makefile

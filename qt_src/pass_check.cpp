@@ -10,7 +10,14 @@ pass_check::pass_check(QWidget* parent)
     isPassInput_ = false;
 }
 
-pass_check::~pass_check() { delete ui; }
+pass_check::~pass_check()
+{
+    delete ui;
+    for (size_t i = 0; i < this->get_pass().size(); i++) {
+        this->pass_[i] = '0';
+    }
+    this->pass_.clear();
+}
 
 void pass_check::on_pushButton_clicked()
 {

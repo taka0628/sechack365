@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.12.8
+** Created by: Qt User Interface Compiler version 5.15.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -35,7 +35,6 @@ public:
     QPushButton *push_dec;
     QLineEdit *lineEdit_file_path;
     QLabel *label;
-    QPushButton *pushButton_pass_register;
     QPushButton *pushButton_clear;
     QLabel *label_usb_debug;
     QMenuBar *menuBar;
@@ -68,9 +67,6 @@ public:
         label = new QLabel(centralWidget);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(70, 50, 191, 17));
-        pushButton_pass_register = new QPushButton(centralWidget);
-        pushButton_pass_register->setObjectName(QString::fromUtf8("pushButton_pass_register"));
-        pushButton_pass_register->setGeometry(QRect(278, 0, 121, 25));
         pushButton_clear = new QPushButton(centralWidget);
         pushButton_clear->setObjectName(QString::fromUtf8("pushButton_clear"));
         pushButton_clear->setGeometry(QRect(320, 126, 41, 25));
@@ -96,7 +92,6 @@ public:
 
         menuBar->addAction(menu->menuAction());
         menu->addSeparator();
-        menu->addAction(action_menue_PasswordSetting);
         menu->addAction(action_menue_USBSetting);
         menu->addAction(action_menue_Init);
 
@@ -107,18 +102,17 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
-        action_menue_PasswordSetting->setText(QApplication::translate("MainWindow", "\343\203\221\343\202\271\343\203\257\343\203\274\343\203\211\350\250\255\345\256\232", nullptr));
-        action_menue_USBSetting->setText(QApplication::translate("MainWindow", "USB\347\231\273\351\214\262", nullptr));
-        action_menue_Init->setText(QApplication::translate("MainWindow", "\345\210\235\346\234\237\345\214\226", nullptr));
-        push_enc->setText(QApplication::translate("MainWindow", "encypt", nullptr));
-        push_dec->setText(QApplication::translate("MainWindow", "decrypt", nullptr));
-        lineEdit_file_path->setPlaceholderText(QApplication::translate("MainWindow", "\343\203\225\343\202\241\343\202\244\343\203\253\343\203\221\343\202\271\345\205\245\345\212\233", nullptr));
-        label->setText(QApplication::translate("MainWindow", "\345\257\276\350\261\241\343\203\225\343\202\241\343\202\244\343\203\253\343\202\222\343\203\211\343\203\251\343\203\203\343\202\260", nullptr));
-        pushButton_pass_register->setText(QApplication::translate("MainWindow", "\343\203\221\343\202\271\343\203\257\343\203\274\343\203\211\347\231\273\351\214\262", nullptr));
-        pushButton_clear->setText(QApplication::translate("MainWindow", "clear", nullptr));
-        label_usb_debug->setText(QApplication::translate("MainWindow", "usbID: ", nullptr));
-        menu->setTitle(QApplication::translate("MainWindow", "\343\203\241\343\203\213\343\203\245\343\203\274", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "MainWindow", nullptr));
+        action_menue_PasswordSetting->setText(QCoreApplication::translate("MainWindow", "\343\203\221\343\202\271\343\203\257\343\203\274\343\203\211\350\250\255\345\256\232", nullptr));
+        action_menue_USBSetting->setText(QCoreApplication::translate("MainWindow", "USB\347\231\273\351\214\262", nullptr));
+        action_menue_Init->setText(QCoreApplication::translate("MainWindow", "\345\210\235\346\234\237\345\214\226", nullptr));
+        push_enc->setText(QCoreApplication::translate("MainWindow", "encypt", nullptr));
+        push_dec->setText(QCoreApplication::translate("MainWindow", "decrypt", nullptr));
+        lineEdit_file_path->setPlaceholderText(QCoreApplication::translate("MainWindow", "\343\203\225\343\202\241\343\202\244\343\203\253\343\203\221\343\202\271\345\205\245\345\212\233", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "\345\257\276\350\261\241\343\203\225\343\202\241\343\202\244\343\203\253\343\202\222\343\203\211\343\203\251\343\203\203\343\202\260", nullptr));
+        pushButton_clear->setText(QCoreApplication::translate("MainWindow", "clear", nullptr));
+        label_usb_debug->setText(QCoreApplication::translate("MainWindow", "usbID: ", nullptr));
+        menu->setTitle(QCoreApplication::translate("MainWindow", "\343\203\241\343\203\213\343\203\245\343\203\274", nullptr));
     } // retranslateUi
 
 };
