@@ -19,7 +19,7 @@
 #include "../../include/key_gen.hpp"
 #include "../../include/sha_c.hpp"
 #include "openssl/rand.h"
-#include "gtest/googletest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 
 #define ERROR_TEST        \
     TestLog_c testLogIns; \
@@ -30,6 +30,10 @@
     testLogIns.correctTest()
 
 #define TEST_END testLogIns.~TestLog_c()
+
+// ローカルの実行環境でテスト
+// USBを物理的にさしてテストする場合は1
+// Actions上などUSBの設定ができない環境では0
 
 class TestLog_c {
 private:

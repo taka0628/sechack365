@@ -66,19 +66,6 @@
      <string>対象ファイルをドラッグ</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_pass_register">
-    <property name="geometry">
-     <rect>
-      <x>278</x>
-      <y>0</y>
-      <width>121</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>パスワード登録</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_clear">
     <property name="geometry">
      <rect>
@@ -120,7 +107,6 @@
      <string>メニュー</string>
     </property>
     <addaction name="separator"/>
-    <addaction name="action_menue_PasswordSetting"/>
     <addaction name="action_menue_USBSetting"/>
     <addaction name="action_menue_Init"/>
    </widget>

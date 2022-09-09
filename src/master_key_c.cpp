@@ -16,7 +16,7 @@ dynamic_mem_c master_key_c::get_master_key() const
 {
     if (this->master_key_.size() != AES_SIZE) {
         ERROR("master key is false");
-        log::push_value("this->master_key_.size()", this->master_key_.size());
+        ErrorMsg::push_value("this->master_key_.size()", this->master_key_.size());
         exit(1);
     }
     return this->master_key_;
@@ -118,9 +118,9 @@ bool master_key_c::push_key(const dynamic_mem_c crypt_key, const dynamic_mem_c i
 {
     if (crypt_key.size() != AES_SIZE || enc_mkey.size() != AES_SIZE || iv.size() != AES_SIZE) {
         ERROR("引数が不正");
-        log::push_value("crypt_key.size()", crypt_key.size());
-        log::push_value("enc_mkey.size()", enc_mkey.size());
-        log::push_value("iv.size()", iv.size());
+        ErrorMsg::push_value("crypt_key.size()", crypt_key.size());
+        ErrorMsg::push_value("enc_mkey.size()", enc_mkey.size());
+        ErrorMsg::push_value("iv.size()", iv.size());
         return false;
     }
     // 暗号鍵のハッシュ値
@@ -132,7 +132,7 @@ bool master_key_c::push_key(const dynamic_mem_c crypt_key, const dynamic_mem_c i
     }
     if (hash_key.size() != HASH_SIZE) {
         ERROR("ハッシュサイズエラー");
-        log::push_value("hash_key.size()", hash_key.size());
+        ErrorMsg::push_value("hash_key.size()", hash_key.size());
         return false;
     }
 
@@ -171,7 +171,7 @@ bool master_key_c::init(const string usb_id, const string pass_word)
     dynamic_mem_c enc_mkey = this->enc_mkey(crypt_key);
     if (enc_mkey.size() != AES_SIZE) {
         ERROR("mkey size");
-        log::push_value(TO_STRING(enc_mkey.size()), enc_mkey.size());
+        ErrorMsg::push_value(TO_STRING(enc_mkey.size()), enc_mkey.size());
         exit(1);
     }
 
@@ -210,13 +210,9 @@ dynamic_mem_c master_key_c::generate_crypt_key(const string usb_id, const string
         PUSH_VALUE(password);
         return error;
     }
-    if (!key_gen.set_usbID(usb_id)) {
+    if (!key_gen.set_usb(usb_id)) {
         ERROR("usbIDがセットできません");
         PUSH_VALUE(usb_id);
-        return error;
-    }
-    if (!key_gen.set_UsbSerial()) {
-        ERROR("usb serialがセットできません");
         return error;
     }
     if (!key_gen.key_gen()) {
@@ -243,7 +239,7 @@ master_key_c::enc_mkey(const dynamic_mem_c key)
     aes.encrypt(enc_mkey, this->get_master_key(), aes_c::AES_bit_e::aes_256);
     if (enc_mkey.size() != AES_SIZE) {
         ERROR("鍵のサイズが不正");
-        log::push_value("enc_mkey.size()", enc_mkey.size());
+        ErrorMsg::push_value("enc_mkey.size()", enc_mkey.size());
         exit(1);
     }
 

@@ -83,6 +83,7 @@ void dynamic_mem_c::d_new(const uint size)
 
 void dynamic_mem_c::d_free()
 {
+    this->reset();
     if (this->mem_) {
         delete[] this->mem_;
         this->mem_ = nullptr;

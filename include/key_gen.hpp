@@ -1,39 +1,51 @@
 #ifndef ___KEY_GEN_HPP
 #define ___KEY_GEN_HPP
 
+#include <cstdio>
 #include <fcntl.h>
+#include <fstream>
+#include <iostream>
+#include <openssl/rand.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 #include <unistd.h>
 
-#include "cstdio"
 #include "dynamic_mem_c.hpp"
 #include "error.hpp"
 #include "file_enc.hpp"
-#include "fstream"
-#include "iostream"
 #include "macro.hpp"
-#include "openssl/rand.h"
 #include "sha_c.hpp"
-#include "string"
+
+#if LOCAL_TEST
+#include "device_c.hpp"
+#else
+#include "../test/include/usb_debug.hpp"
+#endif
 
 class key_gen_c {
 private:
-    key_gen_c(const key_gen_c&);
+#if LOCAL_TEST
+    device_c usb_;
+#else
+    usb_debug usb_;
+#endif
 
     dynamic_mem_c key_;
     std::string pass_;
-    std::string usbID_;
-    std::string usbSerial_;
 
     std::string get_pass() const;
     std::string get_usbSerial() const;
+    std::string get_usbID() const;
+
     bool get_nonce(dynamic_mem_c& to) const;
     bool generate_nonce() const;
 
 public:
     key_gen_c();
     ~key_gen_c();
+    key_gen_c(const key_gen_c&)           = delete;
+    key_gen_c& operator=(const device_c&) = delete;
 
     // bool new_key_gen();
     bool key_gen();
@@ -45,9 +57,8 @@ public:
     // パスワードのハッシュ値をファイルに書き込む
     bool set_pass2file(std::string const pass) const;
 
-    bool set_usbID(std::string const id);
-    std::string get_usbID() const;
-    bool set_UsbSerial();
+    // usbIDとシリアル番号の設定を行う
+    bool set_usb(std::string const id);
 
     dynamic_mem_c get_key() const;
     bool canKeyGen() const;

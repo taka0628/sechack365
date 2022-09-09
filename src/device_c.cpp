@@ -66,6 +66,7 @@ string cmdline(string cmd)
     return cmdstring;
 }
 } // namespace local
+
 vector<string> device_c::get_usbList() const
 {
     string cmdline = "lsusb | cut -d ' ' -f 5- ";

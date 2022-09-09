@@ -61,7 +61,7 @@ TEST(KeyListTest, FalseProcess)
 
 TEST(FileEncTest, Normal)
 {
-    const string test_filepath("/home/taka/github/2021_sec/test/data.jpg");
+    const string test_filepath("testdata.txt");
     file_enc_c file_enc;
     ASSERT_TRUE(file_enc.set_file_path(test_filepath));
     ASSERT_TRUE(file_enc.is_file_exit());
