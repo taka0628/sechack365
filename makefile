@@ -63,8 +63,6 @@ endif
 post-exec:
 	docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/build .
 	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libcrypto.so.1.1 build/
-	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libQt5Core.so.5 build/
-	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libQt5Widgets.so.5 build/
 	@docker container stop ${CONTAINER-NAME} 1>/dev/null
 
 install:
