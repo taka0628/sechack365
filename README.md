@@ -89,7 +89,7 @@ cd build
 ### USBメモリの追加
 #### CUI
 ```
-./fileEncSysCmd.out -a -p "${password}" -u "${usb id}"
+./fileEncSysCmd.out --add-usb -p "${password}" -u "${usb id}"
 ```
 #### GUI
 1. 初期化時に登録したUSBメモリが刺さった状態で”メニュー” --> ”USB登録”を選択

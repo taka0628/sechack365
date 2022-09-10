@@ -16,10 +16,12 @@ SRCDIR := src
 # Docker exec用オプション
 ARG :=
 
+CLEAN_FILE := pass_hash\
+	key_hash
+
+
 build:
-	@make -s pre-exec
-	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
-	@make -s post-exec
+	make guiadd -s
 	make cmdapp -s
 
 rebuild:
@@ -28,19 +30,23 @@ rebuild:
 	make -s post-exec
 	make cmdapp -s
 
-
 bash:
 	make -s pre-exec
 	-docker container exec -it ${CONTAINER-NAME} /bin/bash
 	make -s post-exec
 
 clean:
-	rm build/*.o
-	rm src/*.o
+	-cd ${BUILD_DIR} && rm *.o *.out ${CLEAN_FILE} 2>/dev/null
+	-make -C ${SRCDIR} clean -s
 
 cmdapp:
 	@make -s pre-exec
-	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${SRCDIR} && make -j4 && rm *.o && mv ${TARGET} ../build "
+	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${SRCDIR} && make -j4 && mv ${TARGET} ../build "
+	@make -s post-exec
+
+guiadd:
+	@make -s pre-exec
+	-docker container exec -t ${ARG} ${CONTAINER-NAME} /bin/bash -c "cd ${BUILD_DIR} && make -j4"
 	@make -s post-exec
 
 docker-build:
@@ -78,6 +84,7 @@ endif
 # コンテナ内のファイルをローカルへコピー，コンテナの削除を行う
 post-exec:
 	docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/build .
+	docker container cp ${CONTAINER-NAME}:${DOCKER_HOME_DIR}/src .
 	-docker container cp ${CONTAINER-NAME}:/lib/x86_64-linux-gnu/libcrypto.so.1.1 build/
 	@docker container stop ${CONTAINER-NAME} 1>/dev/null
 
