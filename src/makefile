@@ -4,7 +4,8 @@ CXX := g++
 TARGET := fileEncSysCmd.out
 SRC := $(shell find . -name "*.cpp" -type f)
 
-OBJS := ${SRC:%.cpp=%.o}
+OBJDIR := objects
+OBJS := ${SRC:%.cpp=${OBJDIR}/%.o}
 
 LDFLAGS	:= -lssl \
 	-ldl \
@@ -17,8 +18,14 @@ CFLAGS := -Wall\
 ${TARGET}: ${OBJS}
 	${CXX} -o $@ $^ ${LDFLAGS}
 
-%.o: %.cpp
-	${CXX} -c $^ ${CFLAGS}
+${OBJDIR}/%.o: %.cpp
+	mkdir -p ${OBJDIR}
+	cd ${OBJDIR} && \
+	${CXX} -c ../$^ ${CFLAGS}
+
+clean:
+	rm ${OBJDIR}/*.o
+	rm ${TARGET}
 
 test:
 	echo ${SRC}
