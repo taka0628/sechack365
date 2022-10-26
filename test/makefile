@@ -21,7 +21,7 @@ TESTDIR := src
 
 OBJDIR := build
 
-SRCS	:= $(shell cd ${SRCDIR} && find . -name "*.cpp" -type f)
+SRCS	:= $(shell cd ${SRCDIR} && find . -name "*.cpp" -type f | grep -v main.cpp)
 
 TESTSRC	:= $(shell cd ${TESTDIR} && find . -name "*.cpp" -type f)
 
@@ -38,6 +38,10 @@ LDFLAGS	:= -lssl \
 
 CFLAGS	:= -Wall\
 	-std=c++11
+
+# $(warning SRCS = $(SRCS))
+# $(warning TESTSRC = $(TESTSRC))
+# $(warning OBJS = $(OBJS))
 
 ${TARGET}: ${OBJS}
 	${CXX} -o $@ $^ ${LDGFLAGS} ${LDFLAGS}
