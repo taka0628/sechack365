@@ -55,4 +55,10 @@ jobs:
         run: |
           cd test
           ls -l
-          make run
+          make run | tee test.log
+          if [[ -z test.log ]]; then
+            ll test.log
+            file test.log
+            cat test.log
+            exit 1
+          fi
