@@ -3,11 +3,10 @@ FROM ubuntu:20.04
 # ユーザーを作成
 ARG DOCKER_USER_=guest
 
-COPY net.sh /net.sh
-RUN sh /net.sh
+ARG APT_LINK=http://www.ftp.ne.jp/Linux/packages/ubuntu/archive/
+RUN sed -i "s-$(cat /etc/apt/sources.list | grep -v "#" | cut -d " " -f 2 | grep -v "security" | sed "/^$/d" | sed -n 1p)-${APT_LINK}-g" /etc/apt/sources.list
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezon
 
 RUN apt-get update \
 	&&  apt-get install -y \

@@ -1,8 +1,8 @@
 # googletestのインストール
 FROM ubuntu:20.04 AS googletest
 
-COPY net.sh /net.sh
-RUN sh /net.sh
+ARG APT_LINK=http://www.ftp.ne.jp/Linux/packages/ubuntu/archive/
+RUN sed -i "s-$(cat /etc/apt/sources.list | grep -v "#" | cut -d " " -f 2 | grep -v "security" | sed "/^$/d" | sed -n 1p)-${APT_LINK}-g" /etc/apt/sources.list
 
 RUN apt-get update \
 	&&  apt-get install -y \
